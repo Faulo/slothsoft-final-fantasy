@@ -85,7 +85,7 @@ wide table scroll within its panel. Only these components receive the ROM font
 and white-on-blue theme, including headings, labels and native controls.
 The host's surrounding text and page header keep their own styling.
 
-Links use color instead of underlines: gold when unvisited, pale lavender when
+Links use color instead of underlines: gold when unvisited, ochre (NES $18) when
 visited, cyan on hover or keyboard focus, and white while pressed. Keyboard
 focus retains its visible outline. Active color takes precedence over hover
 and focus. The example's palette link demonstrates these states.
