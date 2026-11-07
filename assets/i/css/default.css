@@ -226,15 +226,6 @@
     display: block;
 }
 
-.final-fantasy .ff-text .ff-item-icon {
-    width: auto;
-    height: auto;
-    margin: 0;
-    vertical-align: baseline;
-    background-image: none;
-    filter: none;
-}
-
 /* Native controls, as in Ambermoon: the game typeface belongs on the select itself.
    Explicit option inheritance also covers Firefox's native popup. */
 .final-fantasy select.ff-text {

@@ -203,18 +203,12 @@
     <xsl:template name="item-name">
         <xsl:choose>
             <xsl:when test="sf1:label">
-                <xsl:apply-templates select="sf1:label/node()" mode="item-name" />
+                <xsl:apply-templates select="sf1:label/node()" mode="item-text" />
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="@name" />
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
-    <xsl:template match="sf1:icon" mode="item-name">
-        <xsl:call-template name="item-icon">
-            <xsl:with-param name="glyph" select="@glyph" />
-            <xsl:with-param name="label" select="@label" />
-        </xsl:call-template>
     </xsl:template>
     <xsl:template match="sf1:icon" mode="item-text">
         <xsl:value-of select="substring($item-glyphs, @glyph - 211, 1)" />
@@ -234,9 +228,6 @@
                     <xsl:attribute name="hidden">hidden</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="$class = 'ff-item-icon'">
-                <xsl:value-of select="substring($item-glyphs, $glyph - 211, 1)" />
-            </xsl:if>
         </span>
     </xsl:template>
     <xsl:template name="classes">

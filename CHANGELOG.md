@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Render reference-table item names as plain Unicode text without inline icon wrappers; the ROM font supplies their original pictograms.
+
 - Correct the equipment-update input contract for static analysis while preserving rejection of malformed nested input.
 
 - Map the thirteen item pictograms to the selected Unicode symbols in rendered names and the ROM font, with full-Unicode font support and preserved private-use aliases.

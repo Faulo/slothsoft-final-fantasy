@@ -88,7 +88,9 @@ and the menu palette; palette entry 2 (the menu background) becomes transparent.
 CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mixed
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
-Reference tables render the same tiles as font glyphs inline in their original position. Equipment
+Reference tables render item names as plain Unicode text, including pictograms
+in their original position. The dynamic font maps those characters to the ROM
+tiles; names contain no icon spans or background images. Equipment
 options use the ROM font and its original icons in native Firefox selects, with the selected icon beside the dropdown;
 changing the selection updates that preview without changing save behavior.
 
