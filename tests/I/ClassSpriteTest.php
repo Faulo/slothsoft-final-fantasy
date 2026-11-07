@@ -37,10 +37,12 @@ final class ClassSpriteTest extends TestCase {
     
     public function testMissingRomDoesNotLeakItsPath(): void {
         Configuration::setRomPath('i', '/private/missing-game.nes');
+        $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/gfx/class?class=2');
+        self::assertSame('/i/gfx/class', (string) Module::resolveToAsset($url)->getUrlPath());
         $this->expectException(HttpStatusException::class);
         $this->expectExceptionCode(503);
         $this->expectExceptionMessage('Class graphics are currently unavailable.');
-        Module::resolveToFileWriter(FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/gfx/class?class=2'));
+        Module::resolveToFileWriter($url);
     }
     
     /** @dataProvider invalidClasses */

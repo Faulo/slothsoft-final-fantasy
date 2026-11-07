@@ -15,6 +15,17 @@ final class AssetsModuleTest extends AbstractModuleTest {
         return FarahUrlAuthority::createFromVendorAndModule('slothsoft', 'final-fantasy');
     }
     
+    public function assetLocalUrlProvider(): array {
+        $assets = parent::assetLocalUrlProvider();
+        $rom = Configuration::getRomPath('i');
+        if ($rom === null || ! is_file($rom) || ! is_readable($rom)) {
+            // Unlike XML pages, PNG assets require a private ROM. ClassSpriteTest covers
+            // their lookup and 503 contract without it, and actual PNG results with it.
+            unset($assets['farah://slothsoft@final-fantasy/i/gfx/class']);
+        }
+        return $assets;
+    }
+    
     public function testDomainSchemaResolvesAtItsNamespaceLocation(): void {
         $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/schema/i/1.0');
         $document = Module::resolveToDOMWriter($url)->toDocument();
