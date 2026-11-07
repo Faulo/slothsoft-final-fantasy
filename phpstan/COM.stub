@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Filesystem automation methods used by FileSystem::lookupFile().
+ *
+ * @method object GetFile(string $path)
+ * @method object GetFolder(string $path)
+ */
+class COM {
+}

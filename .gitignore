@@ -1,14 +1,27 @@
-/vendor/
+# == Windows ==
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# == Mac ==
+.DS_Store
+
+# == Composer ==
+/composer.phar
 /composer.lock
+/vendor/
+
+# == phpDocumentor ==
+/docs/
+
+# == PHPUnit ==
 /.phpunit.result.cache
-/.reports/
-/.data/
-/.cache/
-/.log/
-/.farah-*
-*.nes
-*.sav
-*.srm
+/.reports
+
+# == Slothsoft ==
+.cache
+.data
+.log
+.farah-*
 *.local
-/config.local.php
-/results-*.xml
