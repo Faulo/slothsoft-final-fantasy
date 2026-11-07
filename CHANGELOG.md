@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Generate a TrueType menu font from the private ROM and use it for game-derived names, class tooltips and equipment options.
+
 - Extract item-name glyphs and menu colors from the ROM into an on-demand PNG sheet.
 - Render inline item icons in reference tables and selected equipment previews, preserving text fallbacks in domain XML.
 

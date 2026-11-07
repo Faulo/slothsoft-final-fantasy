@@ -25,6 +25,23 @@ final class TextCodec {
         0xE1 => 'potion'
     ];
     
+    /** Unicode code points mapped to original NES tile IDs, including all tiles in the private-use area.
+     * @return array<int, int>
+     */
+    public static function getFontCharacterMap(): array {
+        $map = [];
+        for ($tile = 0x80; $tile <= 0xFF; $tile++) {
+            $map[0xE000 + $tile] = $tile;
+        }
+        foreach (str_split(self::ALPHABET) as $index => $character) {
+            $map[ord($character)] = 0x80 + $index;
+        }
+        foreach (self::SYMBOLS as $tile => $character) {
+            $map[mb_ord($character, 'UTF-8')] = $tile;
+        }
+        return $map;
+    }
+    
     public static function decode(string $bytes): string {
         $text = '';
         foreach (unpack('C*', $bytes) ?: [] as $byte) {

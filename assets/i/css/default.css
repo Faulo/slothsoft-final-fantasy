@@ -175,3 +175,48 @@
     font-size: .9em;
     margin-top: 1.5rem;
 }
+
+@font-face {
+    font-family: 'Final Fantasy I';
+    src: url('/slothsoft@final-fantasy/i/font') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+.final-fantasy .ff-text {
+    font-family: 'Final Fantasy I', monospace;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-synthesis: none;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+.final-fantasy select:has(option[value="0"]:checked),
+.final-fantasy option[value="0"] {
+    font-family: inherit;
+}
+
+.final-fantasy .ff-class-entry {
+    position: relative;
+}
+
+.final-fantasy .ff-class-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    z-index: 1;
+    padding: .5rem;
+    background: #193d75;
+    color: white;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.final-fantasy .ff-class-entry:hover .ff-class-tooltip,
+.final-fantasy .ff-class-entry:focus .ff-class-tooltip {
+    display: block;
+}

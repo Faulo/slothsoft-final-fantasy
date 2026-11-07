@@ -72,7 +72,7 @@
                                 <tbody>
                                     <xsl:for-each select="sf1:weapons/sf1:weapon">
                                         <tr id="weapon-{@id}">
-                                            <th scope="row">
+                                            <th scope="row" class="ff-text">
                                                 <xsl:call-template name="item-name" />
                                             </th>
                                             <td>
@@ -119,7 +119,7 @@
                                 <tbody>
                                     <xsl:for-each select="sf1:armor/sf1:item">
                                         <tr id="armor-{@id}">
-                                            <th scope="row">
+                                            <th scope="row" class="ff-text">
                                                 <xsl:call-template name="item-name" />
                                             </th>
                                             <td>
@@ -172,7 +172,7 @@
                                 <tbody>
                                     <xsl:for-each select="sf1:spells/sf1:spell">
                                         <tr id="spell-{@id}">
-                                            <th scope="row">
+                                            <th scope="row" class="ff-text">
                                                 <xsl:value-of select="@name" />
                                             </th>
                                             <td>
@@ -194,7 +194,7 @@
                         </div>
                     </xsl:when>
                 </xsl:choose>
-                <p class="ff-note">Names preserve the ROM's spelling. Bracketed words represent the game's equipment icons. Prices are in gold.</p>
+                <p class="ff-note">Names and their typeface come from the ROM. Prices are in gold.</p>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -215,7 +215,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="sf1:icon" mode="item-text">
-        <xsl:value-of select="concat(' ', @label, ' ')" />
+        <xsl:value-of select="substring('&#xE0D4;&#xE0D5;&#xE0D6;&#xE0D7;&#xE0D8;&#xE0D9;&#xE0DA;&#xE0DB;&#xE0DC;&#xE0DD;&#xE0DE;&#xE0DF;&#xE0E0;&#xE0E1;', @glyph - 211, 1)" />
     </xsl:template>
     <xsl:template name="item-icon">
         <xsl:param name="glyph" />
@@ -256,13 +256,29 @@
                     </xsl:choose>
                     <xsl:value-of select="$verb" />
                 </xsl:variable>
-                <span class="ff-class-sprite" data-class="{@id}" data-allowed="{@id = $allowed}"
-                      role="img" aria-label="{$label}" title="{$label}">
-                    <xsl:attribute name="style">
-                        <xsl:text>background-image: url('/slothsoft@final-fantasy/i/gfx/class?class=</xsl:text>
-                        <xsl:value-of select="@id" />
-                        <xsl:text>')</xsl:text>
-                    </xsl:attribute>
+                <span class="ff-class-entry" tabindex="0">
+                    <span class="ff-class-sprite" data-class="{@id}" data-allowed="{@id = $allowed}"
+                          role="img" aria-label="{$label}">
+                        <xsl:attribute name="style">
+                            <xsl:text>background-image: url('/slothsoft@final-fantasy/i/gfx/class?class=</xsl:text>
+                            <xsl:value-of select="@id" />
+                            <xsl:text>')</xsl:text>
+                        </xsl:attribute>
+                    </span>
+                    <span class="ff-class-tooltip" aria-hidden="true">
+                        <span class="ff-text">
+                            <xsl:value-of select="@name" />
+                        </span>
+                        <xsl:choose>
+                            <xsl:when test="@id = $allowed">
+                                <xsl:text>: can </xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>: cannot </xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:value-of select="$verb" />
+                    </span>
                 </span>
             </xsl:for-each>
         </span>
@@ -270,7 +286,7 @@
     <xsl:template name="cast">
         <xsl:choose>
             <xsl:when test="@spell != 0">
-                <a href="/FinalFantasy/I/Spells/#spell-{@spell}">
+                <a href="/FinalFantasy/I/Spells/#spell-{@spell}" class="ff-text">
                     <xsl:value-of select="key('spells', @spell)/@name" />
                 </a>
             </xsl:when>
@@ -334,7 +350,13 @@
                     <xsl:for-each select="sf1:character">
                         <fieldset>
                             <legend>
-                                <xsl:value-of select="@name" /><xsl:text> · </xsl:text><xsl:value-of select="key('classes', @class)/@name" />
+                                <span class="ff-text">
+                                    <xsl:value-of select="@name" />
+                                </span>
+                                <xsl:text> · </xsl:text>
+                                <span class="ff-text">
+                                    <xsl:value-of select="key('classes', @class)/@name" />
+                                </span>
                             </legend>
                             <xsl:for-each select="sf1:weapons | sf1:armor">
                                 <h3>
@@ -366,7 +388,7 @@
                 <xsl:value-of select="@index+1" />
             </label>
             <span class="ff-item-picker">
-                <select name="{$field}[id]" id="{$id}">
+                <select name="{$field}[id]" id="{$id}" class="ff-text">
                     <option value="0">
                         <xsl:if test="$selected=0">
                             <xsl:attribute name="selected">selected</xsl:attribute>
@@ -374,7 +396,7 @@
                         Empty
                     </option>
                     <xsl:for-each select="ancestor::sf1:final-fantasy/*[local-name()=$kind]/*">
-                        <option value="{@id}" data-icon="{sf1:label/sf1:icon[1]/@glyph}" data-icon-label="{sf1:label/sf1:icon[1]/@label}">
+                        <option aria-label="{@name}" class="ff-text" value="{@id}" data-icon="{sf1:label/sf1:icon[1]/@glyph}" data-icon-label="{sf1:label/sf1:icon[1]/@label}">
                             <xsl:if test="@id=$selected">
                                 <xsl:attribute name="selected">selected</xsl:attribute>
                             </xsl:if>

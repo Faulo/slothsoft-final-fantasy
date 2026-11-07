@@ -10,6 +10,7 @@
         <resource-directory name="css" type="text/css" />
         <resource-directory name="js" type="application/javascript" />
         <resource-directory name="savegame" type="application/xml" />
+        <custom-asset name="font" executable-builder="Slothsoft\FinalFantasy\I\MenuFontBuilder" />
         <directory name="gfx">
             <custom-asset name="items" executable-builder="Slothsoft\FinalFantasy\I\ItemIconBuilder" />
             <custom-asset name="class" executable-builder="Slothsoft\FinalFantasy\I\ClassSpriteBuilder" parameter-filter="Slothsoft\FinalFantasy\I\ClassSpriteParameters" />

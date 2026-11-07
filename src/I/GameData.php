@@ -103,6 +103,10 @@ final class GameData implements EquipmentCatalog {
         return NesSpriteSheet::toPng($tiles, substr($palettes, (ord($assignments[$class]) & 3) * 4, 4), $poses);
     }
     
+    public function getMenuFont(): string {
+        return MenuFont::toTrueType($this->readGraphics('//sse:image[@name="menu-font"]'));
+    }
+    
     public function getItemIcons(): string {
         return NesSpriteSheet::toTileStrip(
             $this->readGraphics('//sse:image[@name="item-icons"]'),

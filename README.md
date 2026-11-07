@@ -89,7 +89,7 @@ CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mix
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
 Reference tables render these icons inline in their original position. Native
-equipment options use readable text, with the selected icon beside the dropdown;
+equipment options use the ROM font and its original icons, with the selected icon beside the dropdown;
 changing the selection updates that preview without changing save behavior.
 
 ## Binary extraction and implemented behavior
@@ -154,3 +154,21 @@ MIT licensed. Binary layout and behavior were checked against
 and the MIT-licensed
 [Game Tools Collection editor](https://github.com/RyudoSynbios/game-tools-collection/tree/master/src/lib/templates/final-fantasy/saveEditor).
 No disassembly binaries or third-party editor source are bundled.
+
+## ROM typography
+
+`farah://slothsoft@final-fantasy/i/font` returns a generated `font/ttf` font.
+The savegame manifest reads all 128 menu tiles (80–FF); PHP converts foreground
+pixels (palette index 3) to rectangular TrueType contours. No font files or ROM
+pixels are shipped, and no external font converter is required. Missing ROMs
+return 503, as with the PNG assets.
+
+ASCII letters, digits and decoded punctuation map to their original tiles.
+Unicode private-use characters U+E080–U+E0FF expose all tiles, including equipment
+icons. Text remains selectable; item options retain accessible text names.
+ROM/save names use the font at 16px (twice the original 8px grid): equipment,
+spells, cast links, character legends and class tooltips. Interface labels and
+explanations retain the host typography. Unsupported characters use the browser's
+fallback font. Existing plain-text domain names and PNG endpoints are unchanged.
+
+The encoder follows the [OpenType table specification](https://learn.microsoft.com/en-us/typography/opentype/spec/otff).

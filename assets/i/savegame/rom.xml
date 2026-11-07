@@ -4,7 +4,9 @@
     <!-- Layout: https://github.com/Entroper/FF1Disassembly/tree/master/Final%20Fantasy%20Disassembly -->
     <archive path="game.nes" type="NES">
         <file file-name="1">
-            <!-- Menu font tiles D4–E1, copied from bank 09:$8D40 to PPU tile IDs D4–E1. -->
+            <!-- Full menu font: bank 09:$8800, PPU tiles 80–FF. -->
+            <image name="menu-font" position="0x24800" size="2048" width="128" height="64" bitplanes="2" />
+            <!-- Equipment subset: bank 09:$8D40, PPU tiles D4–E1. -->
             <image name="item-icons" position="0x24D40" size="224" width="112" height="8" bitplanes="2" />
             <binary name="menu-palette" position="0x3AD7C" size="4" />
             <!-- Bank 09: 32 NES 2bpp tiles per class. Pose rows and sprite palettes are ROM data too. -->

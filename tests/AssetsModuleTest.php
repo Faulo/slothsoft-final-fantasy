@@ -23,6 +23,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
             // their lookup and 503 contract without it, and actual PNG results with it.
             unset($assets['farah://slothsoft@final-fantasy/i/gfx/class']);
             unset($assets['farah://slothsoft@final-fantasy/i/gfx/items']);
+            unset($assets['farah://slothsoft@final-fantasy/i/font']);
         }
         return $assets;
     }
