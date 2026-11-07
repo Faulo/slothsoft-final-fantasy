@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Give all panel text an opaque black, unblurred shadow offset one pixel right and down at the configured scale, inherited by text and controls.
+
 - Use palette colors instead of underlines for panel links: gold, pale lavender when visited, cyan on hover or keyboard focus, and white while active. Preserve keyboard focus outlines.
 
 - Expose the renderer's complete NES color palette as 55 descriptively named CSS variables in `.ff-ui`, preserving the original four colors. Include palette swatches in the standalone example and verify CSS colors against generated PNG palettes.

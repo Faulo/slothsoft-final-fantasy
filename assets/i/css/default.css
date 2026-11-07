@@ -82,7 +82,7 @@
     font-synthesis: none;
     line-height: 150%;
     letter-spacing: 0;
-    text-shadow: none;
+    text-shadow: calc(1px * var(--ff-scale)) calc(1px * var(--ff-scale)) 0 var(--ff-black);
     color: var(--ff-white);
     background: var(--ff-blue);
     min-width: 0;
@@ -100,7 +100,7 @@
     font-weight: inherit;
     line-height: inherit;
     letter-spacing: inherit;
-    text-shadow: none;
+    text-shadow: inherit;
     color: inherit;
 }
 

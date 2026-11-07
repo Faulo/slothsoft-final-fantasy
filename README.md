@@ -93,8 +93,10 @@ and focus. The example's palette link demonstrates these states.
 The base units are `--ff-font-size: 8px` and `--ff-sprite-size: 24px` (height).
 `--ff-scale` defaults to 1. Set it on each `ff-ui` root to multiply text, sprites,
 spacing and borders together, for example `style="--ff-scale: 2"`. The line
-height is 150%; the border unit is one eighth of the scaled font size. Character
-sprites preserve their 16:24 aspect ratio. `.ff-class-sprite` crops the standing
+height is 150%; the border unit is one eighth of the scaled font size. All panel
+text has an opaque black shadow offset one scaled pixel right and down, with
+no blur. Descendants and controls inherit it without adding another shadow.
+Character sprites preserve their 16:24 aspect ratio. `.ff-class-sprite` crops the standing
 pose by default; set `--ff-pose` to an index from 0 to 7 for another pose.
 `.ff-item-icon` uses `--ff-icon-index` (0–13) to select a menu pictogram.
 
