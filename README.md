@@ -2,7 +2,7 @@
 
 A Farah module for Final Fantasy game data and save editing. Currently supports
 the original US NES release of Final Fantasy I. Requires PHP 8.2 or later and
-`slothsoft/savegame ^1.5.0`.
+the upcoming savegame 1.6 features through `slothsoft/savegame:dev-main`.
 
 ## Installation and private ROM configuration
 
@@ -14,7 +14,10 @@ Composer repositories and require `slothsoft/final-fantasy:dev-main`:
     "repositories": [
         {"type": "vcs", "url": "https://github.com/Faulo/slothsoft-final-fantasy"}
     ],
-    "require": {"slothsoft/final-fantasy": "dev-main"}
+    "require": {
+        "slothsoft/final-fantasy": "dev-main",
+        "slothsoft/savegame": "dev-main"
+    }
 }
 ```
 
@@ -64,6 +67,9 @@ and `/FinalFantasy/Spells/` routes used by the navigation.
 Like `slothsoft/amber`, this module uses a savegame XML specification to retrieve
 game data from the original binary. `assets/i/savegame/rom.xml` owns all record
 offsets, strides, little-endian name pointers, prices and class permission masks.
+Name and spell-permission pointers use repeated records; the dereferencing
+string or repeat-group explicitly opts into `variable-resolution="scoped"`
+to select its own record's pointer. Resolution settings do not inherit.
 The `NesArchiveExtractor` validates the iNES container and US PRG identity, then
 exposes PRG bytes to the savegame parser. It contains no game-data table offsets.
 `GameData` runs `Editor` and `XmlBuilder`, decodes the parsed FF text through

@@ -41,7 +41,7 @@ final class GameDataTest extends TestCase {
         $raw = new DOMXPath($dataset);
         $raw->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
         self::assertSame('23', $raw->evaluate('string(//sse:instruction[@name="weapons"]/sse:group[1]/sse:integer[@name="damage"]/@value)'));
-        self::assertSame(mb_convert_encoding("\x8A\x95\x99\x91\x8A", 'UTF-8', 'ISO-8859-1'), $raw->evaluate('string(//sse:group[@name="name-28"]/sse:string/@value)'));
+        self::assertSame(mb_convert_encoding("\x8A\x95\x99\x91\x8A", 'UTF-8', 'ISO-8859-1'), $raw->evaluate('string(//sse:instruction[@name="weapon-names"]/sse:group[1]/sse:string/@value)'));
         self::assertTrue($domain->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));
         $xpath = new DOMXPath($domain);
         $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);

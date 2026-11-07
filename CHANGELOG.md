@@ -6,3 +6,4 @@
 - Read ROM game data through savegame manifests and expose the `http://schema.slothsoft.net/final-fantasy/i` domain schema.
 - Configure private ROM locations through the package configuration API; distribute no game binaries.
 - Provide ROM-backed equipment editing and weapon, armor, and spell reference assets.
+- Use savegame 1.6 scoped variable resolution for repeated name and spell-permission pointers, replacing numbered pointer declarations. Require savegame `dev-main` until that release is tagged.

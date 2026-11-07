@@ -15,7 +15,7 @@
         "ext-xsl": "*",
         "slothsoft/core": "^1.15.1",
         "slothsoft/farah": "^1.29.7",
-        "slothsoft/savegame": "^1.5.0"
+        "slothsoft/savegame": "dev-main"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.3.4",
