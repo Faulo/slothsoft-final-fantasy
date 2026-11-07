@@ -127,6 +127,7 @@
 
 .ff-ui a:any-link {
     text-decoration: none;
+    text-shadow: inherit;
 }
 
 .ff-ui a:link {
