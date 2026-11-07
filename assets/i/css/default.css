@@ -1,0 +1,132 @@
+.final-fantasy {
+    --ff-blue: #193d75;
+    --ff-line: #c6cddb;
+    max-width: 90rem;
+    margin: 0 auto;
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+.final-fantasy .eyebrow {
+    font-size: .85em;
+    letter-spacing: .08em;
+}
+
+.final-fantasy nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1.5rem;
+    border-block: 1px solid var(--ff-line);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.final-fantasy .ff-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+}
+
+.final-fantasy .ff-cards > a {
+    display: block;
+    padding: 1rem;
+    border: 1px solid var(--ff-line);
+    border-radius: .3rem;
+}
+
+.final-fantasy .ff-table {
+    overflow-x: auto;
+}
+
+.final-fantasy table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.final-fantasy caption {
+    text-align: left;
+    padding: .8rem 0;
+}
+
+.final-fantasy th, .final-fantasy td {
+    text-align: left;
+    vertical-align: top;
+    padding: .6rem;
+    border-bottom: 1px solid var(--ff-line);
+}
+
+.final-fantasy thead {
+    background: var(--ff-blue);
+    color: white;
+}
+
+.final-fantasy tbody th {
+    white-space: nowrap;
+}
+
+.final-fantasy .ff-resists {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.final-fantasy .ff-upload {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .8rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--ff-line);
+}
+
+.final-fantasy .ff-party {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.final-fantasy fieldset {
+    min-width: 0;
+    border: 1px solid var(--ff-line);
+    padding: 1rem;
+}
+
+.final-fantasy legend {
+    font-weight: bold;
+    padding: 0 .5rem;
+}
+
+.final-fantasy .ff-slot {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(6rem, 1fr) auto;
+    align-items: center;
+    gap: .5rem;
+    margin: .5rem 0;
+}
+
+.final-fantasy select {
+    width: 100%;
+    padding: .4rem;
+    font: inherit;
+}
+
+.final-fantasy button {
+    padding: .6rem 1rem;
+    font: inherit;
+    cursor: pointer;
+}
+
+.final-fantasy .ff-equipped {
+    white-space: nowrap;
+}
+
+.final-fantasy .ff-error {
+    padding: 1rem;
+    border: 2px solid #a21d28;
+}
+
+.final-fantasy .ff-note {
+    font-size: .9em;
+    margin-top: 1.5rem;
+}

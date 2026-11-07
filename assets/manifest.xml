@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<assets xmlns="http://schema.slothsoft.net/farah/module" version="1.1">
+    <directory name="schema">
+        <directory name="i">
+            <resource name="1.0" path="1.0.xsd" type="application/xml" />
+        </directory>
+    </directory>
+    <directory name="i">
+        <resource-directory name="xsl" type="application/xslt+xml" />
+        <resource-directory name="css" type="text/css" />
+        <resource-directory name="savegame" type="application/xml" />
+        <directory name="api">
+            <custom-asset name="data" executable-builder="Slothsoft\FinalFantasy\I\PageDataBuilder" parameter-filter="Slothsoft\FinalFantasy\I\PageParameters" />
+        </directory>
+        <fragment name="html">
+            <fragment name="home">
+                <use-template ref="/i/xsl/page" />
+                <use-document ref="/i/api/data?view=home" name="data" />
+                <link-stylesheet ref="/i/css/default" />
+            </fragment>
+            <fragment name="editor">
+                <use-template ref="/i/xsl/page" />
+                <use-document ref="/i/api/data?view=editor" name="data" />
+                <link-stylesheet ref="/i/css/default" />
+            </fragment>
+            <fragment name="weapons">
+                <use-template ref="/i/xsl/page" />
+                <use-document ref="/i/api/data?view=weapons" name="data" />
+                <link-stylesheet ref="/i/css/default" />
+            </fragment>
+            <fragment name="armor">
+                <use-template ref="/i/xsl/page" />
+                <use-document ref="/i/api/data?view=armor" name="data" />
+                <link-stylesheet ref="/i/css/default" />
+            </fragment>
+            <fragment name="spells">
+                <use-template ref="/i/xsl/page" />
+                <use-document ref="/i/api/data?view=spells" name="data" />
+                <link-stylesheet ref="/i/css/default" />
+            </fragment>
+        </fragment>
+    </directory>
+</assets>

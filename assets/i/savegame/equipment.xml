@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<savegame xmlns="http://schema.slothsoft.net/savegame/editor" version="0.4">
+    <archive path="party.sav" type="raw">
+        <file file-name="1">
+            <repeat-group name="characters" position="0x500" group-count="4" group-size="0x40">
+                <repeat-group name="weapons" position="0x18" group-count="4" group-size="1">
+                    <integer name="item" size="1" bit-mask="0x7f" min="0" max="40" />
+                    <bit name="equipped" size="1" bit="7" />
+                </repeat-group>
+                <repeat-group name="armor" position="0x1c" group-count="4" group-size="1">
+                    <integer name="item" size="1" bit-mask="0x7f" min="0" max="40" />
+                    <bit name="equipped" size="1" bit="7" />
+                </repeat-group>
+                <integer name="damage" position="0x20" size="1" />
+                <integer name="hit" position="0x21" size="1" />
+                <integer name="absorb" position="0x22" size="1" />
+                <integer name="evade" position="0x23" size="1" />
+                <integer name="resistance" position="0x24" size="1" />
+            </repeat-group>
+        </file>
+    </archive>
+</savegame>

@@ -1,0 +1,137 @@
+<?php
+declare(strict_types = 1);
+
+namespace Slothsoft\FinalFantasy\I;
+
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
+use Exception;
+use RuntimeException;
+use Slothsoft\Savegame\Build\XmlBuilder;
+use Slothsoft\Savegame\Editor;
+use Slothsoft\Savegame\EditorConfig;
+use Slothsoft\Savegame\Node\ArchiveParser\CopyArchiveBuilder;
+use SplFileInfo;
+use XSLTProcessor;
+
+/** Reads game data through the savegame manifest, then transforms it into FF I domain XML. */
+final class GameData implements EquipmentCatalog {
+    public const XML_NAMESPACE = 'http://schema.slothsoft.net/final-fantasy/i';
+    public const US_PRG_SHA256 = NesArchiveExtractor::US_PRG_SHA256;
+    
+    private DOMDocument $dataset;
+    
+    private DOMDocument $document;
+    
+    /** @throws Exception */
+    public function __construct(string $contents) {
+        $directory = temp_dir('final-fantasy-i-data');
+        if (file_put_contents($directory . '/game.nes', $contents) !== strlen($contents)) {
+            throw new RuntimeException('Could not prepare the game data source.');
+        }
+        $config = new EditorConfig(
+            new SplFileInfo($directory),
+            new SplFileInfo($directory),
+            new SplFileInfo($directory),
+            new SplFileInfo(dirname(__DIR__, 2) . '/assets/i/savegame/rom.xml'),
+            ['NES' => new NesArchiveExtractor()],
+            ['NES' => new CopyArchiveBuilder()]
+        );
+        $editor = new Editor($config);
+        $savegame = $editor->loadSavegame(true, true);
+        $builder = new XmlBuilder($savegame);
+        $builder->setCacheDirectory($directory . '/xml');
+        $this->dataset = new DOMDocument('1.0', 'UTF-8');
+        if (! $this->dataset->loadXML(implode('', iterator_to_array($builder->toChunks())))) {
+            throw new RuntimeException('Could not serialize the parsed game data.');
+        }
+        // FF's character encoding is domain-specific. The manifest has already read
+        // and bounded each name using its pointer and terminator; only decode glyphs here.
+        $input = clone $this->dataset;
+        $xpath = new DOMXPath($input);
+        $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
+        foreach ($xpath->query('//sse:string[@name="text"]') as $node) {
+            assert($node instanceof DOMElement);
+            $node->setAttribute('value', TextCodec::decode(mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8')));
+        }
+        $stylesheet = new DOMDocument();
+        if (! $stylesheet->load(dirname(__DIR__, 2) . '/assets/i/xsl/data.xsl')) {
+            throw new RuntimeException('Could not load the game data transformation.');
+        }
+        $processor = new XSLTProcessor();
+        $processor->importStylesheet($stylesheet);
+        $processor->setParameter('', 'rom-sha256', self::US_PRG_SHA256);
+        $result = $processor->transformToDoc($input);
+        if (! $result instanceof DOMDocument) {
+            throw new RuntimeException('Could not transform the game data.');
+        }
+        $this->document = $result;
+    }
+    
+    /** @throws Exception */
+    public static function fromFile(string $path): self {
+        if (! is_file($path) || ! is_readable($path)) {
+            throw new RuntimeException('The Final Fantasy US ROM is not configured or readable.');
+        }
+        $contents = file_get_contents($path);
+        if ($contents === false) {
+            throw new RuntimeException('Could not read the Final Fantasy US ROM.');
+        }
+        return new self($contents);
+    }
+    
+    public function getDatasetDocument(): DOMDocument {
+        return clone $this->dataset;
+    }
+    
+    public function toDocument(): DOMDocument {
+        return clone $this->document;
+    }
+    
+    /** @return array<int, string> */
+    public function getClasses(): array {
+        $classes = [];
+        foreach ($this->records('classes') as $id => $record) {
+            $classes[$id] = (string) $record['name'];
+        }
+        return $classes;
+    }
+    
+    /** @return array<int, array<string, mixed>> */
+    public function getWeapons(): array {
+        return $this->records('weapons');
+    }
+    
+    /** @return array<int, array<string, mixed>> */
+    public function getArmor(): array {
+        return $this->records('armor');
+    }
+    
+    /** @return array<int, array<string, mixed>> */
+    public function getSpells(): array {
+        return $this->records('spells');
+    }
+    
+    /** @return array<int, array<string, mixed>> */
+    private function records(string $group): array {
+        $xpath = new DOMXPath($this->document);
+        $xpath->registerNamespace('ff', self::XML_NAMESPACE);
+        $records = [];
+        foreach ($xpath->query('/ff:final-fantasy/ff:' . $group . '/*') as $node) {
+            assert($node instanceof DOMElement);
+            $record = [];
+            foreach ($node->attributes as $attribute) {
+                $key = preg_replace_callback('/-([a-z])/', static fn(array $match): string => strtoupper($match[1]), $attribute->name);
+                $record[$key] = in_array($key, ['name', 'school'], true) ? $attribute->value : (int) $attribute->value;
+            }
+            $record['classes'] = [];
+            foreach ($xpath->query('ff:class-ref', $node) as $class) {
+                assert($class instanceof DOMElement);
+                $record['classes'][] = (int) $class->getAttribute('id');
+            }
+            $records[(int) $node->getAttribute('id')] = $record;
+        }
+        return $records;
+    }
+}

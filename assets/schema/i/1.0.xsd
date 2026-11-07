@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ff="http://schema.slothsoft.net/final-fantasy/i" targetNamespace="http://schema.slothsoft.net/final-fantasy/i" elementFormDefault="qualified">
+    <xs:simpleType name="classId">
+        <xs:restriction base="xs:unsignedByte">
+            <xs:maxInclusive value="11" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="equipmentId">
+        <xs:restriction base="xs:unsignedByte">
+            <xs:minInclusive value="1" />
+            <xs:maxInclusive value="40" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="spellReference">
+        <xs:restriction base="xs:unsignedByte">
+            <xs:maxInclusive value="64" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="classReference">
+        <xs:attribute name="id" type="ff:classId" use="required" />
+    </xs:complexType>
+    <xs:attributeGroup name="identity">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="price" type="xs:unsignedShort" use="required" />
+    </xs:attributeGroup>
+    <xs:complexType name="weapon">
+        <xs:sequence>
+            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+        </xs:sequence>
+        <xs:attributeGroup ref="ff:identity" />
+        <xs:attribute name="id" type="ff:equipmentId" use="required" />
+        <xs:attribute name="hit" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="damage" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="critical" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="spell" type="ff:spellReference" use="required" />
+    </xs:complexType>
+    <xs:complexType name="armor">
+        <xs:sequence>
+            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+        </xs:sequence>
+        <xs:attributeGroup ref="ff:identity" />
+        <xs:attribute name="id" type="ff:equipmentId" use="required" />
+        <xs:attribute name="evade-penalty" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="absorb" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="resistance-mask" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="spell" type="ff:spellReference" use="required" />
+        <xs:attribute name="category" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:unsignedByte">
+                    <xs:maxInclusive value="3" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="spell">
+        <xs:sequence>
+            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+        </xs:sequence>
+        <xs:attributeGroup ref="ff:identity" />
+        <xs:attribute name="id" type="ff:spellReference" use="required" />
+        <xs:attribute name="level" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:unsignedByte">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="8" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="school" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="white" />
+                    <xs:enumeration value="black" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="hit" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="effectivity" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="element-mask" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="target" type="xs:unsignedByte" use="required" />
+        <xs:attribute name="effect" type="xs:unsignedByte" use="required" />
+    </xs:complexType>
+    <xs:simpleType name="slotIndex">
+        <xs:restriction base="xs:unsignedByte">
+            <xs:maxInclusive value="3" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="equipmentSlots">
+        <xs:sequence>
+            <xs:element name="slot" minOccurs="4" maxOccurs="4">
+                <xs:complexType>
+                    <xs:attribute name="index" type="ff:slotIndex" use="required" />
+                    <xs:attribute name="id" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:unsignedByte">
+                                <xs:maxInclusive value="127" />
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="equipped" type="xs:boolean" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="editor">
+        <xs:sequence>
+            <xs:element name="character" minOccurs="4" maxOccurs="4">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="weapons" type="ff:equipmentSlots" />
+                        <xs:element name="armor" type="ff:equipmentSlots" />
+                    </xs:sequence>
+                    <xs:attribute name="index" type="ff:slotIndex" use="required" />
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="source" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:base64Binary">
+                    <xs:length value="8192" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:element name="final-fantasy">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="classes">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="class" minOccurs="12" maxOccurs="12">
+                                    <xs:complexType>
+                                        <xs:attribute name="id" type="ff:classId" use="required" />
+                                        <xs:attribute name="name" type="xs:string" use="required" />
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="weapons">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="weapon" type="ff:weapon" minOccurs="40" maxOccurs="40" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="armor">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="item" type="ff:armor" minOccurs="40" maxOccurs="40" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="spells">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="spell" type="ff:spell" minOccurs="64" maxOccurs="64" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="error" type="xs:string" minOccurs="0" />
+                    <xs:element name="editor" type="ff:editor" minOccurs="0" />
+                    <xs:element name="unavailable" type="xs:string" minOccurs="0" />
+                </xs:sequence>
+                <xs:element name="unavailable" type="xs:string" />
+            </xs:choice>
+            <xs:attribute name="version" type="xs:string" fixed="1.0" />
+            <xs:attribute name="region" type="xs:string" fixed="US" />
+            <xs:attribute name="rom-sha256" type="xs:string" />
+            <xs:attribute name="view" type="xs:string" />
+        </xs:complexType>
+        <xs:key name="classId">
+            <xs:selector xpath="ff:classes/ff:class" />
+            <xs:field xpath="@id" />
+        </xs:key>
+        <xs:keyref name="weaponClass" refer="ff:classId">
+            <xs:selector xpath="ff:weapons/ff:weapon/ff:class-ref" />
+            <xs:field xpath="@id" />
+        </xs:keyref>
+        <xs:keyref name="armorClass" refer="ff:classId">
+            <xs:selector xpath="ff:armor/ff:item/ff:class-ref" />
+            <xs:field xpath="@id" />
+        </xs:keyref>
+        <xs:keyref name="spellClass" refer="ff:classId">
+            <xs:selector xpath="ff:spells/ff:spell/ff:class-ref" />
+            <xs:field xpath="@id" />
+        </xs:keyref>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,10 @@
+*.nes export-ignore
+*.sav export-ignore
+*.srm export-ignore
+/.ddev export-ignore
+/.github export-ignore
+/.jenkins export-ignore
+/.data export-ignore
+/.cache export-ignore
+/.log export-ignore
+/config.local.php export-ignore

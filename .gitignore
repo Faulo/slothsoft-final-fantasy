@@ -1,0 +1,14 @@
+/vendor/
+/composer.lock
+/.phpunit.result.cache
+/.reports/
+/.data/
+/.cache/
+/.log/
+/.farah-*
+*.nes
+*.sav
+*.srm
+*.local
+/config.local.php
+/results-*.xml

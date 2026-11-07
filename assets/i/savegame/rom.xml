@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<savegame xmlns="http://schema.slothsoft.net/savegame/editor" version="0.4">
+    <!-- Offsets are PRG-relative. The NES extractor validates the US release and removes its container header. -->
+    <!-- Layout: https://github.com/Entroper/FF1Disassembly/tree/master/Final%20Fantasy%20Disassembly -->
+    <archive path="game.nes" type="NES">
+        <file file-name="1">
+            <repeat-group name="weapons" position="0x30000" group-count="40" group-size="8">
+                <integer name="hit" position="0" size="1" />
+                <integer name="damage" position="1" size="1" />
+                <integer name="stored-critical" position="2" size="1" />
+                <integer name="spell" position="3" size="1" />
+                <integer name="unused-element" position="4" size="1" />
+                <integer name="unused-category" position="5" size="1" />
+            </repeat-group>
+            <repeat-group name="armor" position="0x30140" group-count="40" group-size="4">
+                <integer name="evade-penalty" position="0" size="1" />
+                <integer name="absorb" position="1" size="1" />
+                <integer name="resistance-mask" position="2" size="1" />
+                <integer name="spell" position="3" size="1" />
+            </repeat-group>
+            <repeat-group name="spells" position="0x301E0" group-count="64" group-size="8">
+                <integer name="hit" position="0" size="1" />
+                <integer name="effectivity" position="1" size="1" />
+                <integer name="element-mask" position="2" size="1" />
+                <integer name="target" position="3" size="1" />
+                <integer name="effect" position="4" size="1" />
+            </repeat-group>
+            <repeat-group name="prices" position="0x37C00" group-count="256" group-size="2">
+                <integer name="price" size="2" byte-order="little" />
+            </repeat-group>
+            <repeat-group name="weapon-permissions" position="0x3BF50" group-count="40" group-size="2">
+                <integer name="mask" size="2" byte-order="little" />
+            </repeat-group>
+            <repeat-group name="armor-permissions" position="0x3BFA0" group-count="40" group-size="2">
+                <integer name="mask" size="2" byte-order="little" />
+            </repeat-group>
+            <repeat-group name="armor-categories" position="0x3BCD1" group-count="40" group-size="1">
+                <integer name="category" size="1" />
+            </repeat-group>
+            <!-- Pointers use unique names because savegame expressions resolve variables at file scope. -->
+            <group name="names">
+                <group name="name-28">
+                    <integer name="name-pointer-28" position-from="root" position="0x2B700 + 28 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-28 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-29">
+                    <integer name="name-pointer-29" position-from="root" position="0x2B700 + 29 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-29 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-30">
+                    <integer name="name-pointer-30" position-from="root" position="0x2B700 + 30 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-30 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-31">
+                    <integer name="name-pointer-31" position-from="root" position="0x2B700 + 31 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-31 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-32">
+                    <integer name="name-pointer-32" position-from="root" position="0x2B700 + 32 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-32 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-33">
+                    <integer name="name-pointer-33" position-from="root" position="0x2B700 + 33 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-33 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-34">
+                    <integer name="name-pointer-34" position-from="root" position="0x2B700 + 34 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-34 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-35">
+                    <integer name="name-pointer-35" position-from="root" position="0x2B700 + 35 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-35 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-36">
+                    <integer name="name-pointer-36" position-from="root" position="0x2B700 + 36 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-36 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-37">
+                    <integer name="name-pointer-37" position-from="root" position="0x2B700 + 37 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-37 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-38">
+                    <integer name="name-pointer-38" position-from="root" position="0x2B700 + 38 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-38 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-39">
+                    <integer name="name-pointer-39" position-from="root" position="0x2B700 + 39 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-39 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-40">
+                    <integer name="name-pointer-40" position-from="root" position="0x2B700 + 40 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-40 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-41">
+                    <integer name="name-pointer-41" position-from="root" position="0x2B700 + 41 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-41 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-42">
+                    <integer name="name-pointer-42" position-from="root" position="0x2B700 + 42 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-42 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-43">
+                    <integer name="name-pointer-43" position-from="root" position="0x2B700 + 43 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-43 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-44">
+                    <integer name="name-pointer-44" position-from="root" position="0x2B700 + 44 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-44 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-45">
+                    <integer name="name-pointer-45" position-from="root" position="0x2B700 + 45 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-45 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-46">
+                    <integer name="name-pointer-46" position-from="root" position="0x2B700 + 46 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-46 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-47">
+                    <integer name="name-pointer-47" position-from="root" position="0x2B700 + 47 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-47 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-48">
+                    <integer name="name-pointer-48" position-from="root" position="0x2B700 + 48 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-48 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-49">
+                    <integer name="name-pointer-49" position-from="root" position="0x2B700 + 49 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-49 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-50">
+                    <integer name="name-pointer-50" position-from="root" position="0x2B700 + 50 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-50 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-51">
+                    <integer name="name-pointer-51" position-from="root" position="0x2B700 + 51 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-51 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-52">
+                    <integer name="name-pointer-52" position-from="root" position="0x2B700 + 52 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-52 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-53">
+                    <integer name="name-pointer-53" position-from="root" position="0x2B700 + 53 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-53 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-54">
+                    <integer name="name-pointer-54" position-from="root" position="0x2B700 + 54 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-54 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-55">
+                    <integer name="name-pointer-55" position-from="root" position="0x2B700 + 55 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-55 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-56">
+                    <integer name="name-pointer-56" position-from="root" position="0x2B700 + 56 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-56 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-57">
+                    <integer name="name-pointer-57" position-from="root" position="0x2B700 + 57 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-57 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-58">
+                    <integer name="name-pointer-58" position-from="root" position="0x2B700 + 58 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-58 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-59">
+                    <integer name="name-pointer-59" position-from="root" position="0x2B700 + 59 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-59 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-60">
+                    <integer name="name-pointer-60" position-from="root" position="0x2B700 + 60 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-60 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-61">
+                    <integer name="name-pointer-61" position-from="root" position="0x2B700 + 61 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-61 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-62">
+                    <integer name="name-pointer-62" position-from="root" position="0x2B700 + 62 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-62 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-63">
+                    <integer name="name-pointer-63" position-from="root" position="0x2B700 + 63 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-63 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-64">
+                    <integer name="name-pointer-64" position-from="root" position="0x2B700 + 64 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-64 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-65">
+                    <integer name="name-pointer-65" position-from="root" position="0x2B700 + 65 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-65 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-66">
+                    <integer name="name-pointer-66" position-from="root" position="0x2B700 + 66 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-66 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-67">
+                    <integer name="name-pointer-67" position-from="root" position="0x2B700 + 67 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-67 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-68">
+                    <integer name="name-pointer-68" position-from="root" position="0x2B700 + 68 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-68 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-69">
+                    <integer name="name-pointer-69" position-from="root" position="0x2B700 + 69 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-69 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-70">
+                    <integer name="name-pointer-70" position-from="root" position="0x2B700 + 70 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-70 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-71">
+                    <integer name="name-pointer-71" position-from="root" position="0x2B700 + 71 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-71 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-72">
+                    <integer name="name-pointer-72" position-from="root" position="0x2B700 + 72 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-72 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-73">
+                    <integer name="name-pointer-73" position-from="root" position="0x2B700 + 73 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-73 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-74">
+                    <integer name="name-pointer-74" position-from="root" position="0x2B700 + 74 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-74 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-75">
+                    <integer name="name-pointer-75" position-from="root" position="0x2B700 + 75 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-75 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-76">
+                    <integer name="name-pointer-76" position-from="root" position="0x2B700 + 76 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-76 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-77">
+                    <integer name="name-pointer-77" position-from="root" position="0x2B700 + 77 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-77 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-78">
+                    <integer name="name-pointer-78" position-from="root" position="0x2B700 + 78 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-78 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-79">
+                    <integer name="name-pointer-79" position-from="root" position="0x2B700 + 79 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-79 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-80">
+                    <integer name="name-pointer-80" position-from="root" position="0x2B700 + 80 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-80 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-81">
+                    <integer name="name-pointer-81" position-from="root" position="0x2B700 + 81 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-81 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-82">
+                    <integer name="name-pointer-82" position-from="root" position="0x2B700 + 82 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-82 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-83">
+                    <integer name="name-pointer-83" position-from="root" position="0x2B700 + 83 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-83 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-84">
+                    <integer name="name-pointer-84" position-from="root" position="0x2B700 + 84 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-84 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-85">
+                    <integer name="name-pointer-85" position-from="root" position="0x2B700 + 85 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-85 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-86">
+                    <integer name="name-pointer-86" position-from="root" position="0x2B700 + 86 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-86 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-87">
+                    <integer name="name-pointer-87" position-from="root" position="0x2B700 + 87 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-87 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-88">
+                    <integer name="name-pointer-88" position-from="root" position="0x2B700 + 88 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-88 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-89">
+                    <integer name="name-pointer-89" position-from="root" position="0x2B700 + 89 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-89 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-90">
+                    <integer name="name-pointer-90" position-from="root" position="0x2B700 + 90 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-90 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-91">
+                    <integer name="name-pointer-91" position-from="root" position="0x2B700 + 91 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-91 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-92">
+                    <integer name="name-pointer-92" position-from="root" position="0x2B700 + 92 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-92 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-93">
+                    <integer name="name-pointer-93" position-from="root" position="0x2B700 + 93 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-93 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-94">
+                    <integer name="name-pointer-94" position-from="root" position="0x2B700 + 94 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-94 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-95">
+                    <integer name="name-pointer-95" position-from="root" position="0x2B700 + 95 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-95 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-96">
+                    <integer name="name-pointer-96" position-from="root" position="0x2B700 + 96 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-96 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-97">
+                    <integer name="name-pointer-97" position-from="root" position="0x2B700 + 97 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-97 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-98">
+                    <integer name="name-pointer-98" position-from="root" position="0x2B700 + 98 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-98 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-99">
+                    <integer name="name-pointer-99" position-from="root" position="0x2B700 + 99 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-99 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-100">
+                    <integer name="name-pointer-100" position-from="root" position="0x2B700 + 100 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-100 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-101">
+                    <integer name="name-pointer-101" position-from="root" position="0x2B700 + 101 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-101 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-102">
+                    <integer name="name-pointer-102" position-from="root" position="0x2B700 + 102 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-102 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-103">
+                    <integer name="name-pointer-103" position-from="root" position="0x2B700 + 103 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-103 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-104">
+                    <integer name="name-pointer-104" position-from="root" position="0x2B700 + 104 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-104 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-105">
+                    <integer name="name-pointer-105" position-from="root" position="0x2B700 + 105 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-105 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-106">
+                    <integer name="name-pointer-106" position-from="root" position="0x2B700 + 106 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-106 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-107">
+                    <integer name="name-pointer-107" position-from="root" position="0x2B700 + 107 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-107 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-176">
+                    <integer name="name-pointer-176" position-from="root" position="0x2B700 + 176 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-176 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-177">
+                    <integer name="name-pointer-177" position-from="root" position="0x2B700 + 177 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-177 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-178">
+                    <integer name="name-pointer-178" position-from="root" position="0x2B700 + 178 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-178 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-179">
+                    <integer name="name-pointer-179" position-from="root" position="0x2B700 + 179 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-179 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-180">
+                    <integer name="name-pointer-180" position-from="root" position="0x2B700 + 180 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-180 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-181">
+                    <integer name="name-pointer-181" position-from="root" position="0x2B700 + 181 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-181 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-182">
+                    <integer name="name-pointer-182" position-from="root" position="0x2B700 + 182 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-182 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-183">
+                    <integer name="name-pointer-183" position-from="root" position="0x2B700 + 183 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-183 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-184">
+                    <integer name="name-pointer-184" position-from="root" position="0x2B700 + 184 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-184 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-185">
+                    <integer name="name-pointer-185" position-from="root" position="0x2B700 + 185 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-185 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-186">
+                    <integer name="name-pointer-186" position-from="root" position="0x2B700 + 186 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-186 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-187">
+                    <integer name="name-pointer-187" position-from="root" position="0x2B700 + 187 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-187 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-188">
+                    <integer name="name-pointer-188" position-from="root" position="0x2B700 + 188 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-188 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-189">
+                    <integer name="name-pointer-189" position-from="root" position="0x2B700 + 189 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-189 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-190">
+                    <integer name="name-pointer-190" position-from="root" position="0x2B700 + 190 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-190 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-191">
+                    <integer name="name-pointer-191" position-from="root" position="0x2B700 + 191 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-191 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-192">
+                    <integer name="name-pointer-192" position-from="root" position="0x2B700 + 192 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-192 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-193">
+                    <integer name="name-pointer-193" position-from="root" position="0x2B700 + 193 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-193 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-194">
+                    <integer name="name-pointer-194" position-from="root" position="0x2B700 + 194 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-194 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-195">
+                    <integer name="name-pointer-195" position-from="root" position="0x2B700 + 195 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-195 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-196">
+                    <integer name="name-pointer-196" position-from="root" position="0x2B700 + 196 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-196 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-197">
+                    <integer name="name-pointer-197" position-from="root" position="0x2B700 + 197 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-197 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-198">
+                    <integer name="name-pointer-198" position-from="root" position="0x2B700 + 198 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-198 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-199">
+                    <integer name="name-pointer-199" position-from="root" position="0x2B700 + 199 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-199 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-200">
+                    <integer name="name-pointer-200" position-from="root" position="0x2B700 + 200 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-200 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-201">
+                    <integer name="name-pointer-201" position-from="root" position="0x2B700 + 201 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-201 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-202">
+                    <integer name="name-pointer-202" position-from="root" position="0x2B700 + 202 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-202 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-203">
+                    <integer name="name-pointer-203" position-from="root" position="0x2B700 + 203 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-203 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-204">
+                    <integer name="name-pointer-204" position-from="root" position="0x2B700 + 204 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-204 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-205">
+                    <integer name="name-pointer-205" position-from="root" position="0x2B700 + 205 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-205 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-206">
+                    <integer name="name-pointer-206" position-from="root" position="0x2B700 + 206 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-206 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-207">
+                    <integer name="name-pointer-207" position-from="root" position="0x2B700 + 207 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-207 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-208">
+                    <integer name="name-pointer-208" position-from="root" position="0x2B700 + 208 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-208 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-209">
+                    <integer name="name-pointer-209" position-from="root" position="0x2B700 + 209 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-209 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-210">
+                    <integer name="name-pointer-210" position-from="root" position="0x2B700 + 210 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-210 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-211">
+                    <integer name="name-pointer-211" position-from="root" position="0x2B700 + 211 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-211 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-212">
+                    <integer name="name-pointer-212" position-from="root" position="0x2B700 + 212 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-212 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-213">
+                    <integer name="name-pointer-213" position-from="root" position="0x2B700 + 213 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-213 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-214">
+                    <integer name="name-pointer-214" position-from="root" position="0x2B700 + 214 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-214 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-215">
+                    <integer name="name-pointer-215" position-from="root" position="0x2B700 + 215 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-215 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-216">
+                    <integer name="name-pointer-216" position-from="root" position="0x2B700 + 216 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-216 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-217">
+                    <integer name="name-pointer-217" position-from="root" position="0x2B700 + 217 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-217 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-218">
+                    <integer name="name-pointer-218" position-from="root" position="0x2B700 + 218 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-218 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-219">
+                    <integer name="name-pointer-219" position-from="root" position="0x2B700 + 219 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-219 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-220">
+                    <integer name="name-pointer-220" position-from="root" position="0x2B700 + 220 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-220 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-221">
+                    <integer name="name-pointer-221" position-from="root" position="0x2B700 + 221 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-221 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-222">
+                    <integer name="name-pointer-222" position-from="root" position="0x2B700 + 222 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-222 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-223">
+                    <integer name="name-pointer-223" position-from="root" position="0x2B700 + 223 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-223 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-224">
+                    <integer name="name-pointer-224" position-from="root" position="0x2B700 + 224 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-224 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-225">
+                    <integer name="name-pointer-225" position-from="root" position="0x2B700 + 225 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-225 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-226">
+                    <integer name="name-pointer-226" position-from="root" position="0x2B700 + 226 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-226 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-227">
+                    <integer name="name-pointer-227" position-from="root" position="0x2B700 + 227 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-227 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-228">
+                    <integer name="name-pointer-228" position-from="root" position="0x2B700 + 228 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-228 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-229">
+                    <integer name="name-pointer-229" position-from="root" position="0x2B700 + 229 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-229 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-230">
+                    <integer name="name-pointer-230" position-from="root" position="0x2B700 + 230 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-230 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-231">
+                    <integer name="name-pointer-231" position-from="root" position="0x2B700 + 231 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-231 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-232">
+                    <integer name="name-pointer-232" position-from="root" position="0x2B700 + 232 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-232 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-233">
+                    <integer name="name-pointer-233" position-from="root" position="0x2B700 + 233 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-233 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-234">
+                    <integer name="name-pointer-234" position-from="root" position="0x2B700 + 234 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-234 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-235">
+                    <integer name="name-pointer-235" position-from="root" position="0x2B700 + 235 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-235 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-236">
+                    <integer name="name-pointer-236" position-from="root" position="0x2B700 + 236 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-236 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-237">
+                    <integer name="name-pointer-237" position-from="root" position="0x2B700 + 237 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-237 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-238">
+                    <integer name="name-pointer-238" position-from="root" position="0x2B700 + 238 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-238 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-239">
+                    <integer name="name-pointer-239" position-from="root" position="0x2B700 + 239 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-239 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-240">
+                    <integer name="name-pointer-240" position-from="root" position="0x2B700 + 240 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-240 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-241">
+                    <integer name="name-pointer-241" position-from="root" position="0x2B700 + 241 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-241 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-242">
+                    <integer name="name-pointer-242" position-from="root" position="0x2B700 + 242 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-242 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-243">
+                    <integer name="name-pointer-243" position-from="root" position="0x2B700 + 243 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-243 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-244">
+                    <integer name="name-pointer-244" position-from="root" position="0x2B700 + 244 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-244 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-245">
+                    <integer name="name-pointer-245" position-from="root" position="0x2B700 + 245 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-245 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-246">
+                    <integer name="name-pointer-246" position-from="root" position="0x2B700 + 246 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-246 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-247">
+                    <integer name="name-pointer-247" position-from="root" position="0x2B700 + 247 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-247 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-248">
+                    <integer name="name-pointer-248" position-from="root" position="0x2B700 + 248 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-248 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-249">
+                    <integer name="name-pointer-249" position-from="root" position="0x2B700 + 249 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-249 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-250">
+                    <integer name="name-pointer-250" position-from="root" position="0x2B700 + 250 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-250 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+                <group name="name-251">
+                    <integer name="name-pointer-251" position-from="root" position="0x2B700 + 251 * 2" size="2" byte-order="little" />
+                    <string name="text" position-from="root" position="$name-pointer-251 + 0x20000" type="null-delimited" encoding="ISO-8859-1" />
+                </group>
+            </group>
+            <group name="spell-permissions">
+                <group name="class-0">
+                    <integer name="spell-pointer-0" position-from="root" position="0x3AD00 + 0 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-0 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-1">
+                    <integer name="spell-pointer-1" position-from="root" position="0x3AD00 + 1 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-1 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-2">
+                    <integer name="spell-pointer-2" position-from="root" position="0x3AD00 + 2 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-2 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-3">
+                    <integer name="spell-pointer-3" position-from="root" position="0x3AD00 + 3 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-3 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-4">
+                    <integer name="spell-pointer-4" position-from="root" position="0x3AD00 + 4 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-4 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-5">
+                    <integer name="spell-pointer-5" position-from="root" position="0x3AD00 + 5 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-5 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-6">
+                    <integer name="spell-pointer-6" position-from="root" position="0x3AD00 + 6 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-6 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-7">
+                    <integer name="spell-pointer-7" position-from="root" position="0x3AD00 + 7 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-7 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-8">
+                    <integer name="spell-pointer-8" position-from="root" position="0x3AD00 + 8 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-8 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-9">
+                    <integer name="spell-pointer-9" position-from="root" position="0x3AD00 + 9 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-9 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-10">
+                    <integer name="spell-pointer-10" position-from="root" position="0x3AD00 + 10 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-10 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+                <group name="class-11">
+                    <integer name="spell-pointer-11" position-from="root" position="0x3AD00 + 11 * 2" size="2" byte-order="little" />
+                    <repeat-group name="levels" position-from="root" position="$spell-pointer-11 + 0x30000" group-count="8" group-size="1">
+                        <integer name="mask" size="1" />
+                    </repeat-group>
+                </group>
+            </group>
+        </file>
+    </archive>
+</savegame>
