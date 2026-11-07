@@ -25,6 +25,15 @@ final class TextCodec {
         0xE1 => 'potion'
     ];
     
+    /** Unicode equivalents for the thirteen item pictograms. */
+    private const ICON_CHARACTERS = [
+        0x1F5E1 => 0xD4, 0x1F528 => 0xD5, 0x1F52A => 0xD6,
+        0x1FA93 => 0xD7, 0x1FA84 => 0xD8, 0x1F962 => 0xD9,
+        0x1F9BA => 0xDA, 0x26E8 => 0xDB, 0x1FA96 => 0xDC,
+        0x1F9E4 => 0xDD, 0x1F48D => 0xDE, 0x1F455 => 0xDF,
+        0x1F9F4 => 0xE1
+    ];
+    
     /** Unicode code points mapped to original NES tile IDs, including all tiles in the private-use area.
      * @return array<int, int>
      */
@@ -39,7 +48,7 @@ final class TextCodec {
         foreach (self::SYMBOLS as $tile => $character) {
             $map[mb_ord($character, 'UTF-8')] = $tile;
         }
-        return $map;
+        return $map + self::ICON_CHARACTERS;
     }
     
     public static function decode(string $bytes): string {

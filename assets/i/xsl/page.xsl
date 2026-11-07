@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sf1="http://schema.slothsoft.net/final-fantasy/i" exclude-result-prefixes="sf1">
+    <!-- D4-E1, retaining the unused E0 tile in the private-use area. -->
+    <xsl:variable name="item-glyphs" select="'&#x1F5E1;&#x1F528;&#x1F52A;&#x1FA93;&#x1FA84;&#x1F962;&#x1F9BA;&#x26E8;&#x1FA96;&#x1F9E4;&#x1F48D;&#x1F455;&#xE0E0;&#x1F9F4;'" />
     <xsl:key name="classes" match="sf1:classes/sf1:class" use="@id" />
     <xsl:key name="spells" match="sf1:spells/sf1:spell" use="@id" />
     <xsl:template match="/*">
@@ -215,7 +217,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="sf1:icon" mode="item-text">
-        <xsl:value-of select="substring('&#xE0D4;&#xE0D5;&#xE0D6;&#xE0D7;&#xE0D8;&#xE0D9;&#xE0DA;&#xE0DB;&#xE0DC;&#xE0DD;&#xE0DE;&#xE0DF;&#xE0E0;&#xE0E1;', @glyph - 211, 1)" />
+        <xsl:value-of select="substring($item-glyphs, @glyph - 211, 1)" />
     </xsl:template>
     <xsl:template name="item-icon">
         <xsl:param name="glyph" />
@@ -233,7 +235,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$class = 'ff-item-icon'">
-                <xsl:value-of select="substring('&#xE0D4;&#xE0D5;&#xE0D6;&#xE0D7;&#xE0D8;&#xE0D9;&#xE0DA;&#xE0DB;&#xE0DC;&#xE0DD;&#xE0DE;&#xE0DF;&#xE0E0;&#xE0E1;', $glyph - 211, 1)" />
+                <xsl:value-of select="substring($item-glyphs, $glyph - 211, 1)" />
             </xsl:if>
         </span>
     </xsl:template>

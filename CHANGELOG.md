@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Map the thirteen item pictograms to the selected Unicode symbols in rendered names and the ROM font, with full-Unicode font support and preserved private-use aliases.
+
 - Style native Firefox equipment selects with the ROM font using the Ambermoon approach; remove the JavaScript replacement picker.
 - Give panels the original menu palette, outlined borders and tile-based spacing; preserve sprite transparency.
 

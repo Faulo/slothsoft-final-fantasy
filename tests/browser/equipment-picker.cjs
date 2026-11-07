@@ -31,8 +31,31 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
         }));
         assert.match(font.family, /Final Fantasy I/);
         assert.equal(font.background, 'rgb(0, 0, 252)');
-        assert.equal(font.text, 'Wooden\uE0D9');
+        assert.equal(font.text, 'Wooden\u{1F962}');
         assert.equal(font.loaded, true);
+        // Browser rasterization must use the original tile for every Unicode alias,
+        // including emoji that could otherwise fall back to a color emoji font.
+        const aliasesMatch = await page.evaluate(() => {
+            const aliases = [[0x1F5E1, 0xD4], [0x1F528, 0xD5], [0x1F52A, 0xD6],
+                [0x1FA93, 0xD7], [0x1FA84, 0xD8], [0x1F962, 0xD9],
+                [0x1F9BA, 0xDA], [0x26E8, 0xDB], [0x1FA96, 0xDC],
+                [0x1F9E4, 0xDD], [0x1F48D, 0xDE], [0x1F455, 0xDF], [0x1F9F4, 0xE1]];
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 64;
+            const context = canvas.getContext('2d');
+            context.font = '32px "Final Fantasy I"';
+            const pixels = code => {
+                context.clearRect(0, 0, 64, 64);
+                context.fillText(String.fromCodePoint(code), 0, 32);
+                return Array.from(context.getImageData(0, 0, 64, 64).data);
+            };
+            return aliases.every(([code, tile]) => {
+                const expected = pixels(0xE000 + tile);
+                const actual = pixels(code);
+                return expected.some(value => value !== 0) && actual.every((value, index) => value === expected[index]);
+            });
+        });
+        assert.equal(aliasesMatch, true, 'Unicode icons must render the same pixels as their ROM tiles');
         await select.click();
         if (process.env.FF_SCREENSHOT) {
             await page.screenshot({path: process.env.FF_SCREENSHOT});
@@ -48,7 +71,7 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
         const fallback = await browser.newPage({ignoreHTTPSErrors: true, javaScriptEnabled: false});
         await loadSave(fallback, false);
         assert.equal(await fallback.locator('#ff-0-weapons-0').isVisible(), true);
-        assert.equal(await fallback.locator('#ff-0-weapons-0 option[value="1"]').textContent(), 'Wooden\uE0D9');
+        assert.equal(await fallback.locator('#ff-0-weapons-0 option[value="1"]').textContent(), 'Wooden\u{1F962}');
         assert.deepEqual(errors, []);
         console.log('Native Firefox equipment picker: font, palette, glyphs, selection, form values and no-JavaScript behavior passed.');
     } finally {

@@ -61,8 +61,8 @@ final class MenuFont {
             'hhea' => pack('Nn*', 0x10000, 1024, 0, 0, 1024, 0, 0, 1024, 1, 0, 0, 0, 0, 0, 0, 0, 129),
             'maxp' => pack('Nn*', 0x10000, 129, 256, 64, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0),
             'OS/2' => pack('n*', 0, 1024, 400, 5, 0, 512, 512, 0, 128, 512, 512, 0, 512, 64, 512, 0)
-                . str_repeat("\0", 10) . pack('N4', 1, 0x10000000, 0, 0) . 'SLOT'
-                . pack('n*', 64, 32, 0xE0FF, 1024, 0, 0, 1024, 0),
+                . str_repeat("\0", 10) . pack('N4', 1, 0x12004000, 0, 0) . 'SLOT'
+                . pack('n*', 64, 32, 0xFFFF, 1024, 0, 0, 1024, 0),
             'name' => self::names(),
             'cmap' => self::characterMap(),
             'post' => pack('N2n2N5', 0x30000, 0, 0, 64, 1, 0, 0, 0, 0),
@@ -87,18 +87,30 @@ final class MenuFont {
     private static function characterMap(): string {
         $map = TextCodec::getFontCharacterMap();
         ksort($map);
-        $map[0xFFFF] = 0x7F; // Sentinel maps to missing glyph zero.
-        $count = count($map);
+        // Format 4 is limited to the BMP. Keep it for existing Unicode clients.
+        $bmp = array_filter($map, static fn(int $code): bool => $code < 0xFFFF, ARRAY_FILTER_USE_KEY);
+        $bmp[0xFFFF] = 0x7F; // Sentinel maps to missing glyph zero.
+        $count = count($bmp);
         $power = (int) floor(log($count, 2));
         $ends = $starts = $deltas = '';
-        foreach ($map as $code => $tile) {
+        foreach ($bmp as $code => $tile) {
             $ends .= pack('n', $code);
             $starts .= pack('n', $code);
             $deltas .= pack('n', ($tile - 0x7F - $code) & 0xFFFF);
         }
         $subtable = pack('n7', 4, 16 + 8 * $count, 0, 2 * $count, 2 * (1 << $power), $power, 2 * $count - 2 * (1 << $power))
             . $ends . pack('n', 0) . $starts . $deltas . str_repeat("\0", 2 * $count);
-        return pack('n2n2Nn2N', 0, 2, 0, 3, 20, 3, 1, 20) . $subtable;
+        // Format 12 contains the complete repertoire, including supplementary-plane emoji.
+        $groups = '';
+        foreach ($map as $code => $tile) {
+            $groups .= pack('N3', $code, $code, $tile - 0x7F);
+        }
+        $full = pack('n2N3', 12, 0, 16 + strlen($groups), 0, count($map)) . $groups;
+        $fullOffset = 36 + strlen($subtable);
+        return pack('n2', 0, 4)
+            . pack('n2N', 0, 3, 36) . pack('n2N', 0, 4, $fullOffset)
+            . pack('n2N', 3, 1, 36) . pack('n2N', 3, 10, $fullOffset)
+            . $subtable . $full;
     }
     
     private static function names(): string {

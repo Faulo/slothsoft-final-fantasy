@@ -165,7 +165,29 @@ return 503, as with the PNG assets.
 
 ASCII letters, digits and decoded punctuation map to their original tiles.
 Unicode private-use characters U+E080–U+E0FF expose all tiles, including equipment
-icons. Text remains selectable; item options retain accessible text names.
+icons, as backward-compatible aliases. Item labels use these Unicode equivalents:
+
+| Icon     | Character | Code point |
+|----------|-----------|------------|
+| Sword    | 🗡        | U+1F5E1    |
+| Hammer   | 🔨        | U+1F528    |
+| Knife    | 🔪        | U+1F52A    |
+| Axe      | 🪓        | U+1FA93    |
+| Staff    | 🪄        | U+1FA84    |
+| Nunchaku | 🥢        | U+1F962    |
+| Armor    | 🦺        | U+1F9BA    |
+| Shield   | ⛨        | U+26E8     |
+| Helmet   | 🪖        | U+1FA96    |
+| Gauntlet | 🧤        | U+1F9E4    |
+| Bracelet | 💍        | U+1F48D    |
+| Shirt    | 👕        | U+1F455    |
+| Potion   | 🧴        | U+1F9F4    |
+
+The font provides BMP format 4 and full-Unicode format 12 `cmap` subtables.
+These characters display the original ROM pixels with the font loaded and a
+recognizable Unicode symbol when it is unavailable. No emoji variation selectors
+are added. Plain-text domain fallbacks and stored save bytes remain unchanged.
+Text remains selectable; item options retain accessible text names.
 ROM/save names use the font at 16px (twice the original 8px grid): equipment,
 spells, cast links, character legends and class tooltips. Interface labels and
 explanations retain the host typography. Unsupported characters use the browser's
