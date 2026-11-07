@@ -21,6 +21,7 @@
                     <sf1:weapon id="{$id}" name="{$file/sse:instruction[@name='weapon-names']/sse:group[$id]/sse:string/@value}"
                                 price="{$prices[$id + 28]/sse:integer/@value}" critical="{$id}">
                         <xsl:apply-templates select="sse:integer[@name='hit' or @name='damage' or @name='spell']" />
+                        <xsl:copy-of select="$file/sse:instruction[@name='weapon-names']/sse:group[$id]/sse:string/sf1:label" />
                         <xsl:call-template name="equipment-classes">
                             <xsl:with-param name="mask" select="$file/sse:instruction[@name='weapon-permissions']/sse:group[$id]/sse:integer/@value" />
                         </xsl:call-template>
@@ -34,6 +35,7 @@
                               price="{$prices[$id + 68]/sse:integer/@value}"
                               category="{$file/sse:instruction[@name='armor-categories']/sse:group[$id]/sse:integer/@value}">
                         <xsl:apply-templates select="sse:integer" />
+                        <xsl:copy-of select="$file/sse:instruction[@name='armor-names']/sse:group[$id]/sse:string/sf1:label" />
                         <xsl:call-template name="equipment-classes">
                             <xsl:with-param name="mask" select="$file/sse:instruction[@name='armor-permissions']/sse:group[$id]/sse:integer/@value" />
                         </xsl:call-template>

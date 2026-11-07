@@ -6,7 +6,7 @@ namespace Slothsoft\FinalFantasy\I;
 use InvalidArgumentException;
 use RuntimeException;
 
-/** NES 8x8 planar tiles arranged into eight 16x24 battle poses, left to right. */
+/** NES 8x8 planar tiles decoded as class poses or a horizontal menu glyph strip. */
 final class NesSpriteSheet {
     public const WIDTH = 128;
     public const HEIGHT = 24;
@@ -28,10 +28,6 @@ final class NesSpriteSheet {
         if (strlen($tiles) !== 512 || strlen($palette) !== 4 || strlen($poses) !== 32) {
             throw new InvalidArgumentException('Expected 32 NES tiles, four palette entries and eight pose records.');
         }
-        $colors = '';
-        for ($index = 0; $index < 4; $index++) {
-            $colors .= substr(pack('N', self::RGB[ord($palette[$index]) & 0x3F]), 1);
-        }
         $scanlines = '';
         for ($y = 0; $y < self::HEIGHT; $y++) {
             $scanlines .= "\0"; // PNG filter: none.
@@ -42,22 +38,52 @@ final class NesSpriteSheet {
                 }
                 for ($x = 0; $x < 16; $x++) {
                     $offset = ($leftTile + intdiv($x, 8)) * 16 + $y % 8;
-                    $shift = 7 - $x % 8;
-                    $pixel = ((ord($tiles[$offset]) >> $shift) & 1)
-                        | (((ord($tiles[$offset + 8]) >> $shift) & 1) << 1);
-                    $scanlines .= chr($pixel);
+                    $scanlines .= self::pixel($tiles, $offset, $x % 8);
                 }
             }
         }
+        return self::encodePng(self::WIDTH, self::HEIGHT, $scanlines, $palette, 0);
+    }
+    
+    public static function toTileStrip(string $tiles, string $palette, int $transparent = 2): string {
+        if ($tiles === '' || strlen($tiles) % 16 !== 0 || strlen($tiles) > 4096
+            || strlen($palette) !== 4 || $transparent < 0 || $transparent > 3) {
+            throw new InvalidArgumentException('Expected complete NES tiles, four palette entries and a transparency index from 0 to 3.');
+        }
+        $count = intdiv(strlen($tiles), 16);
+        $scanlines = '';
+        for ($y = 0; $y < 8; $y++) {
+            $scanlines .= "\0";
+            for ($tile = 0; $tile < $count; $tile++) {
+                for ($x = 0; $x < 8; $x++) {
+                    $scanlines .= self::pixel($tiles, $tile * 16 + $y, $x);
+                }
+            }
+        }
+        return self::encodePng($count * 8, 8, $scanlines, $palette, $transparent);
+    }
+    
+    private static function pixel(string $tiles, int $offset, int $x): string {
+        $shift = 7 - $x;
+        return chr(((ord($tiles[$offset]) >> $shift) & 1)
+            | (((ord($tiles[$offset + 8]) >> $shift) & 1) << 1));
+    }
+    
+    private static function encodePng(int $width, int $height, string $scanlines, string $palette, int $transparent): string {
+        $colors = '';
+        for ($index = 0; $index < 4; $index++) {
+            $colors .= substr(pack('N', self::RGB[ord($palette[$index]) & 0x3F]), 1);
+        }
         $compressed = gzcompress($scanlines, 9);
         if ($compressed === false) {
-            throw new RuntimeException('Could not encode the class sprite PNG.');
+            throw new RuntimeException('Could not encode the NES graphics PNG.');
         }
-        // Indexed PNG keeps the game's four colors and makes sprite color zero transparent.
+        $alpha = "\xFF\xFF\xFF\xFF";
+        $alpha[$transparent] = "\0";
         return "\x89PNG\r\n\x1A\n"
-            . self::chunk('IHDR', pack('NNCCCCC', self::WIDTH, self::HEIGHT, 8, 3, 0, 0, 0))
+            . self::chunk('IHDR', pack('NNCCCCC', $width, $height, 8, 3, 0, 0, 0))
             . self::chunk('PLTE', $colors)
-            . self::chunk('tRNS', "\0\xFF\xFF\xFF")
+            . self::chunk('tRNS', $alpha)
             . self::chunk('IDAT', $compressed)
             . self::chunk('IEND', '');
     }

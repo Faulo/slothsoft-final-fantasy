@@ -54,7 +54,9 @@ final class GameData implements EquipmentCatalog {
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
         foreach ($xpath->query('//sse:string[@name="text"]') as $node) {
             assert($node instanceof DOMElement);
-            $node->setAttribute('value', TextCodec::decode(mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8')));
+            $bytes = mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8');
+            $node->setAttribute('value', TextCodec::decode($bytes));
+            $node->appendChild(TextCodec::createLabel($input, $bytes));
         }
         $stylesheet = new DOMDocument();
         if (! $stylesheet->load(dirname(__DIR__, 2) . '/assets/i/xsl/data.xsl')) {
@@ -94,21 +96,30 @@ final class GameData implements EquipmentCatalog {
         if ($class < 0 || $class > 11) {
             throw new InvalidArgumentException('Choose a class ID from 0 to 11.');
         }
+        $tiles = $this->readGraphics('//sse:instruction[@name="class-graphics"]/sse:group[' . ($class + 1) . ']/sse:image');
+        $assignments = $this->readGraphics('//sse:binary[@name="class-palettes"]');
+        $palettes = $this->readGraphics('//sse:binary[@name="sprite-palettes"]');
+        $poses = $this->readGraphics('//sse:binary[@name="class-poses"]');
+        return NesSpriteSheet::toPng($tiles, substr($palettes, (ord($assignments[$class]) & 3) * 4, 4), $poses);
+    }
+    
+    public function getItemIcons(): string {
+        return NesSpriteSheet::toTileStrip(
+            $this->readGraphics('//sse:image[@name="item-icons"]'),
+            $this->readGraphics('//sse:binary[@name="menu-palette"]'),
+            2
+        );
+    }
+    
+    private function readGraphics(string $query): string {
         $xpath = new DOMXPath($this->dataset);
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
-        $read = static function (string $query) use ($xpath): string {
-            $hex = (string) $xpath->evaluate('string(' . $query . '/@value)');
-            $value = hex2bin(str_replace(' ', '', trim($hex)));
-            if ($value === false || $value === '') {
-                throw new RuntimeException('The class graphics dataset is incomplete.');
-            }
-            return $value;
-        };
-        $tiles = $read('//sse:instruction[@name="class-graphics"]/sse:group[' . ($class + 1) . ']/sse:image');
-        $assignments = $read('//sse:binary[@name="class-palettes"]');
-        $palettes = $read('//sse:binary[@name="sprite-palettes"]');
-        $poses = $read('//sse:binary[@name="class-poses"]');
-        return NesSpriteSheet::toPng($tiles, substr($palettes, (ord($assignments[$class]) & 3) * 4, 4), $poses);
+        $hex = (string) $xpath->evaluate('string(' . $query . '/@value)');
+        $value = hex2bin(str_replace(' ', '', trim($hex)));
+        if ($value === false || $value === '') {
+            throw new RuntimeException('The graphics dataset is incomplete.');
+        }
+        return $value;
     }
     
     /** @return array<int, string> */

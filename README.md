@@ -57,6 +57,7 @@ Composer registers the Farah module `slothsoft@final-fantasy`.
 | `farah://slothsoft@final-fantasy/i/savegame/rom`          | ROM extraction specification                                         |
 | `farah://slothsoft@final-fantasy/i/savegame/equipment`    | SRAM equipment specification                                         |
 | `farah://slothsoft@final-fantasy/i/gfx/class?class=2`     | Black Belt battle sprite sheet (class IDs 0–11)                      |
+| `farah://slothsoft@final-fantasy/i/gfx/items`             | Item-name icon sheet from the original menu font                     |
 
 The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix `sf1`. Hosts
 embed the HTML fragments and provide `/FinalFantasy/I/`,
@@ -81,6 +82,16 @@ use ROM class names and state whether that class can equip or learn it. The publ
 HTTP asset is `/slothsoft@final-fantasy/i/gfx/class?class=2`; invalid class IDs return
 400 and unavailable ROMs return 503. The default class ID is 0 (Fighter).
 
+Item icons use the same on-demand PNG pipeline. The 112×8 sheet contains the
+fourteen menu-font tiles D4–E1 in ROM order. The manifest reads both their pixels
+and the menu palette; palette entry 2 (the menu background) becomes transparent.
+CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mixed
+`sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
+accessible label. Existing `@name` text fallbacks remain available to consumers.
+Reference tables render these icons inline in their original position. Native
+equipment options use readable text, with the selected icon beside the dropdown;
+changing the selection updates that preview without changing save behavior.
+
 ## Binary extraction and implemented behavior
 
 Like `slothsoft/amber`, this module uses a savegame XML specification to retrieve
@@ -94,7 +105,7 @@ exposes PRG bytes to the savegame parser. It contains no game-data table offsets
 `GameData` runs `Editor` and `XmlBuilder`, decodes the parsed FF text through
 `TextCodec`, and applies `assets/i/xsl/data.xsl` to produce domain XML. There is
 no second hand-written ROM record parser. Names, including their spelling and
-case, come from the ROM; equipment glyphs are rendered as bracketed labels.
+case, come from the ROM; equipment glyphs retain their original tile identity.
 `GameData::getDatasetDocument()` returns the parsed savegame dataset with text
 in its ISO-8859-1 carrier encoding; `toDocument()` returns decoded domain data.
 

@@ -22,6 +22,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
             // Unlike XML pages, PNG assets require a private ROM. ClassSpriteTest covers
             // their lookup and 503 contract without it, and actual PNG results with it.
             unset($assets['farah://slothsoft@final-fantasy/i/gfx/class']);
+            unset($assets['farah://slothsoft@final-fantasy/i/gfx/items']);
         }
         return $assets;
     }

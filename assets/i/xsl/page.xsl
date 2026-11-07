@@ -73,7 +73,7 @@
                                     <xsl:for-each select="sf1:weapons/sf1:weapon">
                                         <tr id="weapon-{@id}">
                                             <th scope="row">
-                                                <xsl:value-of select="@name" />
+                                                <xsl:call-template name="item-name" />
                                             </th>
                                             <td>
                                                 <xsl:value-of select="@price" />
@@ -120,7 +120,7 @@
                                     <xsl:for-each select="sf1:armor/sf1:item">
                                         <tr id="armor-{@id}">
                                             <th scope="row">
-                                                <xsl:value-of select="@name" />
+                                                <xsl:call-template name="item-name" />
                                             </th>
                                             <td>
                                                 <xsl:choose>
@@ -197,6 +197,42 @@
                 <p class="ff-note">Names preserve the ROM's spelling. Bracketed words represent the game's equipment icons. Prices are in gold.</p>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    <xsl:template name="item-name">
+        <xsl:choose>
+            <xsl:when test="sf1:label">
+                <xsl:apply-templates select="sf1:label/node()" mode="item-name" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="@name" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    <xsl:template match="sf1:icon" mode="item-name">
+        <xsl:call-template name="item-icon">
+            <xsl:with-param name="glyph" select="@glyph" />
+            <xsl:with-param name="label" select="@label" />
+        </xsl:call-template>
+    </xsl:template>
+    <xsl:template match="sf1:icon" mode="item-text">
+        <xsl:value-of select="concat(' ', @label, ' ')" />
+    </xsl:template>
+    <xsl:template name="item-icon">
+        <xsl:param name="glyph" />
+        <xsl:param name="label" />
+        <xsl:param name="class" select="'ff-item-icon'" />
+        <span class="{$class}" data-glyph="{$glyph}" role="img" aria-label="{$label}" title="{$label}">
+            <xsl:choose>
+                <xsl:when test="string($glyph) != ''">
+                    <xsl:attribute name="style">
+                        <xsl:value-of select="concat('background-position: ', -16 * ($glyph - 212), 'px 0')" />
+                    </xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="hidden">hidden</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
     </xsl:template>
     <xsl:template name="classes">
         <xsl:variable name="allowed" select="sf1:class-ref/@id" />
@@ -322,28 +358,46 @@
         <xsl:variable name="kind" select="local-name(..)" />
         <xsl:variable name="character" select="../../@index" />
         <xsl:variable name="selected" select="@id" />
+        <xsl:variable name="selected-icon" select="ancestor::sf1:final-fantasy/*[local-name()=$kind]/*[@id=$selected]/sf1:label/sf1:icon[1]" />
         <xsl:variable name="field" select="concat('equipment[', $character, '][', $kind, '][', @index, ']')" />
         <xsl:variable name="id" select="concat('ff-', $character, '-', $kind, '-', @index)" />
         <div class="ff-slot">
             <label for="{$id}">Slot
                 <xsl:value-of select="@index+1" />
             </label>
-            <select name="{$field}[id]" id="{$id}">
-                <option value="0">
-                    <xsl:if test="$selected=0">
-                        <xsl:attribute name="selected">selected</xsl:attribute>
-                    </xsl:if>
-                    Empty
-                </option>
-                <xsl:for-each select="ancestor::sf1:final-fantasy/*[local-name()=$kind]/*">
-                    <option value="{@id}">
-                        <xsl:if test="@id=$selected">
+            <span class="ff-item-picker">
+                <select name="{$field}[id]" id="{$id}">
+                    <option value="0">
+                        <xsl:if test="$selected=0">
                             <xsl:attribute name="selected">selected</xsl:attribute>
                         </xsl:if>
-                        <xsl:value-of select="@name" />
+                        Empty
                     </option>
-                </xsl:for-each>
-            </select>
+                    <xsl:for-each select="ancestor::sf1:final-fantasy/*[local-name()=$kind]/*">
+                        <option value="{@id}" data-icon="{sf1:label/sf1:icon[1]/@glyph}" data-icon-label="{sf1:label/sf1:icon[1]/@label}">
+                            <xsl:if test="@id=$selected">
+                                <xsl:attribute name="selected">selected</xsl:attribute>
+                            </xsl:if>
+                            <xsl:variable name="text">
+                                <xsl:choose>
+                                    <xsl:when test="sf1:label">
+                                        <xsl:apply-templates select="sf1:label/node()" mode="item-text" />
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="@name" />
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:value-of select="normalize-space($text)" />
+                        </option>
+                    </xsl:for-each>
+                </select>
+                <xsl:call-template name="item-icon">
+                    <xsl:with-param name="glyph" select="$selected-icon/@glyph" />
+                    <xsl:with-param name="label" select="$selected-icon/@label" />
+                    <xsl:with-param name="class" select="'ff-item-icon ff-selected-icon'" />
+                </xsl:call-template>
+            </span>
             <label class="ff-equipped">
                 <input type="checkbox" name="{$field}[equipped]" value="1">
                     <xsl:if test="@equipped=1">

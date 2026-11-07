@@ -8,8 +8,10 @@
     <directory name="i">
         <resource-directory name="xsl" type="application/xslt+xml" />
         <resource-directory name="css" type="text/css" />
+        <resource-directory name="js" type="application/javascript" />
         <resource-directory name="savegame" type="application/xml" />
         <directory name="gfx">
+            <custom-asset name="items" executable-builder="Slothsoft\FinalFantasy\I\ItemIconBuilder" />
             <custom-asset name="class" executable-builder="Slothsoft\FinalFantasy\I\ClassSpriteBuilder" parameter-filter="Slothsoft\FinalFantasy\I\ClassSpriteParameters" />
         </directory>
         <directory name="api">
@@ -22,6 +24,7 @@
                 <link-stylesheet ref="/i/css/default" />
             </fragment>
             <fragment name="editor">
+                <link-script ref="/i/js/item-icons" />
                 <use-template ref="/i/xsl/page" />
                 <use-document ref="/i/api/data?view=editor" name="data" />
                 <link-stylesheet ref="/i/css/default" />

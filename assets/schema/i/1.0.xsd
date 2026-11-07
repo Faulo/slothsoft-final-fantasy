@@ -16,6 +16,7 @@ This namespace describes game data extracted from the original US NES release of
 *** Version 1.0 ***
     R20261107
         - initial schema for ROM-derived reference data and equipment save editing
+        - optional mixed-content item labels preserve ROM glyph IDs for inline icons
                 ]]></ssv:changelog>
             </ssv:info>
         </xs:appinfo>
@@ -44,8 +45,26 @@ This namespace describes game data extracted from the original US NES release of
         <xs:attribute name="name" type="xs:string" use="required" />
         <xs:attribute name="price" type="xs:unsignedShort" use="required" />
     </xs:attributeGroup>
+    <xs:complexType name="itemLabel" mixed="true">
+        <xs:sequence>
+            <xs:element name="icon" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="glyph" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:unsignedByte">
+                                <xs:minInclusive value="212" />
+                                <xs:maxInclusive value="225" />
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="label" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="weapon">
         <xs:sequence>
+            <xs:element name="label" type="sf1:itemLabel" minOccurs="0" />
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
         <xs:attributeGroup ref="sf1:identity" />
@@ -57,6 +76,7 @@ This namespace describes game data extracted from the original US NES release of
     </xs:complexType>
     <xs:complexType name="armor">
         <xs:sequence>
+            <xs:element name="label" type="sf1:itemLabel" minOccurs="0" />
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
         <xs:attributeGroup ref="sf1:identity" />

@@ -97,7 +97,9 @@ final class GameDataTest extends TestCase {
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
         foreach ($xpath->query('//sse:string[@name="text"]') as $node) {
             self::assertInstanceOf(DOMElement::class, $node);
-            $node->setAttribute('value', TextCodec::decode(mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8')));
+            $bytes = mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8');
+            $node->setAttribute('value', TextCodec::decode($bytes));
+            $node->appendChild(TextCodec::createLabel($input, $bytes));
         }
         $stylesheet = new DOMDocument();
         self::assertTrue($stylesheet->load(dirname(__DIR__, 2) . '/assets/i/xsl/data.xsl'));
@@ -107,6 +109,27 @@ final class GameDataTest extends TestCase {
         $domain = $processor->transformToDoc($input);
         self::assertInstanceOf(DOMDocument::class, $domain);
         return [$dataset, $domain];
+    }
+    
+    public function testItemIconsAndMixedNamesComeFromSyntheticRomBytes(): void {
+        $prg = str_repeat("\0", 0x40000);
+        $prg = substr_replace($prg, pack('v', 0xBA00), 0x2B700 + 28 * 2, 2);
+        $prg = substr_replace($prg, "\x8A\xD9\x8B\xD4\xFF\0", 0x2BA00, 6);
+        $prg[0x24D40] = "\x80";
+        $prg = substr_replace($prg, "\x0F\0\x01\x30", 0x3AD7C, 4);
+        [$dataset, $domain] = $this->parseSyntheticPrg($prg);
+        $raw = new DOMXPath($dataset);
+        $raw->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
+        self::assertStringStartsWith('80 00 ', $raw->evaluate('string(//sse:image[@name="item-icons"]/@value)'));
+        self::assertSame('224', $raw->evaluate('string(//sse:image[@name="item-icons"]/@size)'));
+        self::assertSame('0f 00 01 30 ', $raw->evaluate('string(//sse:binary[@name="menu-palette"]/@value)'));
+        self::assertTrue($domain->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));
+        $xpath = new DOMXPath($domain);
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('A[nunchuck]B[sword]', $xpath->evaluate('string(//sf1:weapon[@id="1"]/@name)'));
+        self::assertSame('217', $xpath->evaluate('string(//sf1:weapon[@id="1"]/sf1:label/sf1:icon[1]/@glyph)'));
+        self::assertSame('212', $xpath->evaluate('string(//sf1:weapon[@id="1"]/sf1:label/sf1:icon[2]/@glyph)'));
+        self::assertSame('B', $xpath->evaluate('string(//sf1:weapon[@id="1"]/sf1:label/text()[2])'));
     }
     
     public function testRejectsNonRom(): void {

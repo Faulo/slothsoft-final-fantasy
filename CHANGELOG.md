@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Extract item-name glyphs and menu colors from the ROM into an on-demand PNG sheet.
+- Render inline item icons in reference tables and selected equipment previews, preserving text fallbacks in domain XML.
+
 - Decode ROM class tiles, palettes and pose arrangements into transparent PNG sprite sheets on demand.
 - Show all twelve class sprites in weapon, armor and spell tables, dimming classes without permission.
 

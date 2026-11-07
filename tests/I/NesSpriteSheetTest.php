@@ -49,4 +49,25 @@ final class NesSpriteSheetTest extends TestCase {
         $this->expectException(InvalidArgumentException::class);
         NesSpriteSheet::toPng('', str_repeat("\0", 4), str_repeat("\0", 32));
     }
+    
+    public function testMenuTileStripUsesColorTwoForTransparencyAndPreservesTileOrder(): void {
+        $tiles = "\x80" . str_repeat("\0", 7) . str_repeat("\xFF", 8)
+            . "\x01" . str_repeat("\0", 7) . str_repeat("\xFF", 8);
+        $png = NesSpriteSheet::toTileStrip($tiles, "\x0F\0\x01\x30");
+        $info = getimagesizefromstring($png);
+        self::assertIsArray($info);
+        self::assertSame([16, 8, IMAGETYPE_PNG], array_slice($info, 0, 3));
+        self::assertSame("\xFF\xFF\0\xFF", substr($png, strpos($png, 'tRNS') + 4, 4));
+        $offset = strpos($png, 'IDAT');
+        $length = unpack('Nlength', substr($png, $offset - 4, 4))['length'];
+        $pixels = gzuncompress(substr($png, $offset + 4, $length));
+        self::assertIsString($pixels);
+        self::assertSame("\0\x03" . str_repeat("\x02", 14) . "\x03", substr($pixels, 0, 17));
+        self::assertSame("\0" . str_repeat("\x02", 16), substr($pixels, 17, 17));
+    }
+    
+    public function testRejectsPartialMenuTile(): void {
+        $this->expectException(InvalidArgumentException::class);
+        NesSpriteSheet::toTileStrip(str_repeat("\0", 15), str_repeat("\0", 4));
+    }
 }
