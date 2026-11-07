@@ -1,9 +1,18 @@
 .final-fantasy {
-    --ff-blue: #193d75;
-    --ff-line: #c6cddb;
+    /* Menu palette 0F / 00 / 01 / 30, using the same 2C02 RGB approximation as the PNGs. */
+    --ff-black: #000000;
+    --ff-gray: #7c7c7c;
+    --ff-blue: #0000fc;
+    --ff-white: #fcfcfc;
+    --ff-line: var(--ff-gray);
+    --ff-tile: 16px;
+    background: var(--ff-blue);
+    color: var(--ff-white);
+    text-shadow: none;
+    border: none;
     max-width: 90rem;
     margin: 0 auto;
-    padding: 1rem;
+    padding: var(--ff-tile);
     line-height: 1.5;
 }
 
@@ -15,10 +24,11 @@
 .final-fantasy nav {
     display: flex;
     flex-wrap: wrap;
-    gap: .6rem 1.5rem;
-    border-block: 1px solid var(--ff-line);
-    padding: 1rem 0;
-    margin-bottom: 2rem;
+    background: var(--ff-blue);
+    gap: 8px 24px;
+    border-top: 2px solid var(--ff-gray);
+    padding: var(--ff-tile) 0 0;
+    margin: var(--ff-tile) 0 0;
 }
 
 .final-fantasy .ff-cards {
@@ -30,8 +40,7 @@
 .final-fantasy .ff-cards > a {
     display: block;
     padding: 1rem;
-    border: 1px solid var(--ff-line);
-    border-radius: .3rem;
+    border-radius: 4px;
 }
 
 .final-fantasy .ff-table {
@@ -121,7 +130,7 @@
     gap: .8rem;
     margin: 1.5rem 0;
     padding: 1rem;
-    border: 1px solid var(--ff-line);
+    border: 2px solid var(--ff-gray);
 }
 
 .final-fantasy .ff-party {
@@ -133,13 +142,14 @@
 
 .final-fantasy fieldset {
     min-width: 0;
-    border: 1px solid var(--ff-line);
+    border: 2px solid var(--ff-gray);
     padding: 1rem;
 }
 
 .final-fantasy legend {
-    font-weight: bold;
-    padding: 0 .5rem;
+    font-weight: normal;
+    padding: 0 8px;
+    background: var(--ff-blue);
 }
 
 .final-fantasy .ff-slot {
@@ -194,11 +204,6 @@
     line-height: 1.5;
 }
 
-.final-fantasy select:has(option[value="0"]:checked),
-.final-fantasy option[value="0"] {
-    font-family: inherit;
-}
-
 .final-fantasy .ff-class-entry {
     position: relative;
 }
@@ -210,7 +215,7 @@
     right: 0;
     z-index: 1;
     padding: .5rem;
-    background: #193d75;
+    background: var(--ff-blue);
     color: white;
     white-space: nowrap;
     pointer-events: none;
@@ -230,77 +235,73 @@
     filter: none;
 }
 
-.final-fantasy .ff-combobox {
-    position: relative;
+/* Native controls, as in Ambermoon: the game typeface belongs on the select itself.
+   Explicit option inheritance also covers Firefox's native popup. */
+.final-fantasy select.ff-text {
     display: block;
-    min-width: 0;
-}
-
-.final-fantasy .ff-choice {
-    display: block;
-    width: 100%;
-    min-height: 34px;
-    padding: .4rem 1.5rem .4rem .4rem;
-    border: 1px solid #888;
-    border-radius: 3px;
-    background: white;
-    color: black;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.final-fantasy .ff-choice::after {
-    content: '';
-    position: absolute;
-    right: .5rem;
-    top: 50%;
-    border: 4px solid transparent;
-    border-bottom: 0;
-    border-top-color: currentColor;
-}
-
-.final-fantasy .ff-choice:focus-visible {
-    outline: 2px solid var(--ff-blue);
-    outline-offset: 2px;
-}
-
-.final-fantasy .ff-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 10;
-    min-width: 100%;
     box-sizing: border-box;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border: 1px solid #888;
-    border-radius: 3px;
-    background: white;
-    color: black;
-    box-shadow: 0 3px 8px #0004;
+    margin: 0 auto;
+    border: 2px solid var(--ff-gray);
+    border-radius: 0;
+    background-color: var(--ff-blue);
+    color: var(--ff-white);
 }
 
-.final-fantasy .ff-options-above {
-    top: auto;
-    bottom: 100%;
+.final-fantasy select.ff-text option {
+    font: inherit;
+    background-color: var(--ff-blue);
+    color: var(--ff-white);
 }
 
-.final-fantasy .ff-option {
-    display: block;
-    padding: .4rem;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.final-fantasy .ff-option:hover,
-.final-fantasy .ff-option-active {
+.final-fantasy > header,
+.final-fantasy .ff-cards > a,
+.final-fantasy .ff-upload,
+.final-fantasy fieldset,
+.final-fantasy .ff-table {
     background: var(--ff-blue);
-    color: white;
+    color: var(--ff-white);
+    border: 2px solid var(--ff-white);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--ff-gray), 0 0 0 2px var(--ff-gray), 0 0 0 4px var(--ff-black);
+    padding: var(--ff-tile);
+    margin-block: var(--ff-tile);
 }
 
-.final-fantasy .ff-options[hidden],
-.final-fantasy select[hidden] {
-    display: none;
+.final-fantasy > header {
+    margin-top: 0;
+}
+
+.final-fantasy h1,
+.final-fantasy h2,
+.final-fantasy h3 {
+    color: var(--ff-white);
+    margin-block: var(--ff-tile);
+}
+
+.final-fantasy a:link,
+.final-fantasy a:visited {
+    color: var(--ff-white);
+}
+
+.final-fantasy button,
+.final-fantasy ::file-selector-button {
+    background: var(--ff-blue);
+    color: var(--ff-white);
+    border: 2px solid var(--ff-white);
+    border-radius: 2px;
+    padding: 8px 16px;
+}
+
+.final-fantasy button:hover,
+.final-fantasy select:hover {
+    border-color: var(--ff-white);
+}
+
+.final-fantasy :focus-visible {
+    outline: 2px solid var(--ff-white);
+    outline-offset: 3px;
+}
+
+.final-fantasy input[type="checkbox"] {
+    accent-color: var(--ff-blue);
 }

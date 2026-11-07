@@ -26,7 +26,6 @@
             </fragment>
             <fragment name="editor">
                 <link-script ref="/i/js/item-icons" />
-                <link-script ref="/i/js/equipment-picker" />
                 <use-template ref="/i/xsl/page" />
                 <use-document ref="/i/api/data?view=editor" name="data" />
                 <link-stylesheet ref="/i/css/default" />

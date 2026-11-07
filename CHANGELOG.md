@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- Render equipment dropdown options in the page so their ROM font and icons also work when native option menus ignore web fonts. Preserve keyboard navigation and readable native selects without JavaScript.
+- Style native Firefox equipment selects with the ROM font using the Ambermoon approach; remove the JavaScript replacement picker.
+- Give panels the original menu palette, outlined borders and tile-based spacing; preserve sprite transparency.
 
 - Generate a TrueType menu font from the private ROM and use it for game-derived names, class tooltips and equipment options.
 

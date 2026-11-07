@@ -89,7 +89,7 @@ CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mix
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
 Reference tables render the same tiles as font glyphs inline in their original position. Equipment
-options use the ROM font and its original icons in an in-page combobox, with the selected icon beside the dropdown;
+options use the ROM font and its original icons in native Firefox selects, with the selected icon beside the dropdown;
 changing the selection updates that preview without changing save behavior.
 
 ## Binary extraction and implemented behavior
@@ -173,13 +173,18 @@ fallback font. Existing plain-text domain names and PNG endpoints are unchanged.
 
 The encoder follows the [OpenType table specification](https://learn.microsoft.com/en-us/typography/opentype/spec/otff).
 
-Equipment pickers enhance the original form selects with in-page listboxes, since
-operating-system dropdowns may ignore downloaded fonts. Arrow keys, Home/End,
-Page Up/Down and typing navigate; Enter/Space/Tab commit, and Escape cancels.
-The native select remains the submitted form value. Without JavaScript, native
-options show readable icon descriptions instead of private-use glyph boxes.
+Equipment pickers use native selects with CSS font inheritance, following
+Ambermoon's approach. Firefox is the rendering target; no JavaScript replaces or
+styles the options. The icon-preview script only updates the adjacent PNG.
 
-The browser regression check is `node tests/browser/equipment-picker.cjs` with
-Playwright available (or `FF_PLAYWRIGHT_MODULE` pointing to its module),
-`FF_SAVE_PATH` pointing to a private sample save, and optionally `FF_EDITOR_URL`
-and `FF_BROWSER_CHANNEL` overriding the local DDEV URL and Edge browser.
+Panels use the menu's blue, white, gray and black palette (NES indices 01, 30, 00
+and 0F), with CSS borders and spacing on the original 8px grid at 2x scale.
+RGB values use the same conventional 2C02 approximation as the extracted PNGs;
+emulators can differ in their RGB palette. Sprite transparency remains unchanged.
+
+For the headless Firefox regression check, install Playwright's Firefox in DDEV (`ddev exec npx --yes --package=playwright playwright install firefox`) and run
+`tests/browser/equipment-picker.cjs` with `FF_PLAYWRIGHT_MODULE` pointing to that
+Playwright module, `FF_SAVE_PATH` to a private sample save and `FF_EDITOR_URL` to
+the editor on a configured host. `FF_SCREENSHOT` optionally saves a page screenshot.
+Page screenshots do not include the operating system's native dropdown popup;
+confirm its appearance manually in Firefox.
