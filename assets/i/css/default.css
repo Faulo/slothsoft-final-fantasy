@@ -1,191 +1,3 @@
-.final-fantasy {
-    /* Menu palette 0F / 00 / 01 / 30, using the same 2C02 RGB approximation as the PNGs. */
-    --ff-black: #000000;
-    --ff-gray: #7c7c7c;
-    --ff-blue: #0000fc;
-    --ff-white: #fcfcfc;
-    --ff-line: var(--ff-gray);
-    --ff-tile: 16px;
-    background: var(--ff-blue);
-    color: var(--ff-white);
-    text-shadow: none;
-    border: none;
-    max-width: 90rem;
-    margin: 0 auto;
-    padding: var(--ff-tile);
-    line-height: 1.5;
-}
-
-.final-fantasy .eyebrow {
-    font-size: .85em;
-    letter-spacing: .08em;
-}
-
-.final-fantasy nav {
-    display: flex;
-    flex-wrap: wrap;
-    background: var(--ff-blue);
-    gap: 8px 24px;
-    border-top: 2px solid var(--ff-gray);
-    padding: var(--ff-tile) 0 0;
-    margin: var(--ff-tile) 0 0;
-}
-
-.final-fantasy .ff-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1rem;
-}
-
-.final-fantasy .ff-cards > a {
-    display: block;
-    padding: 1rem;
-    border-radius: 4px;
-}
-
-.final-fantasy .ff-table {
-    overflow-x: auto;
-}
-
-.final-fantasy table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.final-fantasy caption {
-    text-align: left;
-    padding: .8rem 0;
-}
-
-.final-fantasy th, .final-fantasy td {
-    text-align: left;
-    vertical-align: top;
-    padding: .6rem;
-    border-bottom: 1px solid var(--ff-line);
-}
-
-.final-fantasy thead {
-    background: var(--ff-blue);
-    color: white;
-}
-
-.final-fantasy tbody th {
-    white-space: nowrap;
-}
-
-.final-fantasy .ff-resists {
-    margin: 0;
-    padding-left: 1.2rem;
-}
-
-.final-fantasy .ff-classes {
-    display: inline-grid;
-    grid-template-columns: repeat(6, 32px);
-    gap: 4px;
-}
-
-.final-fantasy .ff-class-sprite {
-    display: block;
-    width: 32px;
-    height: 48px;
-    background-size: 256px 48px;
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-}
-
-.final-fantasy .ff-class-sprite[data-allowed="false"] {
-    opacity: .25;
-    filter: grayscale(1) brightness(.65);
-}
-
-.final-fantasy .ff-item-icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    vertical-align: -2px;
-    margin-inline: 2px;
-    background-image: url('/slothsoft@final-fantasy/i/gfx/items');
-    background-size: 224px 16px;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    filter: drop-shadow(1px 1px 0 #333);
-}
-
-.final-fantasy .ff-item-icon[hidden] {
-    display: none;
-}
-
-.final-fantasy .ff-item-picker {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 20px;
-    align-items: center;
-    gap: .3rem;
-}
-
-.final-fantasy .ff-upload {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .8rem;
-    margin: 1.5rem 0;
-    padding: 1rem;
-    border: 2px solid var(--ff-gray);
-}
-
-.final-fantasy .ff-party {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
-    gap: 1rem;
-    margin: 1.5rem 0;
-}
-
-.final-fantasy fieldset {
-    min-width: 0;
-    border: 2px solid var(--ff-gray);
-    padding: 1rem;
-}
-
-.final-fantasy legend {
-    font-weight: normal;
-    padding: 0 8px;
-    background: var(--ff-blue);
-}
-
-.final-fantasy .ff-slot {
-    display: grid;
-    grid-template-columns: 3.2rem minmax(6rem, 1fr) auto;
-    align-items: center;
-    gap: .5rem;
-    margin: .5rem 0;
-}
-
-.final-fantasy select {
-    width: 100%;
-    padding: .4rem;
-    font: inherit;
-}
-
-.final-fantasy button {
-    padding: .6rem 1rem;
-    font: inherit;
-    cursor: pointer;
-}
-
-.final-fantasy .ff-equipped {
-    white-space: nowrap;
-}
-
-.final-fantasy .ff-error {
-    padding: 1rem;
-    border: 2px solid #a21d28;
-}
-
-.final-fantasy .ff-note {
-    font-size: .9em;
-    margin-top: 1.5rem;
-}
-
 @font-face {
     font-family: 'Final Fantasy I';
     src: url('/slothsoft@final-fantasy/i/font') format('truetype');
@@ -194,105 +6,224 @@
     font-display: swap;
 }
 
-.final-fantasy .ff-text {
+/* Apply to a component, not the host page. Override --ff-scale on that root. */
+.ff-ui {
+    --ff-font-size: 8px;
+    --ff-sprite-size: 24px;
+    --ff-scale: 1;
+    --ff-pose: 0;
+    --ff-icon-index: 0;
+    --ff-unit: calc(var(--ff-font-size) * var(--ff-scale));
+    --ff-border: calc(var(--ff-unit) / 8);
+    --ff-sprite-height: calc(var(--ff-sprite-size) * var(--ff-scale));
+    --ff-sprite-width: calc(var(--ff-sprite-height) * 2 / 3);
+    /* NES palette 0F / 00 / 01 / 30, matching the generated PNG palette. */
+    --ff-black: #000000;
+    --ff-gray: #7c7c7c;
+    --ff-blue: #0000fc;
+    --ff-white: #fcfcfc;
     font-family: 'Final Fantasy I', monospace;
-    font-size: 16px;
+    font-size: var(--ff-unit);
     font-style: normal;
     font-weight: 400;
     font-synthesis: none;
+    line-height: 150%;
     letter-spacing: 0;
-    line-height: 1.5;
+    text-shadow: none;
+    color: var(--ff-white);
+    background: var(--ff-blue);
+    min-width: 0;
+    max-width: 100%;
 }
 
-.final-fantasy .ff-class-entry {
+.ff-ui, .ff-ui * {
+    box-sizing: border-box;
+}
+
+.ff-ui :where(*) {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-shadow: none;
+    color: inherit;
+}
+
+.ff-ui.ff-panel, .ff-ui .ff-panel {
+    border: var(--ff-border) solid var(--ff-white);
+    border-radius: calc(var(--ff-border) * 2);
+    box-shadow: inset 0 0 0 var(--ff-border) var(--ff-gray),
+    0 0 0 var(--ff-border) var(--ff-gray),
+    0 0 0 calc(var(--ff-border) * 2) var(--ff-black);
+    background: var(--ff-blue);
+    color: var(--ff-white);
+    padding: 1em;
+    min-width: 0;
+}
+
+.ff-ui :where(h1, h2, h3, h4, p, ul) {
+    margin-block: .5em;
+}
+
+.ff-ui :where(h1, h2, h3, h4, p) {
+    padding: 0;
+    text-align: left;
+}
+
+.ff-ui a:link, .ff-ui a:visited, .ff-ui a:hover, .ff-ui a:active {
+    color: var(--ff-white);
+}
+
+.ff-ui.ff-table {
+    overflow-x: auto;
+}
+
+.ff-ui table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.ff-ui :where(table, caption, thead, tbody, tfoot, tr, th, td) {
+    background: var(--ff-blue);
+    color: var(--ff-white);
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.ff-ui caption {
+    text-align: left;
+    padding: 0 0 1em;
+}
+
+.ff-ui th, .ff-ui td {
+    text-align: left;
+    vertical-align: top;
+    padding: .5em;
+    border: none;
+    border-bottom: var(--ff-border) solid var(--ff-gray);
+}
+
+.ff-ui tbody th {
+    white-space: nowrap;
+}
+
+.ff-ui :where(input, select, option, button, textarea),
+.ff-ui ::file-selector-button {
+    font: inherit;
+    color: var(--ff-white);
+    background: var(--ff-blue);
+}
+
+.ff-ui :where(input, select, button, textarea),
+.ff-ui ::file-selector-button {
+    border: var(--ff-border) solid var(--ff-white);
+    border-radius: 0;
+    padding: .5em;
+}
+
+.ff-ui select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+
+.ff-ui button, .ff-ui ::file-selector-button {
+    cursor: pointer;
+    padding-inline: 1em;
+}
+
+.ff-ui input[type="file"] {
+    max-width: 100%;
+    border: none;
+    padding: 0;
+}
+
+.ff-ui input[type="checkbox"] {
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    width: 1em;
+    height: 1em;
+    padding: 0;
+    margin: 0 .5em 0 0;
+    vertical-align: -.125em;
+}
+
+.ff-ui input[type="checkbox"]:checked::after {
+    content: 'X';
+    line-height: 1;
+}
+
+.ff-ui legend {
+    padding-inline: .5em;
+    color: var(--ff-white);
+    background: var(--ff-blue);
+}
+
+.ff-ui :focus-visible {
+    outline: var(--ff-border) solid var(--ff-white);
+    outline-offset: var(--ff-border);
+}
+
+.ff-ui .ff-classes {
+    display: inline-grid;
+    grid-template-columns: repeat(6, var(--ff-sprite-width));
+    gap: calc(var(--ff-border) * 2);
+}
+
+.ff-ui .ff-class-sprite {
+    display: block;
+    width: var(--ff-sprite-width);
+    height: var(--ff-sprite-height);
+    background-size: calc(var(--ff-sprite-width) * 8) var(--ff-sprite-height);
+    background-position: calc(-1 * var(--ff-pose, 0) * var(--ff-sprite-width)) 0;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.ff-ui .ff-class-sprite[data-allowed="false"] {
+    opacity: .25;
+    filter: grayscale(1) brightness(.65);
+}
+
+.ff-ui .ff-class-entry {
     position: relative;
 }
 
-.final-fantasy .ff-class-tooltip {
+.ff-ui .ff-class-tooltip {
     display: none;
     position: absolute;
     bottom: 100%;
     right: 0;
     z-index: 1;
-    padding: .5rem;
+    padding: .5em;
+    color: var(--ff-white);
     background: var(--ff-blue);
-    color: white;
+    border: var(--ff-border) solid var(--ff-white);
     white-space: nowrap;
     pointer-events: none;
 }
 
-.final-fantasy .ff-class-entry:hover .ff-class-tooltip,
-.final-fantasy .ff-class-entry:focus .ff-class-tooltip {
+.ff-ui .ff-class-entry:hover .ff-class-tooltip,
+.ff-ui .ff-class-entry:focus .ff-class-tooltip {
     display: block;
 }
 
-/* Native controls, as in Ambermoon: the game typeface belongs on the select itself.
-   Explicit option inheritance also covers Firefox's native popup. */
-.final-fantasy select.ff-text {
-    display: block;
-    box-sizing: border-box;
-    margin: 0 auto;
-    border: 2px solid var(--ff-gray);
-    border-radius: 0;
-    background-color: var(--ff-blue);
-    color: var(--ff-white);
+.ff-ui .ff-item-icon {
+    display: inline-block;
+    width: var(--ff-unit);
+    height: var(--ff-unit);
+    background-image: url('/slothsoft@final-fantasy/i/gfx/items');
+    background-size: calc(var(--ff-unit) * 14) var(--ff-unit);
+    background-position: calc(-1 * var(--ff-icon-index, 0) * var(--ff-unit)) 0;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
 }
 
-.final-fantasy select.ff-text option {
-    font: inherit;
-    background-color: var(--ff-blue);
-    color: var(--ff-white);
-}
-
-.final-fantasy > header,
-.final-fantasy .ff-cards > a,
-.final-fantasy .ff-upload,
-.final-fantasy fieldset,
-.final-fantasy .ff-table {
-    background: var(--ff-blue);
-    color: var(--ff-white);
-    border: 2px solid var(--ff-white);
-    border-radius: 4px;
-    box-shadow: inset 0 0 0 2px var(--ff-gray), 0 0 0 2px var(--ff-gray), 0 0 0 4px var(--ff-black);
-    padding: var(--ff-tile);
-    margin-block: var(--ff-tile);
-}
-
-.final-fantasy > header {
-    margin-top: 0;
-}
-
-.final-fantasy h1,
-.final-fantasy h2,
-.final-fantasy h3 {
-    color: var(--ff-white);
-    margin-block: var(--ff-tile);
-}
-
-.final-fantasy a:link,
-.final-fantasy a:visited {
-    color: var(--ff-white);
-}
-
-.final-fantasy button,
-.final-fantasy ::file-selector-button {
-    background: var(--ff-blue);
-    color: var(--ff-white);
-    border: 2px solid var(--ff-white);
-    border-radius: 2px;
-    padding: 8px 16px;
-}
-
-.final-fantasy button:hover,
-.final-fantasy select:hover {
-    border-color: var(--ff-white);
-}
-
-.final-fantasy :focus-visible {
-    outline: 2px solid var(--ff-white);
-    outline-offset: 3px;
-}
-
-.final-fantasy input[type="checkbox"] {
-    accent-color: var(--ff-blue);
+.ff-ui [hidden] {
+    display: none;
 }

@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Slothsoft\FinalFantasy;
 
+use DOMDocument;
 use DOMXPath;
+use GuzzleHttp\Psr7\ServerRequest;
+use Slothsoft\Farah\RequestStrategy\LookupAssetStrategy;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlAuthority;
 use Slothsoft\Farah\Module\Module;
@@ -55,15 +58,28 @@ final class AssetsModuleTest extends AbstractModuleTest {
     }
     
     /** @runInSeparateProcess */
-    public function testPublicPagesResolveWithoutPrivateRom(): void {
+    public function testUtilityExampleResolvesWithoutPrivateRom(): void {
         Configuration::setRomPath('i', null);
-        foreach (['home', 'editor', 'weapons', 'armor', 'spells'] as $view) {
-            $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/html/' . $view);
-            $document = Module::resolveToDOMWriter($url)->toDocument();
-            $xpath = new DOMXPath($document);
-            $xpath->registerNamespace('html', 'http://www.w3.org/1999/xhtml');
-            self::assertSame(1.0, $xpath->evaluate('count(//html:article)'), $view);
-            self::assertStringContainsString($view === 'home' ? 'The equipment and magic of Final Fantasy' : 'Game data is currently unavailable.', $document->textContent, $view);
-        }
+        $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/examples/panels');
+        self::assertSame('/i/examples/panels', (string) Module::resolveToAsset($url)->getUrlPath());
+        $response = (new LookupAssetStrategy())->process(new ServerRequest('GET', $url));
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('application/xhtml+xml', explode(';', $response->getHeaderLine('content-type'))[0]);
+        $document = new DOMDocument();
+        self::assertTrue($document->loadXML((string) $response->getBody()));
+        $xpath = new DOMXPath($document);
+        $xpath->registerNamespace('html', 'http://www.w3.org/1999/xhtml');
+        self::assertSame(1.0, $xpath->evaluate('count(//html:form[contains(@class, "ff-ui")])'));
+        self::assertSame(1.0, $xpath->evaluate('count(//html:section[contains(@class, "ff-ui")]/html:table)'));
+        self::assertSame('/slothsoft@final-fantasy/i/css/default', $xpath->evaluate('string(//html:link[@rel="stylesheet"]/@href)'));
+        self::assertSame(0.0, $xpath->evaluate('count(//html:a | //html:nav)'));
+    }
+    
+    public function testUtilityStylesheetResolves(): void {
+        $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/css/default');
+        $response = (new LookupAssetStrategy())->process(new ServerRequest('GET', $url));
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('text/css', explode(';', $response->getHeaderLine('content-type'))[0]);
+        self::assertStringContainsString('/slothsoft@final-fantasy/i/font', (string) $response->getBody());
     }
 }

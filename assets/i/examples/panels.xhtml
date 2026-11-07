@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Final Fantasy I utility CSS examples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/slothsoft@final-fantasy/i/css/default"/>
+</head>
+<body>
+<h1>Final Fantasy I utility CSS</h1>
+<p>The host owns its page markup, links and form actions. Put the FF theme on individual panels.</p>
+<p>The base font is 8px and the sprite height is 24px. The first panel uses scale 1; the form uses scale 2. Font and sprite assets require a configured private ROM.</p>
+<!-- Illustrative text only: applications retrieve actual names from the XML data API. -->
+<section class="ff-ui ff-panel ff-table">
+    <table>
+        <caption>Example at original scale</caption>
+        <thead>
+        <tr>
+            <th scope="col">Text</th>
+            <th scope="col">Sprite</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">Example🥢</th>
+            <td><span class="ff-class-sprite" role="img" aria-label="Class 0" style="background-image: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<p>Use <code>style="--ff-scale: 2"</code> to double every pixel unit, including borders.</p>
+<form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 2">
+    <fieldset class="ff-panel">
+        <legend>Example controls</legend>
+        <label for="example-item">Item</label>
+        <select id="example-item" name="item">
+            <option>Example🗡</option>
+            <option>Example🥢</option>
+        </select>
+        <label><input type="checkbox" name="equipped"/>Equipped</label>
+        <button type="button">Example button</button>
+    </fieldset>
+</form>
+</body>
+</html>

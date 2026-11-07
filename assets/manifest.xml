@@ -8,7 +8,6 @@
     <directory name="i">
         <resource-directory name="xsl" type="application/xslt+xml" />
         <resource-directory name="css" type="text/css" />
-        <resource-directory name="js" type="application/javascript" />
         <resource-directory name="savegame" type="application/xml" />
         <custom-asset name="font" executable-builder="Slothsoft\FinalFantasy\I\MenuFontBuilder" />
         <directory name="gfx">
@@ -18,33 +17,8 @@
         <directory name="api">
             <custom-asset name="data" executable-builder="Slothsoft\FinalFantasy\I\PageDataBuilder" parameter-filter="Slothsoft\FinalFantasy\I\PageParameters" />
         </directory>
-        <fragment name="html">
-            <fragment name="home">
-                <use-template ref="/i/xsl/page" />
-                <use-document ref="/i/api/data?view=home" name="data" />
-                <link-stylesheet ref="/i/css/default" />
-            </fragment>
-            <fragment name="editor">
-                <link-script ref="/i/js/item-icons" />
-                <use-template ref="/i/xsl/page" />
-                <use-document ref="/i/api/data?view=editor" name="data" />
-                <link-stylesheet ref="/i/css/default" />
-            </fragment>
-            <fragment name="weapons">
-                <use-template ref="/i/xsl/page" />
-                <use-document ref="/i/api/data?view=weapons" name="data" />
-                <link-stylesheet ref="/i/css/default" />
-            </fragment>
-            <fragment name="armor">
-                <use-template ref="/i/xsl/page" />
-                <use-document ref="/i/api/data?view=armor" name="data" />
-                <link-stylesheet ref="/i/css/default" />
-            </fragment>
-            <fragment name="spells">
-                <use-template ref="/i/xsl/page" />
-                <use-document ref="/i/api/data?view=spells" name="data" />
-                <link-stylesheet ref="/i/css/default" />
-            </fragment>
-        </fragment>
+        <directory name="examples">
+            <resource name="panels" path="panels.xhtml" type="application/xhtml+xml" />
+        </directory>
     </directory>
 </assets>

@@ -33,8 +33,8 @@ The path belongs to the PHP runtime (a container path in DDEV). There is no
 default ROM path in the package. Passing `null` clears the configuration. Store
 the ROM outside public document roots and published assets. ROMs and saves are
 ignored by Git and excluded from distribution archives; none are bundled.
-The overview remains available without a ROM; data/editor pages explain when
-game data is unavailable without exposing the configured filesystem path.
+The XML API reports unavailable game data without exposing the configured
+filesystem path when the ROM cannot be read.
 
 Only the original US PRG is accepted, SHA-256
 `fa456d852372173ea31b192459ba1a2026f779df67793327ba6e132476c1d034`.
@@ -48,21 +48,46 @@ Composer registers the Farah module `slothsoft@final-fantasy`.
 | Asset                                                     | Purpose                                                              |
 |-----------------------------------------------------------|----------------------------------------------------------------------|
 | `farah://slothsoft@final-fantasy/i/api/data?view=weapons` | Domain XML; views are `home`, `editor`, `weapons`, `armor`, `spells` |
-| `farah://slothsoft@final-fantasy/i/html/home`             | Overview fragment                                                    |
-| `farah://slothsoft@final-fantasy/i/html/editor`           | Equipment editor fragment                                            |
-| `farah://slothsoft@final-fantasy/i/html/weapons`          | Weapons reference fragment                                           |
-| `farah://slothsoft@final-fantasy/i/html/armor`            | Armor reference fragment                                             |
-| `farah://slothsoft@final-fantasy/i/html/spells`           | Spells reference fragment                                            |
+| `farah://slothsoft@final-fantasy/i/css/default`           | Reusable FF panel, typography, control and sprite utilities          |
+| `farah://slothsoft@final-fantasy/i/examples/panels`       | Standalone XHTML examples at 1x and 2x scale                         |
 | `farah://slothsoft@final-fantasy/schema/i/1.0`            | Versioned domain XSD                                                 |
 | `farah://slothsoft@final-fantasy/i/savegame/rom`          | ROM extraction specification                                         |
 | `farah://slothsoft@final-fantasy/i/savegame/equipment`    | SRAM equipment specification                                         |
+| `farah://slothsoft@final-fantasy/i/font`                  | ROM-derived TrueType font                                            |
 | `farah://slothsoft@final-fantasy/i/gfx/class?class=2`     | Black Belt battle sprite sheet (class IDs 0–11)                      |
-| `farah://slothsoft@final-fantasy/i/gfx/items`             | Item-name icon sheet from the original menu font                     |
+| `farah://slothsoft@final-fantasy/i/gfx/items`             | Item-name icon sheet from the menu font                              |
 
-The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix `sf1`. Hosts
-embed the HTML fragments and provide `/FinalFantasy/I/`,
-`/FinalFantasy/I/SaveEditor/`, `/FinalFantasy/I/Weapons/`, `/FinalFantasy/I/Armor/`
-and `/FinalFantasy/I/Spells/` routes used by the navigation.
+The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix
+`sf1`. Applications consume the XML data API and own their HTML, page routes,
+form destinations and browser behavior. The former `/i/html/*` page fragments,
+`/i/xsl/page` and `/i/js/item-icons` have moved into the consuming site as part of
+the pre-release package/site separation.
+
+## Utility CSS and host integration
+
+Load `/slothsoft@final-fantasy/i/css/default` in the host page. Apply
+`class="ff-ui ff-panel"` to a form or a table container; add `ff-table` to make a
+wide table scroll within its panel. Only these components receive the ROM font
+and white-on-blue theme, including headings, links, labels and native controls.
+The host's surrounding text and page header keep their own styling.
+
+The base units are `--ff-font-size: 8px` and `--ff-sprite-size: 24px` (height).
+`--ff-scale` defaults to 1. Set it on each `ff-ui` root to multiply text, sprites,
+spacing and borders together, for example `style="--ff-scale: 2"`. The line
+height is 150%; the border unit is one eighth of the scaled font size. Character
+sprites preserve their 16:24 aspect ratio. `.ff-class-sprite` crops the standing
+pose by default; set `--ff-pose` to an index from 0 to 7 for another pose.
+`.ff-item-icon` uses `--ff-icon-index` (0–13) to select a menu pictogram.
+
+See [the complete example HTML](assets/i/examples/panels.xhtml) for forms,
+tables, symbols and class sprites. Example text is illustrative; actual game
+names must come from the XML API. The examples depend only on package assets.
+
+For editing, hosts consume `i/api/data?view=editor`. It accepts `ff-action=upload`
+with the `ff-save` file, or `ff-action=download` with the returned base64
+`ff-source` and `equipment[character][weapons|armor][slot][id|equipped]` fields.
+The host chooses the form action. Successful downloads return the edited save;
+errors and loaded party data are represented in the domain XML.
 
 ## Class graphics
 
@@ -75,24 +100,21 @@ crouch). The hardware color indices use a conventional 2C02 RGB approximation;
 the original composite colors depend on the display and are not RGB data in the ROM.
 PNG encoding uses zlib, without requiring GD, ImageMagick or an external converter.
 
-The reference tables use CSS to crop the standing pose at 2× pixel scale. All
-twelve classes appear in every row, with base classes above their promotions;
-classes unable to equip or learn the item are dimmed. Tooltips and accessible labels
-use ROM class names and state whether that class can equip or learn it. The public
-HTTP asset is `/slothsoft@final-fantasy/i/gfx/class?class=2`; invalid class IDs return
-400 and unavailable ROMs return 503. The default class ID is 0 (Fighter).
+The CSS utilities crop a single pose at the selected scale. Use
+`data-allowed="false"` to dim an unavailable class sprite. Hosts supply the
+class names and equip/learn descriptions from the XML data. The public HTTP asset
+is `/slothsoft@final-fantasy/i/gfx/class?class=2`; invalid class IDs return 400 and
+unavailable ROMs return 503. The default class ID is 0 (Fighter).
 
 Item icons use the same on-demand PNG pipeline. The 112×8 sheet contains the
 fourteen menu-font tiles D4–E1 in ROM order. The manifest reads both their pixels
 and the menu palette; palette entry 2 (the menu background) becomes transparent.
-CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mixed
+CSS selects an 8×8 glyph at the configured scale. Weapons and armor expose an optional mixed
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
-Reference tables render item names as plain Unicode text, including pictograms
-in their original position. The dynamic font maps those characters to the ROM
-tiles; names contain no icon spans or background images. Equipment
-options use the ROM font and its original icons in native Firefox selects, with the selected icon beside the dropdown;
-changing the selection updates that preview without changing save behavior.
+Hosts render item names as plain Unicode text, including pictograms in their
+original position. The dynamic font maps those characters to the ROM tiles.
+The PNG sheet is also available for standalone icon previews.
 
 ## Binary extraction and implemented behavior
 
@@ -190,25 +212,13 @@ These characters display the original ROM pixels with the font loaded and a
 recognizable Unicode symbol when it is unavailable. No emoji variation selectors
 are added. Plain-text domain fallbacks and stored save bytes remain unchanged.
 Text remains selectable; item options retain accessible text names.
-ROM/save names use the font at 16px (twice the original 8px grid): equipment,
-spells, cast links, character legends and class tooltips. Interface labels and
-explanations retain the host typography. Unsupported characters use the browser's
-fallback font. Existing plain-text domain names and PNG endpoints are unchanged.
+All text inside `.ff-ui` panels uses the ROM font at the configured scale.
+Unsupported characters use the browser's fallback font. Existing plain-text
+domain names and PNG endpoints are unchanged.
 
 The encoder follows the [OpenType table specification](https://learn.microsoft.com/en-us/typography/opentype/spec/otff).
 
-Equipment pickers use native selects with CSS font inheritance, following
-Ambermoon's approach. Firefox is the rendering target; no JavaScript replaces or
-styles the options. The icon-preview script only updates the adjacent PNG.
-
-Panels use the menu's blue, white, gray and black palette (NES indices 01, 30, 00
-and 0F), with CSS borders and spacing on the original 8px grid at 2x scale.
-RGB values use the same conventional 2C02 approximation as the extracted PNGs;
-emulators can differ in their RGB palette. Sprite transparency remains unchanged.
-
-For the headless Firefox regression check, install Playwright's Firefox in DDEV (`ddev exec npx --yes --package=playwright playwright install firefox`) and run
-`tests/browser/equipment-picker.cjs` with `FF_PLAYWRIGHT_MODULE` pointing to that
-Playwright module, `FF_SAVE_PATH` to a private sample save and `FF_EDITOR_URL` to
-the editor on a configured host. `FF_SCREENSHOT` optionally saves a page screenshot.
-Page screenshots do not include the operating system's native dropdown popup;
-confirm its appearance manually in Firefox.
+Native selects and options inherit the panel font and palette through CSS;
+Firefox is the rendering target. Panels use the menu's blue, white, gray and
+black palette (NES indices 01, 30, 00 and 0F), using the same conventional 2C02
+RGB approximation as the generated PNGs. Sprite transparency is preserved.

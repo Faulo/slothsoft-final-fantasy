@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Move application HTML, navigation, form markup and browser behavior into the consuming site. Replace the pre-release HTML page assets with standalone utility-CSS examples at `/i/examples/panels`.
+- Scope FF typography and white-on-blue colors to explicit panels. Scale the 8px font, 24px sprite height, spacing and font-relative borders with a shared multiplier.
+
 - Render reference-table item names as plain Unicode text without inline icon wrappers; the ROM font supplies their original pictograms.
 
 - Correct the equipment-update input contract for static analysis while preserving rejection of malformed nested input.
