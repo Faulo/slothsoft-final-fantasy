@@ -171,6 +171,11 @@ final class SaveTest extends TestCase {
     
     public function invalidUpdates(): array {
         return [
+            'non-integer member' => [['hero' => ['weapons' => []]]],
+            'non-array groups' => [[0 => null]],
+            'non-array slots' => [[0 => ['weapons' => false]]],
+            'non-integer slot' => [[0 => ['weapons' => ['left' => ['id' => 1]]]]],
+            'non-array slot values' => [[0 => ['weapons' => [0 => null]]]],
             'unknown member' => [[4 => ['weapons' => []]]],
             'unknown category' => [[0 => ['spells' => []]]],
             'unknown slot' => [[0 => ['weapons' => [4 => ['id' => 1]]]]],

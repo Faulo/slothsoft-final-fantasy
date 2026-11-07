@@ -61,7 +61,9 @@ final class Save {
     /**
      * Partial updates: character index => weapons/armor => slot index => id/equipped.
      *
-     * @param array<int, array<string, array<int, array<string, mixed>>>> $updates
+     * The nested input is validated here; malformed keys and values are rejected.
+     *
+     * @param array<array-key, mixed> $updates
      */
     public function withEquipment(array $updates, EquipmentCatalog $rom): string {
         $original = $this->getCharacters();

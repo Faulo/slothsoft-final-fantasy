@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Correct the equipment-update input contract for static analysis while preserving rejection of malformed nested input.
+
 - Map the thirteen item pictograms to the selected Unicode symbols in rendered names and the ROM font, with full-Unicode font support and preserved private-use aliases.
 
 - Style native Firefox equipment selects with the ROM font using the Ambermoon approach; remove the JavaScript replacement picker.
