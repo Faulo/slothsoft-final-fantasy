@@ -232,6 +232,9 @@
                     <xsl:attribute name="hidden">hidden</xsl:attribute>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="$class = 'ff-item-icon'">
+                <xsl:value-of select="substring('&#xE0D4;&#xE0D5;&#xE0D6;&#xE0D7;&#xE0D8;&#xE0D9;&#xE0DA;&#xE0DB;&#xE0DC;&#xE0DD;&#xE0DE;&#xE0DF;&#xE0E0;&#xE0E1;', $glyph - 211, 1)" />
+            </xsl:if>
         </span>
     </xsl:template>
     <xsl:template name="classes">

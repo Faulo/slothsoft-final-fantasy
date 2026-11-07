@@ -88,7 +88,7 @@ and the menu palette; palette entry 2 (the menu background) becomes transparent.
 CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mixed
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
-Reference tables render these icons inline in their original position. Native
+Reference tables render the same tiles as font glyphs inline in their original position. Native
 equipment options use the ROM font and its original icons, with the selected icon beside the dropdown;
 changing the selection updates that preview without changing save behavior.
 
