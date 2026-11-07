@@ -38,11 +38,11 @@ final class PageSchemaTest extends TestCase {
         $_POST = ['ff-action' => 'download', 'ff-source' => base64_encode($contents), 'equipment' => []];
         $document = $this->loadPage('editor');
         $xpath = new DOMXPath($document);
-        $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);
-        self::assertSame(1.0, $xpath->evaluate('count(/ff:final-fantasy/ff:error)'));
-        self::assertSame(4.0, $xpath->evaluate('count(/ff:final-fantasy/ff:editor/ff:character)'));
-        self::assertSame(32.0, $xpath->evaluate('count(/ff:final-fantasy/ff:editor/ff:character/*/ff:slot)'));
-        self::assertSame(base64_encode($contents), $xpath->evaluate('string(/ff:final-fantasy/ff:editor/@source)'));
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame(1.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:error)'));
+        self::assertSame(4.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character)'));
+        self::assertSame(32.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character/*/sf1:slot)'));
+        self::assertSame(base64_encode($contents), $xpath->evaluate('string(/sf1:final-fantasy/sf1:editor/@source)'));
         $this->validate($document);
     }
     
@@ -51,6 +51,9 @@ final class PageSchemaTest extends TestCase {
     }
     
     private function validate(DOMDocument $document): void {
+        foreach ($document->getElementsByTagNameNS(GameData::XML_NAMESPACE, '*') as $element) {
+            self::assertSame('sf1', $element->prefix);
+        }
         self::assertTrue($document->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));
     }
     

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ff="http://schema.slothsoft.net/final-fantasy/i" xmlns:ssv="http://schema.slothsoft.net/schema/versioning" targetNamespace="http://schema.slothsoft.net/final-fantasy/i" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sf1="http://schema.slothsoft.net/final-fantasy/i" xmlns:ssv="http://schema.slothsoft.net/schema/versioning" targetNamespace="http://schema.slothsoft.net/final-fantasy/i" elementFormDefault="qualified">
     <xs:annotation>
         <xs:appinfo>
             <ssv:info version="1.0">
                 <ssv:name>Final Fantasy I Game Data</ssv:name>
                 <ssv:version>1.0</ssv:version>
                 <ssv:revision>R20261107</ssv:revision>
-                <ssv:prefix>ff</ssv:prefix>
+                <ssv:prefix>sf1</ssv:prefix>
                 <ssv:namespace>http://schema.slothsoft.net/final-fantasy/i</ssv:namespace>
                 <ssv:author email="daniel.lio.schulz@gmail.com">Daniel Schulz</ssv:author>
                 <ssv:description><![CDATA[
@@ -38,7 +38,7 @@ This namespace describes game data extracted from the original US NES release of
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="classReference">
-        <xs:attribute name="id" type="ff:classId" use="required" />
+        <xs:attribute name="id" type="sf1:classId" use="required" />
     </xs:complexType>
     <xs:attributeGroup name="identity">
         <xs:attribute name="name" type="xs:string" use="required" />
@@ -46,25 +46,25 @@ This namespace describes game data extracted from the original US NES release of
     </xs:attributeGroup>
     <xs:complexType name="weapon">
         <xs:sequence>
-            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+            <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
-        <xs:attributeGroup ref="ff:identity" />
-        <xs:attribute name="id" type="ff:equipmentId" use="required" />
+        <xs:attributeGroup ref="sf1:identity" />
+        <xs:attribute name="id" type="sf1:equipmentId" use="required" />
         <xs:attribute name="hit" type="xs:unsignedByte" use="required" />
         <xs:attribute name="damage" type="xs:unsignedByte" use="required" />
         <xs:attribute name="critical" type="xs:unsignedByte" use="required" />
-        <xs:attribute name="spell" type="ff:spellReference" use="required" />
+        <xs:attribute name="spell" type="sf1:spellReference" use="required" />
     </xs:complexType>
     <xs:complexType name="armor">
         <xs:sequence>
-            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+            <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
-        <xs:attributeGroup ref="ff:identity" />
-        <xs:attribute name="id" type="ff:equipmentId" use="required" />
+        <xs:attributeGroup ref="sf1:identity" />
+        <xs:attribute name="id" type="sf1:equipmentId" use="required" />
         <xs:attribute name="evade-penalty" type="xs:unsignedByte" use="required" />
         <xs:attribute name="absorb" type="xs:unsignedByte" use="required" />
         <xs:attribute name="resistance-mask" type="xs:unsignedByte" use="required" />
-        <xs:attribute name="spell" type="ff:spellReference" use="required" />
+        <xs:attribute name="spell" type="sf1:spellReference" use="required" />
         <xs:attribute name="category" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:unsignedByte">
@@ -75,10 +75,10 @@ This namespace describes game data extracted from the original US NES release of
     </xs:complexType>
     <xs:complexType name="spell">
         <xs:sequence>
-            <xs:element name="class-ref" type="ff:classReference" minOccurs="0" maxOccurs="12" />
+            <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
-        <xs:attributeGroup ref="ff:identity" />
-        <xs:attribute name="id" type="ff:spellReference" use="required" />
+        <xs:attributeGroup ref="sf1:identity" />
+        <xs:attribute name="id" type="sf1:spellReference" use="required" />
         <xs:attribute name="level" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:unsignedByte">
@@ -110,7 +110,7 @@ This namespace describes game data extracted from the original US NES release of
         <xs:sequence>
             <xs:element name="slot" minOccurs="4" maxOccurs="4">
                 <xs:complexType>
-                    <xs:attribute name="index" type="ff:slotIndex" use="required" />
+                    <xs:attribute name="index" type="sf1:slotIndex" use="required" />
                     <xs:attribute name="id" use="required">
                         <xs:simpleType>
                             <xs:restriction base="xs:unsignedByte">
@@ -128,10 +128,10 @@ This namespace describes game data extracted from the original US NES release of
             <xs:element name="character" minOccurs="4" maxOccurs="4">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="weapons" type="ff:equipmentSlots" />
-                        <xs:element name="armor" type="ff:equipmentSlots" />
+                        <xs:element name="weapons" type="sf1:equipmentSlots" />
+                        <xs:element name="armor" type="sf1:equipmentSlots" />
                     </xs:sequence>
-                    <xs:attribute name="index" type="ff:slotIndex" use="required" />
+                    <xs:attribute name="index" type="sf1:slotIndex" use="required" />
                     <xs:attribute name="name" type="xs:string" use="required" />
                     <xs:attribute name="class" type="xs:unsignedByte" use="required" />
                 </xs:complexType>
@@ -154,7 +154,7 @@ This namespace describes game data extracted from the original US NES release of
                             <xs:sequence>
                                 <xs:element name="class" minOccurs="12" maxOccurs="12">
                                     <xs:complexType>
-                                        <xs:attribute name="id" type="ff:classId" use="required" />
+                                        <xs:attribute name="id" type="sf1:classId" use="required" />
                                         <xs:attribute name="name" type="xs:string" use="required" />
                                     </xs:complexType>
                                 </xs:element>
@@ -164,26 +164,26 @@ This namespace describes game data extracted from the original US NES release of
                     <xs:element name="weapons">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="weapon" type="ff:weapon" minOccurs="40" maxOccurs="40" />
+                                <xs:element name="weapon" type="sf1:weapon" minOccurs="40" maxOccurs="40" />
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="armor">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="item" type="ff:armor" minOccurs="40" maxOccurs="40" />
+                                <xs:element name="item" type="sf1:armor" minOccurs="40" maxOccurs="40" />
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="spells">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="spell" type="ff:spell" minOccurs="64" maxOccurs="64" />
+                                <xs:element name="spell" type="sf1:spell" minOccurs="64" maxOccurs="64" />
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="error" type="xs:string" minOccurs="0" />
-                    <xs:element name="editor" type="ff:editor" minOccurs="0" />
+                    <xs:element name="editor" type="sf1:editor" minOccurs="0" />
                     <xs:element name="unavailable" type="xs:string" minOccurs="0" />
                 </xs:sequence>
                 <xs:element name="unavailable" type="xs:string" />
@@ -194,19 +194,19 @@ This namespace describes game data extracted from the original US NES release of
             <xs:attribute name="view" type="xs:string" />
         </xs:complexType>
         <xs:key name="classId">
-            <xs:selector xpath="ff:classes/ff:class" />
+            <xs:selector xpath="sf1:classes/sf1:class" />
             <xs:field xpath="@id" />
         </xs:key>
-        <xs:keyref name="weaponClass" refer="ff:classId">
-            <xs:selector xpath="ff:weapons/ff:weapon/ff:class-ref" />
+        <xs:keyref name="weaponClass" refer="sf1:classId">
+            <xs:selector xpath="sf1:weapons/sf1:weapon/sf1:class-ref" />
             <xs:field xpath="@id" />
         </xs:keyref>
-        <xs:keyref name="armorClass" refer="ff:classId">
-            <xs:selector xpath="ff:armor/ff:item/ff:class-ref" />
+        <xs:keyref name="armorClass" refer="sf1:classId">
+            <xs:selector xpath="sf1:armor/sf1:item/sf1:class-ref" />
             <xs:field xpath="@id" />
         </xs:keyref>
-        <xs:keyref name="spellClass" refer="ff:classId">
-            <xs:selector xpath="ff:spells/ff:spell/ff:class-ref" />
+        <xs:keyref name="spellClass" refer="sf1:classId">
+            <xs:selector xpath="sf1:spells/sf1:spell/sf1:class-ref" />
             <xs:field xpath="@id" />
         </xs:keyref>
     </xs:element>

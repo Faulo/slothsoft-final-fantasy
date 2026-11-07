@@ -44,26 +44,26 @@ final class GameDataTest extends TestCase {
         self::assertSame(mb_convert_encoding("\x8A\x95\x99\x91\x8A", 'UTF-8', 'ISO-8859-1'), $raw->evaluate('string(//sse:instruction[@name="weapon-names"]/sse:group[1]/sse:string/@value)'));
         self::assertTrue($domain->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));
         $xpath = new DOMXPath($domain);
-        $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);
-        self::assertSame('ALPHA', $xpath->evaluate('string(//ff:weapon[@id="1"]/@name)'));
-        self::assertSame('1234', $xpath->evaluate('string(//ff:weapon[@id="1"]/@price)'));
-        self::assertSame('1', $xpath->evaluate('string(//ff:weapon[@id="1"]/@critical)'));
-        self::assertSame(0.0, $xpath->evaluate('count(//ff:weapon/@stored-critical | //ff:weapon/@unused-element | //ff:weapon/@unused-category)'));
-        self::assertSame(1.0, $xpath->evaluate('count(//ff:weapon[@id="1"]/ff:class-ref)'));
-        self::assertSame('0', $xpath->evaluate('string(//ff:weapon[@id="1"]/ff:class-ref/@id)'));
-        self::assertSame('255', $xpath->evaluate('string(//ff:armor/ff:item[@id="1"]/@resistance-mask)'));
-        self::assertSame('3', $xpath->evaluate('string(//ff:armor/ff:item[@id="1"]/@category)'));
-        self::assertSame('34', $xpath->evaluate('string(//ff:spell[@id="1"]/@effectivity)'));
-        self::assertSame(1.0, $xpath->evaluate('count(//ff:spell[@id="1"]/ff:class-ref)'));
-        self::assertSame('11', $xpath->evaluate('string(//ff:spell[@id="1"]/ff:class-ref/@id)'));
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('ALPHA', $xpath->evaluate('string(//sf1:weapon[@id="1"]/@name)'));
+        self::assertSame('1234', $xpath->evaluate('string(//sf1:weapon[@id="1"]/@price)'));
+        self::assertSame('1', $xpath->evaluate('string(//sf1:weapon[@id="1"]/@critical)'));
+        self::assertSame(0.0, $xpath->evaluate('count(//sf1:weapon/@stored-critical | //sf1:weapon/@unused-element | //sf1:weapon/@unused-category)'));
+        self::assertSame(1.0, $xpath->evaluate('count(//sf1:weapon[@id="1"]/sf1:class-ref)'));
+        self::assertSame('0', $xpath->evaluate('string(//sf1:weapon[@id="1"]/sf1:class-ref/@id)'));
+        self::assertSame('255', $xpath->evaluate('string(//sf1:armor/sf1:item[@id="1"]/@resistance-mask)'));
+        self::assertSame('3', $xpath->evaluate('string(//sf1:armor/sf1:item[@id="1"]/@category)'));
+        self::assertSame('34', $xpath->evaluate('string(//sf1:spell[@id="1"]/@effectivity)'));
+        self::assertSame(1.0, $xpath->evaluate('count(//sf1:spell[@id="1"]/sf1:class-ref)'));
+        self::assertSame('11', $xpath->evaluate('string(//sf1:spell[@id="1"]/sf1:class-ref/@id)'));
         
         // Change only the source pointer: parsing and the domain transform must follow it.
         $prg = substr_replace($prg, pack('v', 0xBA20), 0x2B700 + 28 * 2, 2);
         [, $changed] = $this->parseSyntheticPrg($prg);
         $xpath = new DOMXPath($changed);
-        $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);
-        self::assertSame('BETA', $xpath->evaluate('string(//ff:weapon[@id="1"]/@name)'));
-        self::assertSame('ALPHA', $xpath->evaluate('string(//ff:weapon[@id="2"]/@name)'));
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('BETA', $xpath->evaluate('string(//sf1:weapon[@id="1"]/@name)'));
+        self::assertSame('ALPHA', $xpath->evaluate('string(//sf1:weapon[@id="2"]/@name)'));
     }
     
     /**
@@ -155,9 +155,9 @@ final class GameDataTest extends TestCase {
         $document = $rom->toDocument();
         self::assertTrue($document->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));
         $xpath = new DOMXPath($document);
-        $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);
-        self::assertSame('Falchon', $xpath->evaluate('string(/ff:final-fantasy/ff:weapons/ff:weapon[@id="15"]/@name)'));
-        self::assertSame(64.0, $xpath->evaluate('count(/ff:final-fantasy/ff:spells/ff:spell)'));
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('Falchon', $xpath->evaluate('string(/sf1:final-fantasy/sf1:weapons/sf1:weapon[@id="15"]/@name)'));
+        self::assertSame(64.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:spells/sf1:spell)'));
     }
     
     public function testTrainerDoesNotShiftTables(): void {

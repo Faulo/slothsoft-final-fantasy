@@ -25,6 +25,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
         $xpath->registerNamespace('ssv', 'http://schema.slothsoft.net/schema/versioning');
         self::assertSame('1.0', $xpath->evaluate('string(/xs:schema/xs:annotation/xs:appinfo/ssv:info/ssv:version)'));
         self::assertSame(GameData::XML_NAMESPACE, $xpath->evaluate('string(/xs:schema/xs:annotation/xs:appinfo/ssv:info/ssv:namespace)'));
+        self::assertSame('sf1', $xpath->evaluate('string(/xs:schema/xs:annotation/xs:appinfo/ssv:info/ssv:prefix)'));
     }
     
     /** @runInSeparateProcess */
@@ -34,10 +35,10 @@ final class AssetsModuleTest extends AbstractModuleTest {
         $document = Module::resolveToDOMWriter($url)->toDocument();
         self::assertTrue($document->schemaValidate(dirname(__DIR__) . '/assets/schema/i/1.0.xsd'));
         $xpath = new DOMXPath($document);
-        $xpath->registerNamespace('ff', GameData::XML_NAMESPACE);
-        self::assertSame('weapons', $xpath->evaluate('string(/ff:final-fantasy/@view)'));
-        self::assertSame(1.0, $xpath->evaluate('count(/ff:final-fantasy/ff:unavailable)'));
-        self::assertSame(0.0, $xpath->evaluate('count(/ff:final-fantasy/ff:weapons)'));
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('weapons', $xpath->evaluate('string(/sf1:final-fantasy/@view)'));
+        self::assertSame(1.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:unavailable)'));
+        self::assertSame(0.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:weapons)'));
     }
     
     /** @runInSeparateProcess */

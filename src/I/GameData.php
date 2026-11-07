@@ -116,9 +116,9 @@ final class GameData implements EquipmentCatalog {
     /** @return array<int, array<string, mixed>> */
     private function records(string $group): array {
         $xpath = new DOMXPath($this->document);
-        $xpath->registerNamespace('ff', self::XML_NAMESPACE);
+        $xpath->registerNamespace('sf1', self::XML_NAMESPACE);
         $records = [];
-        foreach ($xpath->query('/ff:final-fantasy/ff:' . $group . '/*') as $node) {
+        foreach ($xpath->query('/sf1:final-fantasy/sf1:' . $group . '/*') as $node) {
             assert($node instanceof DOMElement);
             $record = [];
             foreach ($node->attributes as $attribute) {
@@ -126,7 +126,7 @@ final class GameData implements EquipmentCatalog {
                 $record[$key] = in_array($key, ['name', 'school'], true) ? $attribute->value : (int) $attribute->value;
             }
             $record['classes'] = [];
-            foreach ($xpath->query('ff:class-ref', $node) as $class) {
+            foreach ($xpath->query('sf1:class-ref', $node) as $class) {
                 assert($class instanceof DOMElement);
                 $record['classes'][] = (int) $class->getAttribute('id');
             }

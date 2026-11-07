@@ -57,7 +57,7 @@ Composer registers the Farah module `slothsoft@final-fantasy`.
 | `farah://slothsoft@final-fantasy/i/savegame/rom`          | ROM extraction specification                                         |
 | `farah://slothsoft@final-fantasy/i/savegame/equipment`    | SRAM equipment specification                                         |
 
-The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`. Hosts
+The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix `sf1`. Hosts
 embed the HTML fragments and provide `/FinalFantasy/I/`,
 `/FinalFantasy/I/SaveEditor/`, `/FinalFantasy/I/Weapons/`, `/FinalFantasy/I/Armor/`
 and `/FinalFantasy/I/Spells/` routes used by the navigation.

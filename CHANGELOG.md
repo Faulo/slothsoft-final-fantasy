@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Use the `sf1` namespace prefix throughout Final Fantasy I domain XML, schema metadata and XPath expressions.
 - Publish Final Fantasy I navigation and form actions under `/FinalFantasy/I/`.
 - Add schema versioning metadata to the Final Fantasy I domain schema.
 

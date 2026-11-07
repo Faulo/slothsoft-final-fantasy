@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ff="http://schema.slothsoft.net/final-fantasy/i" exclude-result-prefixes="ff">
-    <xsl:key name="classes" match="ff:classes/ff:class" use="@id" />
-    <xsl:key name="spells" match="ff:spells/ff:spell" use="@id" />
+<xsl:stylesheet version="1.0" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sf1="http://schema.slothsoft.net/final-fantasy/i" exclude-result-prefixes="sf1">
+    <xsl:key name="classes" match="sf1:classes/sf1:class" use="@id" />
+    <xsl:key name="spells" match="sf1:spells/sf1:spell" use="@id" />
     <xsl:template match="/*">
         <article class="final-fantasy">
             <header>
@@ -15,10 +15,10 @@
                     <a href="/FinalFantasy/I/Spells/">Spells</a>
                 </nav>
             </header>
-            <xsl:apply-templates select=".//ff:final-fantasy" />
+            <xsl:apply-templates select=".//sf1:final-fantasy" />
         </article>
     </xsl:template>
-    <xsl:template match="ff:final-fantasy">
+    <xsl:template match="sf1:final-fantasy">
         <xsl:choose>
             <xsl:when test="@view = 'home'">
                 <h2>The equipment and magic of Final Fantasy</h2>
@@ -42,9 +42,9 @@
                     </a>
                 </div>
             </xsl:when>
-            <xsl:when test="ff:unavailable">
+            <xsl:when test="sf1:unavailable">
                 <p role="status">
-                    <xsl:value-of select="ff:unavailable" />
+                    <xsl:value-of select="sf1:unavailable" />
                 </p>
             </xsl:when>
             <xsl:when test="@view = 'editor'">
@@ -70,7 +70,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <xsl:for-each select="ff:weapons/ff:weapon">
+                                    <xsl:for-each select="sf1:weapons/sf1:weapon">
                                         <tr id="weapon-{@id}">
                                             <th scope="row">
                                                 <xsl:value-of select="@name" />
@@ -117,7 +117,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <xsl:for-each select="ff:armor/ff:item">
+                                    <xsl:for-each select="sf1:armor/sf1:item">
                                         <tr id="armor-{@id}">
                                             <th scope="row">
                                                 <xsl:value-of select="@name" />
@@ -170,7 +170,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <xsl:for-each select="ff:spells/ff:spell">
+                                    <xsl:for-each select="sf1:spells/sf1:spell">
                                         <tr id="spell-{@id}">
                                             <th scope="row">
                                                 <xsl:value-of select="@name" />
@@ -199,13 +199,13 @@
         </xsl:choose>
     </xsl:template>
     <xsl:template name="classes">
-        <xsl:for-each select="ff:class-ref">
+        <xsl:for-each select="sf1:class-ref">
             <xsl:if test="position()!=1">
                 <xsl:text>, </xsl:text>
             </xsl:if>
             <xsl:value-of select="key('classes', @id)/@name" />
         </xsl:for-each>
-        <xsl:if test="not(ff:class-ref)">None</xsl:if>
+        <xsl:if test="not(sf1:class-ref)">None</xsl:if>
     </xsl:template>
     <xsl:template name="cast">
         <xsl:choose>
@@ -254,9 +254,9 @@
     <xsl:template name="editor">
         <h2>Equipment editor</h2>
         <p>Edit the four weapon and armor slots of each party member. Check Equipped to use an item; leave it unchecked to carry it.</p>
-        <xsl:if test="ff:error">
+        <xsl:if test="sf1:error">
             <p class="ff-error" role="alert">
-                <xsl:value-of select="ff:error" />
+                <xsl:value-of select="sf1:error" />
             </p>
         </xsl:if>
         <form action="/FinalFantasy/I/SaveEditor/" method="post" enctype="multipart/form-data" class="ff-upload">
@@ -266,24 +266,24 @@
             <input id="ff-save" name="ff-save" type="file" accept=".sav,.srm" required="required" />
             <button type="submit">Load save</button>
         </form>
-        <xsl:for-each select="ff:editor">
+        <xsl:for-each select="sf1:editor">
             <form action="/FinalFantasy/I/SaveEditor/" method="post">
                 <input type="hidden" name="ff-action" value="download" />
                 <input type="hidden" name="ff-source" value="{@source}" />
                 <div class="ff-party">
-                    <xsl:for-each select="ff:character">
+                    <xsl:for-each select="sf1:character">
                         <fieldset>
                             <legend>
                                 <xsl:value-of select="@name" /><xsl:text> · </xsl:text><xsl:value-of select="key('classes', @class)/@name" />
                             </legend>
-                            <xsl:for-each select="ff:weapons | ff:armor">
+                            <xsl:for-each select="sf1:weapons | sf1:armor">
                                 <h3>
                                     <xsl:choose>
-                                        <xsl:when test="self::ff:weapons">Weapons</xsl:when>
+                                        <xsl:when test="self::sf1:weapons">Weapons</xsl:when>
                                         <xsl:otherwise>Armor</xsl:otherwise>
                                     </xsl:choose>
                                 </h3>
-                                <xsl:apply-templates select="ff:slot" />
+                                <xsl:apply-templates select="sf1:slot" />
                             </xsl:for-each>
                         </fieldset>
                     </xsl:for-each>
@@ -294,7 +294,7 @@
             </form>
         </xsl:for-each>
     </xsl:template>
-    <xsl:template match="ff:slot">
+    <xsl:template match="sf1:slot">
         <xsl:variable name="kind" select="local-name(..)" />
         <xsl:variable name="character" select="../../@index" />
         <xsl:variable name="selected" select="@id" />
@@ -311,7 +311,7 @@
                     </xsl:if>
                     Empty
                 </option>
-                <xsl:for-each select="ancestor::ff:final-fantasy/*[local-name()=$kind]/*">
+                <xsl:for-each select="ancestor::sf1:final-fantasy/*[local-name()=$kind]/*">
                     <option value="{@id}">
                         <xsl:if test="@id=$selected">
                             <xsl:attribute name="selected">selected</xsl:attribute>

@@ -25,7 +25,7 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $view = (string) $args->get('view', 'home');
         $document = new DOMDocument('1.0', 'UTF-8');
-        $root = $document->createElementNS(self::NS, 'final-fantasy');
+        $root = $document->createElementNS(self::NS, 'sf1:final-fantasy');
         $document->appendChild($root);
         $root->setAttribute('view', $view);
         $path = Configuration::getRomPath('i');
@@ -154,7 +154,7 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
     private function appendText(DOMElement $parent, string $name, string $text): DOMElement {
         $document = $parent->ownerDocument;
         assert($document instanceof DOMDocument);
-        $element = $document->createElementNS(self::NS, $name);
+        $element = $document->createElementNS(self::NS, 'sf1:' . $name);
         $element->appendChild($document->createTextNode($text));
         $parent->appendChild($element);
         return $element;
