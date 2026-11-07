@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use palette colors instead of underlines for panel links: gold, pale lavender when visited, cyan on hover or keyboard focus, and white while active. Preserve keyboard focus outlines.
+
 - Expose the renderer's complete NES color palette as 55 descriptively named CSS variables in `.ff-ui`, preserving the original four colors. Include palette swatches in the standalone example and verify CSS colors against generated PNG palettes.
 
 - Move application HTML, navigation, form markup and browser behavior into the consuming site. Replace the pre-release HTML page assets with standalone utility-CSS examples at `/i/examples/panels`.

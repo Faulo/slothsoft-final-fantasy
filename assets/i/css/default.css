@@ -125,7 +125,23 @@
     text-align: left;
 }
 
-.ff-ui a:link, .ff-ui a:visited, .ff-ui a:hover, .ff-ui a:active {
+.ff-ui a:any-link {
+    text-decoration: none;
+}
+
+.ff-ui a:link {
+    color: var(--ff-gold);
+}
+
+.ff-ui a:visited {
+    color: var(--ff-pale-lavender);
+}
+
+.ff-ui a:hover, .ff-ui a:focus-visible {
+    color: var(--ff-cyan);
+}
+
+.ff-ui a:active {
     color: var(--ff-white);
 }
 

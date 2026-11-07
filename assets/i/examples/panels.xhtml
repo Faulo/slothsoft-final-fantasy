@@ -26,6 +26,7 @@
         </tr>
         </tbody>
     </table>
+    <p><a href="#palette">View the color palette</a></p>
 </section>
 <p>Use <code>style="--ff-scale: 2"</code> to double every pixel unit, including borders.</p>
 <form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 2">
@@ -42,7 +43,7 @@
 </form>
 <h2>Full NES palette</h2>
 <p>These 55 named colors cover the renderer's 64 NES indices. Repeated black indices share one color. The RGB approximation matches generated PNGs; no ROM is needed for these swatches.</p>
-<section class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">
+<section id="palette" class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">
     <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(22em, 1fr)); gap: 1em; padding: 0; margin: 0; list-style: none">
         <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-gray)"/> gray</li>
         <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-blue)"/> blue</li>

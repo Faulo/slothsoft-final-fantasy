@@ -73,7 +73,8 @@ final class AssetsModuleTest extends AbstractModuleTest {
         self::assertSame(1.0, $xpath->evaluate('count(//html:form[contains(@class, "ff-ui")])'));
         self::assertSame(1.0, $xpath->evaluate('count(//html:section[contains(@class, "ff-ui")]/html:table)'));
         self::assertSame('/slothsoft@final-fantasy/i/css/default', $xpath->evaluate('string(//html:link[@rel="stylesheet"]/@href)'));
-        self::assertSame(0.0, $xpath->evaluate('count(//html:a | //html:nav)'));
+        self::assertSame(0.0, $xpath->evaluate('count(//html:a[not(starts-with(@href, "#"))] | //html:nav)'));
+        self::assertSame(1.0, $xpath->evaluate('count(//html:a[@href="#palette"])'));
         self::assertSame(55.0, $xpath->evaluate('count(//html:section[@aria-label="Named NES palette"]//html:li)'));
     }
     

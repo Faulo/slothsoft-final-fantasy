@@ -82,8 +82,13 @@ semantic aliases later.
 Load `/slothsoft@final-fantasy/i/css/default` in the host page. Apply
 `class="ff-ui ff-panel"` to a form or a table container; add `ff-table` to make a
 wide table scroll within its panel. Only these components receive the ROM font
-and white-on-blue theme, including headings, links, labels and native controls.
+and white-on-blue theme, including headings, labels and native controls.
 The host's surrounding text and page header keep their own styling.
+
+Links use color instead of underlines: gold when unvisited, pale lavender when
+visited, cyan on hover or keyboard focus, and white while pressed. Keyboard
+focus retains its visible outline. Active color takes precedence over hover
+and focus. The example's palette link demonstrates these states.
 
 The base units are `--ff-font-size: 8px` and `--ff-sprite-size: 24px` (height).
 `--ff-scale` defaults to 1. Set it on each `ff-ui` root to multiply text, sprites,
