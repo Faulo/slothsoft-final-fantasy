@@ -229,3 +229,78 @@
     background-image: none;
     filter: none;
 }
+
+.final-fantasy .ff-combobox {
+    position: relative;
+    display: block;
+    min-width: 0;
+}
+
+.final-fantasy .ff-choice {
+    display: block;
+    width: 100%;
+    min-height: 34px;
+    padding: .4rem 1.5rem .4rem .4rem;
+    border: 1px solid #888;
+    border-radius: 3px;
+    background: white;
+    color: black;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.final-fantasy .ff-choice::after {
+    content: '';
+    position: absolute;
+    right: .5rem;
+    top: 50%;
+    border: 4px solid transparent;
+    border-bottom: 0;
+    border-top-color: currentColor;
+}
+
+.final-fantasy .ff-choice:focus-visible {
+    outline: 2px solid var(--ff-blue);
+    outline-offset: 2px;
+}
+
+.final-fantasy .ff-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    min-width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #888;
+    border-radius: 3px;
+    background: white;
+    color: black;
+    box-shadow: 0 3px 8px #0004;
+}
+
+.final-fantasy .ff-options-above {
+    top: auto;
+    bottom: 100%;
+}
+
+.final-fantasy .ff-option {
+    display: block;
+    padding: .4rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.final-fantasy .ff-option:hover,
+.final-fantasy .ff-option-active {
+    background: var(--ff-blue);
+    color: white;
+}
+
+.final-fantasy .ff-options[hidden],
+.final-fantasy select[hidden] {
+    display: none;
+}

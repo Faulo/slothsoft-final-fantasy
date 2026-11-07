@@ -217,6 +217,9 @@
     <xsl:template match="sf1:icon" mode="item-text">
         <xsl:value-of select="substring('&#xE0D4;&#xE0D5;&#xE0D6;&#xE0D7;&#xE0D8;&#xE0D9;&#xE0DA;&#xE0DB;&#xE0DC;&#xE0DD;&#xE0DE;&#xE0DF;&#xE0E0;&#xE0E1;', @glyph - 211, 1)" />
     </xsl:template>
+    <xsl:template match="sf1:icon" mode="item-fallback">
+        <xsl:value-of select="concat(' ', @label, ' ')" />
+    </xsl:template>
     <xsl:template name="item-icon">
         <xsl:param name="glyph" />
         <xsl:param name="label" />
@@ -413,7 +416,20 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:variable>
-                            <xsl:value-of select="normalize-space($text)" />
+                            <xsl:attribute name="data-font-label">
+                                <xsl:value-of select="normalize-space($text)" />
+                            </xsl:attribute>
+                            <xsl:variable name="fallback">
+                                <xsl:choose>
+                                    <xsl:when test="sf1:label">
+                                        <xsl:apply-templates select="sf1:label/node()" mode="item-fallback" />
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="@name" />
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:value-of select="normalize-space($fallback)" />
                         </option>
                     </xsl:for-each>
                 </select>

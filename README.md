@@ -88,8 +88,8 @@ and the menu palette; palette entry 2 (the menu background) becomes transparent.
 CSS selects an 8×8 glyph at 2× scale. Weapons and armor expose an optional mixed
 `sf1:label` containing text and `sf1:icon` nodes with the original glyph ID and an
 accessible label. Existing `@name` text fallbacks remain available to consumers.
-Reference tables render the same tiles as font glyphs inline in their original position. Native
-equipment options use the ROM font and its original icons, with the selected icon beside the dropdown;
+Reference tables render the same tiles as font glyphs inline in their original position. Equipment
+options use the ROM font and its original icons in an in-page combobox, with the selected icon beside the dropdown;
 changing the selection updates that preview without changing save behavior.
 
 ## Binary extraction and implemented behavior
@@ -172,3 +172,14 @@ explanations retain the host typography. Unsupported characters use the browser'
 fallback font. Existing plain-text domain names and PNG endpoints are unchanged.
 
 The encoder follows the [OpenType table specification](https://learn.microsoft.com/en-us/typography/opentype/spec/otff).
+
+Equipment pickers enhance the original form selects with in-page listboxes, since
+operating-system dropdowns may ignore downloaded fonts. Arrow keys, Home/End,
+Page Up/Down and typing navigate; Enter/Space/Tab commit, and Escape cancels.
+The native select remains the submitted form value. Without JavaScript, native
+options show readable icon descriptions instead of private-use glyph boxes.
+
+The browser regression check is `node tests/browser/equipment-picker.cjs` with
+Playwright available (or `FF_PLAYWRIGHT_MODULE` pointing to its module),
+`FF_SAVE_PATH` pointing to a private sample save, and optionally `FF_EDITOR_URL`
+and `FF_BROWSER_CHANNEL` overriding the local DDEV URL and Edge browser.

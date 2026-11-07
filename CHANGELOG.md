@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Render equipment dropdown options in the page so their ROM font and icons also work when native option menus ignore web fonts. Preserve keyboard navigation and readable native selects without JavaScript.
+
 - Generate a TrueType menu font from the private ROM and use it for game-derived names, class tooltips and equipment options.
 
 - Extract item-name glyphs and menu colors from the ROM into an on-demand PNG sheet.
