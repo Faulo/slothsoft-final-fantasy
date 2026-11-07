@@ -17,11 +17,64 @@
     --ff-border: calc(var(--ff-unit) / 8);
     --ff-sprite-height: calc(var(--ff-sprite-size) * var(--ff-scale));
     --ff-sprite-width: calc(var(--ff-sprite-height) * 2 / 3);
-    /* NES palette 0F / 00 / 01 / 30, matching the generated PNG palette. */
-    --ff-black: #000000;
-    --ff-gray: #7c7c7c;
-    --ff-blue: #0000fc;
-    --ff-white: #fcfcfc;
+    /* Full 2C02 RGB approximation, matching NesSpriteSheet. ROMs store indices,
+       not RGB values. Duplicate black indices share one named color.
+       These are palette colors; semantic roles belong to the consuming theme. */
+    --ff-gray: #7c7c7c; /* $00 */
+    --ff-blue: #0000fc; /* $01 */
+    --ff-dark-blue: #0000bc; /* $02 */
+    --ff-indigo: #4428bc; /* $03 */
+    --ff-purple: #940084; /* $04 */
+    --ff-wine: #a80020; /* $05 */
+    --ff-dark-red: #a81000; /* $06 */
+    --ff-rust: #881400; /* $07 */
+    --ff-brown: #503000; /* $08 */
+    --ff-forest-green: #007800; /* $09 */
+    --ff-dark-green: #006800; /* $0A */
+    --ff-pine-green: #005800; /* $0B */
+    --ff-dark-teal: #004058; /* $0C */
+    --ff-black: #000000; /* $0D, $0E, $0F, $1D, $1E, $1F, $2E, $2F, $3E, $3F */
+    --ff-silver: #bcbcbc; /* $10 */
+    --ff-azure: #0078f8; /* $11 */
+    --ff-royal-blue: #0058f8; /* $12 */
+    --ff-violet: #6844fc; /* $13 */
+    --ff-magenta: #d800cc; /* $14 */
+    --ff-rose: #e40058; /* $15 */
+    --ff-red: #f83800; /* $16 */
+    --ff-orange: #e45c10; /* $17 */
+    --ff-ochre: #ac7c00; /* $18 */
+    --ff-bright-green: #00b800; /* $19 */
+    --ff-green: #00a800; /* $1A */
+    --ff-emerald: #00a844; /* $1B */
+    --ff-teal: #008888; /* $1C */
+    --ff-off-white: #f8f8f8; /* $20 */
+    --ff-sky-blue: #3cbcfc; /* $21 */
+    --ff-cornflower-blue: #6888fc; /* $22 */
+    --ff-lavender: #9878f8; /* $23 */
+    --ff-orchid: #f878f8; /* $24 */
+    --ff-pink: #f85898; /* $25 */
+    --ff-salmon: #f87858; /* $26 */
+    --ff-apricot: #fca044; /* $27 */
+    --ff-gold: #f8b800; /* $28 */
+    --ff-lime: #b8f818; /* $29 */
+    --ff-leaf-green: #58d854; /* $2A */
+    --ff-mint: #58f898; /* $2B */
+    --ff-turquoise: #00e8d8; /* $2C */
+    --ff-dark-gray: #787878; /* $2D */
+    --ff-white: #fcfcfc; /* $30 */
+    --ff-pale-blue: #a4e4fc; /* $31 */
+    --ff-periwinkle: #b8b8f8; /* $32 */
+    --ff-pale-lavender: #d8b8f8; /* $33 */
+    --ff-pale-pink: #f8b8f8; /* $34 */
+    --ff-blush: #f8a4c0; /* $35 */
+    --ff-peach: #f0d0b0; /* $36 */
+    --ff-cream: #fce0a8; /* $37 */
+    --ff-sand: #f8d878; /* $38 */
+    --ff-pale-lime: #d8f878; /* $39 */
+    --ff-pale-green: #b8f8b8; /* $3A */
+    --ff-pale-mint: #b8f8d8; /* $3B */
+    --ff-cyan: #00fcfc; /* $3C */
+    --ff-pale-rose: #f8d8f8; /* $3D */
     font-family: 'Final Fantasy I', monospace;
     font-size: var(--ff-unit);
     font-style: normal;

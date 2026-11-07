@@ -65,6 +65,20 @@ the pre-release package/site separation.
 
 ## Utility CSS and host integration
 
+The `.ff-ui` block exposes the full 64-entry NES palette used by the PNG renderer
+as 55 descriptive color variables, including `--ff-gold`, `--ff-brown`,
+`--ff-mint` and `--ff-pale-blue`. Duplicate black indices share `--ff-black`.
+Each declaration documents its NES indices; the existing `--ff-blue`,
+`--ff-white`, `--ff-gray` and `--ff-black` values are unchanged. These are
+palette primitives, with no new semantic roles assigned.
+
+The ROM supplies hardware color indices, not RGB values. These variables use
+the same conventional 2C02 RGB approximation as `NesSpriteSheet`; they are not
+RGB colors extracted from the ROM or a claim that every color is used by FF1.
+See the palette swatches in the example HTML below. A host can use a color
+directly, for example `.my-heading { color: var(--ff-gold); }`, and introduce
+semantic aliases later.
+
 Load `/slothsoft@final-fantasy/i/css/default` in the host page. Apply
 `class="ff-ui ff-panel"` to a form or a table container; add `ff-table` to make a
 wide table scroll within its panel. Only these components receive the ROM font

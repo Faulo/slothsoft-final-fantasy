@@ -12,6 +12,7 @@ use Slothsoft\Farah\FarahUrl\FarahUrlAuthority;
 use Slothsoft\Farah\Module\Module;
 use Slothsoft\FarahTesting\Module\AbstractModuleTest;
 use Slothsoft\FinalFantasy\I\GameData;
+use Slothsoft\FinalFantasy\I\NesSpriteSheet;
 
 final class AssetsModuleTest extends AbstractModuleTest {
     protected static function getManifestAuthority(): FarahUrlAuthority {
@@ -73,6 +74,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
         self::assertSame(1.0, $xpath->evaluate('count(//html:section[contains(@class, "ff-ui")]/html:table)'));
         self::assertSame('/slothsoft@final-fantasy/i/css/default', $xpath->evaluate('string(//html:link[@rel="stylesheet"]/@href)'));
         self::assertSame(0.0, $xpath->evaluate('count(//html:a | //html:nav)'));
+        self::assertSame(55.0, $xpath->evaluate('count(//html:section[@aria-label="Named NES palette"]//html:li)'));
     }
     
     public function testUtilityStylesheetResolves(): void {
@@ -81,5 +83,36 @@ final class AssetsModuleTest extends AbstractModuleTest {
         self::assertSame(200, $response->getStatusCode());
         self::assertSame('text/css', explode(';', $response->getHeaderLine('content-type'))[0]);
         self::assertStringContainsString('/slothsoft@final-fantasy/i/font', (string) $response->getBody());
+    }
+    
+    public function testUtilityPaletteMatchesAllSpriteRendererColors(): void {
+        $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/css/default');
+        $response = (new LookupAssetStrategy())->process(new ServerRequest('GET', $url));
+        $css = (string) $response->getBody();
+        self::assertSame(1, preg_match('/\.ff-ui\s*\{([^}]+)}/', $css, $block));
+        self::assertSame(55, preg_match_all('/--ff-([a-z-]+):\s*#([a-f0-9]{6});/i', $block[1], $colors));
+        $namedColors = array_combine($colors[1], $colors[2]);
+        self::assertSame('f8b800', $namedColors['gold']);
+        self::assertSame('503000', $namedColors['brown']);
+        self::assertSame('0000fc', $namedColors['blue']);
+        self::assertSame('fcfcfc', $namedColors['white']);
+        self::assertSame('7c7c7c', $namedColors['gray']);
+        self::assertSame('000000', $namedColors['black']);
+        
+        $pngColors = [];
+        for ($index = 0; $index < 64; $index += 4) {
+            $palette = pack('C4', $index, $index + 1, $index + 2, $index + 3);
+            $png = NesSpriteSheet::toTileStrip(str_repeat("\0", 16), $palette);
+            $position = strpos($png, 'PLTE');
+            self::assertNotFalse($position);
+            foreach (str_split(substr($png, $position + 4, 12), 3) as $rgb) {
+                $pngColors[] = bin2hex($rgb);
+            }
+        }
+        $pngColors = array_values(array_unique($pngColors));
+        $cssColors = array_values($namedColors);
+        sort($pngColors);
+        sort($cssColors);
+        self::assertSame($pngColors, $cssColors, 'CSS must expose every renderer color without adding or changing RGB values.');
     }
 }
