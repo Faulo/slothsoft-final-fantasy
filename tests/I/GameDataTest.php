@@ -20,6 +20,10 @@ use XSLTProcessor;
 final class GameDataTest extends TestCase {
     public function testManifestReadsPointersTablesAndImplementedEffectsFromSyntheticPrg(): void {
         $prg = str_repeat("\0", 0x40000);
+        $prg[0x25000 + 2 * 512] = "\x81";
+        $prg[0x3ECA4 + 2] = "\x01";
+        $prg[0x3EBA5 + 4] = "\x0F";
+        $prg[0x3200C + 4] = "\x08";
         for ($id = 0; $id < 256; $id++) {
             $prg = substr_replace($prg, pack('v', 0xBA00), 0x2B700 + $id * 2, 2);
         }
@@ -40,6 +44,11 @@ final class GameDataTest extends TestCase {
         [$dataset, $domain] = $this->parseSyntheticPrg($prg);
         $raw = new DOMXPath($dataset);
         $raw->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
+        self::assertStringStartsWith('81 00 ', $raw->evaluate('string(//sse:instruction[@name="class-graphics"]/sse:group[3]/sse:image/@value)'));
+        self::assertSame(12.0, $raw->evaluate('count(//sse:instruction[@name="class-graphics"]/sse:group/sse:image)'));
+        self::assertStringStartsWith('00 00 01 ', $raw->evaluate('string(//sse:binary[@name="class-palettes"]/@value)'));
+        self::assertStringStartsWith('00 00 00 00 0f ', $raw->evaluate('string(//sse:binary[@name="sprite-palettes"]/@value)'));
+        self::assertStringStartsWith('00 00 00 00 08 ', $raw->evaluate('string(//sse:binary[@name="class-poses"]/@value)'));
         self::assertSame('23', $raw->evaluate('string(//sse:instruction[@name="weapons"]/sse:group[1]/sse:integer[@name="damage"]/@value)'));
         self::assertSame(mb_convert_encoding("\x8A\x95\x99\x91\x8A", 'UTF-8', 'ISO-8859-1'), $raw->evaluate('string(//sse:instruction[@name="weapon-names"]/sse:group[1]/sse:string/@value)'));
         self::assertTrue($domain->schemaValidate(dirname(__DIR__, 2) . '/assets/schema/i/1.0.xsd'));

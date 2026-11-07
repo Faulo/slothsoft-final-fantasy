@@ -9,6 +9,9 @@
         <resource-directory name="xsl" type="application/xslt+xml" />
         <resource-directory name="css" type="text/css" />
         <resource-directory name="savegame" type="application/xml" />
+        <directory name="gfx">
+            <custom-asset name="class" executable-builder="Slothsoft\FinalFantasy\I\ClassSpriteBuilder" parameter-filter="Slothsoft\FinalFantasy\I\ClassSpriteParameters" />
+        </directory>
         <directory name="api">
             <custom-asset name="data" executable-builder="Slothsoft\FinalFantasy\I\PageDataBuilder" parameter-filter="Slothsoft\FinalFantasy\I\PageParameters" />
         </directory>

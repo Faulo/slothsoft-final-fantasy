@@ -4,6 +4,13 @@
     <!-- Layout: https://github.com/Entroper/FF1Disassembly/tree/master/Final%20Fantasy%20Disassembly -->
     <archive path="game.nes" type="NES">
         <file file-name="1">
+            <!-- Bank 09: 32 NES 2bpp tiles per class. Pose rows and sprite palettes are ROM data too. -->
+            <repeat-group name="class-graphics" position="0x25000" group-count="12" group-size="0x200">
+                <image name="tiles" size="512" width="16" height="128" bitplanes="2" />
+            </repeat-group>
+            <binary name="class-poses" position="0x3200C" size="32" />
+            <binary name="sprite-palettes" position="0x3EBA5" size="16" />
+            <binary name="class-palettes" position="0x3ECA4" size="12" />
             <repeat-group name="weapons" position="0x30000" group-count="40" group-size="8">
                 <integer name="hit" position="0" size="1" />
                 <integer name="damage" position="1" size="1" />

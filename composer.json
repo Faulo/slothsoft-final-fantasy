@@ -13,6 +13,7 @@
         "php": "^8.2",
         "ext-dom": "*",
         "ext-xsl": "*",
+        "ext-zlib": "*",
         "slothsoft/core": "^1.15.1",
         "slothsoft/farah": "^1.29.7",
         "slothsoft/savegame": "dev-main"

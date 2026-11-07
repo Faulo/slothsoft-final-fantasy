@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Decode ROM class tiles, palettes and pose arrangements into transparent PNG sprite sheets on demand.
+- Show all twelve class sprites in weapon, armor and spell tables, dimming classes without permission.
+
 - Use the `sf1` namespace prefix throughout Final Fantasy I domain XML, schema metadata and XPath expressions.
 - Publish Final Fantasy I navigation and form actions under `/FinalFantasy/I/`.
 - Add schema versioning metadata to the Final Fantasy I domain schema.

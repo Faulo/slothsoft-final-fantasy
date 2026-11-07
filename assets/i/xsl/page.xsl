@@ -199,13 +199,37 @@
         </xsl:choose>
     </xsl:template>
     <xsl:template name="classes">
-        <xsl:for-each select="sf1:class-ref">
-            <xsl:if test="position()!=1">
-                <xsl:text>, </xsl:text>
-            </xsl:if>
-            <xsl:value-of select="key('classes', @id)/@name" />
-        </xsl:for-each>
-        <xsl:if test="not(sf1:class-ref)">None</xsl:if>
+        <xsl:variable name="allowed" select="sf1:class-ref/@id" />
+        <xsl:variable name="verb">
+            <xsl:choose>
+                <xsl:when test="self::sf1:spell">learn</xsl:when>
+                <xsl:otherwise>equip</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <span class="ff-classes">
+            <xsl:for-each select="ancestor::sf1:final-fantasy/sf1:classes/sf1:class">
+                <xsl:variable name="label">
+                    <xsl:value-of select="@name" />
+                    <xsl:choose>
+                        <xsl:when test="@id = $allowed">
+                            <xsl:text>: can </xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>: cannot </xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:value-of select="$verb" />
+                </xsl:variable>
+                <span class="ff-class-sprite" data-class="{@id}" data-allowed="{@id = $allowed}"
+                      role="img" aria-label="{$label}" title="{$label}">
+                    <xsl:attribute name="style">
+                        <xsl:text>background-image: url('/slothsoft@final-fantasy/i/gfx/class?class=</xsl:text>
+                        <xsl:value-of select="@id" />
+                        <xsl:text>')</xsl:text>
+                    </xsl:attribute>
+                </span>
+            </xsl:for-each>
+        </span>
     </xsl:template>
     <xsl:template name="cast">
         <xsl:choose>

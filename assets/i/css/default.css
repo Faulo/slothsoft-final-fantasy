@@ -69,6 +69,27 @@
     padding-left: 1.2rem;
 }
 
+.final-fantasy .ff-classes {
+    display: inline-grid;
+    grid-template-columns: repeat(6, 32px);
+    gap: 4px;
+}
+
+.final-fantasy .ff-class-sprite {
+    display: block;
+    width: 32px;
+    height: 48px;
+    background-size: 256px 48px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.final-fantasy .ff-class-sprite[data-allowed="false"] {
+    opacity: .25;
+    filter: grayscale(1) brightness(.65);
+}
+
 .final-fantasy .ff-upload {
     display: flex;
     flex-wrap: wrap;

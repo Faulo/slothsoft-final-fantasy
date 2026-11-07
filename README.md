@@ -56,11 +56,30 @@ Composer registers the Farah module `slothsoft@final-fantasy`.
 | `farah://slothsoft@final-fantasy/schema/i/1.0`            | Versioned domain XSD                                                 |
 | `farah://slothsoft@final-fantasy/i/savegame/rom`          | ROM extraction specification                                         |
 | `farah://slothsoft@final-fantasy/i/savegame/equipment`    | SRAM equipment specification                                         |
+| `farah://slothsoft@final-fantasy/i/gfx/class?class=2`     | Black Belt battle sprite sheet (class IDs 0–11)                      |
 
 The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix `sf1`. Hosts
 embed the HTML fragments and provide `/FinalFantasy/I/`,
 `/FinalFantasy/I/SaveEditor/`, `/FinalFantasy/I/Weapons/`, `/FinalFantasy/I/Armor/`
 and `/FinalFantasy/I/Spells/` routes used by the navigation.
+
+## Class graphics
+
+Class PNGs are generated on demand from the configured private ROM. The ROM
+manifest extracts each class's 32 NES two-bitplane tiles, the palette assignments,
+palette color indices and eight pose arrangements. No extracted images are shipped.
+Each transparent PNG is 128×24 pixels: eight 16×24 poses arranged horizontally in
+ROM order (standing, walking, attack back, attack forward, cheer, cheer, crouch,
+crouch). The hardware color indices use a conventional 2C02 RGB approximation;
+the original composite colors depend on the display and are not RGB data in the ROM.
+PNG encoding uses zlib, without requiring GD, ImageMagick or an external converter.
+
+The reference tables use CSS to crop the standing pose at 2× pixel scale. All
+twelve classes appear in every row, with base classes above their promotions;
+classes unable to equip or learn the item are dimmed. Tooltips and accessible labels
+use ROM class names and state whether that class can equip or learn it. The public
+HTTP asset is `/slothsoft@final-fantasy/i/gfx/class?class=2`; invalid class IDs return
+400 and unavailable ROMs return 503. The default class ID is 0 (Fighter).
 
 ## Binary extraction and implemented behavior
 

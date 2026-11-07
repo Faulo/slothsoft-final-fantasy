@@ -7,6 +7,7 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use Exception;
+use InvalidArgumentException;
 use RuntimeException;
 use Slothsoft\Savegame\Build\XmlBuilder;
 use Slothsoft\Savegame\Editor;
@@ -87,6 +88,27 @@ final class GameData implements EquipmentCatalog {
     
     public function toDocument(): DOMDocument {
         return clone $this->document;
+    }
+    
+    public function getClassSprite(int $class): string {
+        if ($class < 0 || $class > 11) {
+            throw new InvalidArgumentException('Choose a class ID from 0 to 11.');
+        }
+        $xpath = new DOMXPath($this->dataset);
+        $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
+        $read = static function (string $query) use ($xpath): string {
+            $hex = (string) $xpath->evaluate('string(' . $query . '/@value)');
+            $value = hex2bin(str_replace(' ', '', trim($hex)));
+            if ($value === false || $value === '') {
+                throw new RuntimeException('The class graphics dataset is incomplete.');
+            }
+            return $value;
+        };
+        $tiles = $read('//sse:instruction[@name="class-graphics"]/sse:group[' . ($class + 1) . ']/sse:image');
+        $assignments = $read('//sse:binary[@name="class-palettes"]');
+        $palettes = $read('//sse:binary[@name="sprite-palettes"]');
+        $poses = $read('//sse:binary[@name="class-poses"]');
+        return NesSpriteSheet::toPng($tiles, substr($palettes, (ord($assignments[$class]) & 3) * 4, 4), $poses);
     }
     
     /** @return array<int, string> */
