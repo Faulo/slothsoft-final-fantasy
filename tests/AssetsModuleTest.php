@@ -20,6 +20,11 @@ final class AssetsModuleTest extends AbstractModuleTest {
         $document = Module::resolveToDOMWriter($url)->toDocument();
         self::assertSame('http://www.w3.org/2001/XMLSchema', $document->documentElement->namespaceURI);
         self::assertSame(GameData::XML_NAMESPACE, $document->documentElement->getAttribute('targetNamespace'));
+        $xpath = new DOMXPath($document);
+        $xpath->registerNamespace('xs', 'http://www.w3.org/2001/XMLSchema');
+        $xpath->registerNamespace('ssv', 'http://schema.slothsoft.net/schema/versioning');
+        self::assertSame('1.0', $xpath->evaluate('string(/xs:schema/xs:annotation/xs:appinfo/ssv:info/ssv:version)'));
+        self::assertSame(GameData::XML_NAMESPACE, $xpath->evaluate('string(/xs:schema/xs:annotation/xs:appinfo/ssv:info/ssv:namespace)'));
     }
     
     /** @runInSeparateProcess */

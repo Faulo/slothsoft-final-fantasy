@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ff="http://schema.slothsoft.net/final-fantasy/i" targetNamespace="http://schema.slothsoft.net/final-fantasy/i" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ff="http://schema.slothsoft.net/final-fantasy/i" xmlns:ssv="http://schema.slothsoft.net/schema/versioning" targetNamespace="http://schema.slothsoft.net/final-fantasy/i" elementFormDefault="qualified">
+    <xs:annotation>
+        <xs:appinfo>
+            <ssv:info version="1.0">
+                <ssv:name>Final Fantasy I Game Data</ssv:name>
+                <ssv:version>1.0</ssv:version>
+                <ssv:revision>R20261107</ssv:revision>
+                <ssv:prefix>ff</ssv:prefix>
+                <ssv:namespace>http://schema.slothsoft.net/final-fantasy/i</ssv:namespace>
+                <ssv:author email="daniel.lio.schulz@gmail.com">Daniel Schulz</ssv:author>
+                <ssv:description><![CDATA[
+This namespace describes game data extracted from the original US NES release of Final Fantasy I: classes, weapons, armor, spells, class permissions, and equipment save-editor state.
+                ]]></ssv:description>
+                <ssv:changelog><![CDATA[
+*** Version 1.0 ***
+    R20261107
+        - initial schema for ROM-derived reference data and equipment save editing
+                ]]></ssv:changelog>
+            </ssv:info>
+        </xs:appinfo>
+    </xs:annotation>
+
     <xs:simpleType name="classId">
         <xs:restriction base="xs:unsignedByte">
             <xs:maxInclusive value="11" />

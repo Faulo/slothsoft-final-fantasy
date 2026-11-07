@@ -8,11 +8,11 @@
                 <p class="eyebrow">Nintendo Entertainment System · US edition</p>
                 <h1>Final Fantasy</h1>
                 <nav aria-label="Final Fantasy">
-                    <a href="/FinalFantasy/">Overview</a>
-                    <a href="/FinalFantasy/SaveEditor/">Equipment editor</a>
-                    <a href="/FinalFantasy/Weapons/">Weapons</a>
-                    <a href="/FinalFantasy/Armor/">Armor</a>
-                    <a href="/FinalFantasy/Spells/">Spells</a>
+                    <a href="/FinalFantasy/I/">Overview</a>
+                    <a href="/FinalFantasy/I/SaveEditor/">Equipment editor</a>
+                    <a href="/FinalFantasy/I/Weapons/">Weapons</a>
+                    <a href="/FinalFantasy/I/Armor/">Armor</a>
+                    <a href="/FinalFantasy/I/Spells/">Spells</a>
                 </nav>
             </header>
             <xsl:apply-templates select=".//ff:final-fantasy" />
@@ -24,19 +24,19 @@
                 <h2>The equipment and magic of Final Fantasy</h2>
                 <p>Explore the original US game's weapons, armor, and spells, with names and properties read directly from the game ROM.</p>
                 <div class="ff-cards">
-                    <a href="/FinalFantasy/SaveEditor/">
+                    <a href="/FinalFantasy/I/SaveEditor/">
                         <h3>Equipment editor</h3>
                         <p>Load your NES battery save, change your party's equipment, and download the edited save.</p>
                     </a>
-                    <a href="/FinalFantasy/Weapons/">
+                    <a href="/FinalFantasy/I/Weapons/">
                         <h3>40 weapons</h3>
                         <p>Damage, hit bonuses, critical rates, usable spells, and class permissions.</p>
                     </a>
-                    <a href="/FinalFantasy/Armor/">
+                    <a href="/FinalFantasy/I/Armor/">
                         <h3>40 pieces of armor</h3>
                         <p>Protection, evasion penalties, resistances, usable spells, and class permissions.</p>
                     </a>
-                    <a href="/FinalFantasy/Spells/">
+                    <a href="/FinalFantasy/I/Spells/">
                         <h3>64 spells</h3>
                         <p>White and black magic by level, price, and the classes that can learn each spell.</p>
                     </a>
@@ -210,7 +210,7 @@
     <xsl:template name="cast">
         <xsl:choose>
             <xsl:when test="@spell != 0">
-                <a href="/FinalFantasy/Spells/#spell-{@spell}">
+                <a href="/FinalFantasy/I/Spells/#spell-{@spell}">
                     <xsl:value-of select="key('spells', @spell)/@name" />
                 </a>
             </xsl:when>
@@ -259,7 +259,7 @@
                 <xsl:value-of select="ff:error" />
             </p>
         </xsl:if>
-        <form action="/FinalFantasy/SaveEditor/" method="post" enctype="multipart/form-data" class="ff-upload">
+        <form action="/FinalFantasy/I/SaveEditor/" method="post" enctype="multipart/form-data" class="ff-upload">
             <input type="hidden" name="ff-action" value="upload" />
             <input type="hidden" name="MAX_FILE_SIZE" value="8192" />
             <label for="ff-save">NES battery save (.sav, 8 KiB)</label>
@@ -267,7 +267,7 @@
             <button type="submit">Load save</button>
         </form>
         <xsl:for-each select="ff:editor">
-            <form action="/FinalFantasy/SaveEditor/" method="post">
+            <form action="/FinalFantasy/I/SaveEditor/" method="post">
                 <input type="hidden" name="ff-action" value="download" />
                 <input type="hidden" name="ff-source" value="{@source}" />
                 <div class="ff-party">
