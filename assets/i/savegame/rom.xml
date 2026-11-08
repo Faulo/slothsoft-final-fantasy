@@ -16,6 +16,18 @@
             <binary name="map-attributes" position="0x0400" size="1024" />
             <binary name="map-quadrants" position="0x1000" size="4096" />
             <binary name="map-tiles" position="0xC000" size="0x4000" />
+            <!-- Acquisition sources: inspect placed tiles/objects, not unused table entries. -->
+            <binary name="map-properties" position="0x0800" size="2048" />
+            <binary name="map-objects" position="0x3400" size="61 * 48" />
+            <binary name="chest-items" position="0x3100" size="256" />
+            <binary name="shop-types" position="0x3EBB5" size="71" />
+            <repeat-group name="shops" position="0x38300" group-count="71" group-size="2">
+                <integer name="pointer" size="2" byte-order="little" />
+                <binary name="inventory" position-from="root" position="$pointer + 0x30000" variable-resolution="scoped" size="5" />
+            </repeat-group>
+            <!-- Immediate operands in Talk_Smith: one reward, guarded by the smith's event flag. -->
+            <integer name="smith-object" position="0x3936D" size="1" />
+            <integer name="smith-weapon" position="0x39384" size="1" />
             <binary name="initial-state" position="0x3000" size="256" />
             <binary name="initial-flags" position="0x2F00" size="256" />
             <binary name="starting-stats" position="0x3040" size="96" />

@@ -70,6 +70,7 @@ final class GameData implements EquipmentCatalog {
         }
         $this->document = $result;
         SpellEffects::appendTo($this->document);
+        ItemSources::appendTo($this->document, $this->dataset);
     }
     
     /** @throws Exception */

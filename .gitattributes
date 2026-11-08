@@ -29,6 +29,7 @@ composer.phar export-ignore
 /phpdoc.xml export-ignore
 /tests/ export-ignore
 /test-files/ export-ignore
+/test-files/ff1-us.zip binary export-ignore
 /phpunit.xml export-ignore
 /jsconfig.json export-ignore
 /catalog.xml export-ignore

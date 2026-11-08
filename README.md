@@ -7,7 +7,7 @@ the original US NES release of Final Fantasy I. Requires PHP 8.2 or later and
 ## Installation and private ROM configuration
 
 Add the Git repository to your application's Composer repositories and require
-the stable `slothsoft/final-fantasy` 1.0 release:
+the stable `slothsoft/final-fantasy` 1.1 release:
 
 ```json
 {
@@ -15,7 +15,7 @@ the stable `slothsoft/final-fantasy` 1.0 release:
         {"type": "vcs", "url": "https://github.com/Faulo/slothsoft-final-fantasy"}
     ],
     "require": {
-        "slothsoft/final-fantasy": "^1.0.0"
+        "slothsoft/final-fantasy": "^1.1.0"
     }
 }
 ```
@@ -28,10 +28,20 @@ use Slothsoft\FinalFantasy\Configuration;
 Configuration::setRomPath('i', '/private/games/Final Fantasy (USA).nes');
 ```
 
+The path may also point to a ZIP containing exactly one `.nes` file (case
+insensitive, including nested entries). Other files in the archive are ignored.
+Configuration unpacks the ROM into a managed temporary file and returns that
+path from `getRomPath()`; plain ROM paths remain unchanged. Invalid archives,
+multiple ROMs and oversized entries are rejected when configuring the path.
+The existing US-ROM validation still runs when the game data is loaded.
+ZIP support requires PHP's `ext-zip` extension.
+
 The path belongs to the PHP runtime (a container path in DDEV). There is no
 default ROM path in the package. Passing `null` clears the configuration. Store
-the ROM outside public document roots and published assets. ROMs and saves are
-ignored by Git and excluded from distribution archives; none are bundled.
+the application's ROM outside public document roots and published assets.
+The source repository includes a ROM fixture under `test-files/` for testing;
+that directory is excluded from distribution archives. No ROM is bundled in
+the published package or selected automatically by production code.
 The XML API reports unavailable game data without exposing the configured
 filesystem path when the ROM cannot be read.
 
@@ -41,6 +51,28 @@ iNES headers and optional trainers are handled separately. Japanese releases,
 randomizers and other modified PRGs are not supported.
 
 ## Module and schema
+
+### Equipment acquisition
+
+Each weapon and armor record exposes `shop-count`, `chest-count` and `npc-count`
+in XML (`shopCount`, `chestCount`, `npcCount` in PHP). These count sources per new
+playthrough, independently of the user's save. A positive shop count means
+unlimited purchases; otherwise add chest and NPC counts to obtain the finite
+number of copies. Spells do not expose these attributes.
+
+The savegame manifest reads map tile properties, placed NPCs, treasure rewards,
+shop types and inventories, initial flags, and the operands of the dwarf smith's
+reward routine. Only shop and chest IDs actually placed on the 61 standard maps
+count. Shared chest IDs count once, since opening one placement opens all copies;
+unused table records and initially opened chests do not count. The original US
+game has 35 weapon and 51 armor chest rewards, plus the smith's single Xcalber.
+Monsters do not drop equipment, and the party starts without equipment.
+
+The format follows the original game's `LoadShopInventory`, `OpenTreasureChest`
+and `Talk_Smith` routines, documented in the
+[FF1 disassembly](https://github.com/Entroper/FF1Disassembly). Offsets are in the
+manifest; no ROM tables or names are bundled. The domain attributes are optional
+in the schema so existing documents remain valid.
 
 ### Maps
 
@@ -230,11 +262,17 @@ ddev exec vendor/bin/phpunit
 ddev exec vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --no-progress --error-format=json
 ```
 
-Tests use synthetic binary data and catalogs. Optional integration tests accept
-an original ROM through `FINAL_FANTASY_I_ROM` inside the test runtime; they skip
-when it is absent. No copyrighted fixtures are required for CI. Tests cover
-save round-trips, the manifest extraction pipeline, schema validity and both
-Farah asset lookup and resolved output.
+Tests use synthetic binary data and catalogs alongside `test-files/ff1-us.zip`,
+the original US ROM fixture. Composer's development autoloader selects it automatically
+for local tests, Jenkins and GitHub CI. `FINAL_FANTASY_I_ROM` can override its
+location inside the test runtime, accepting either a ZIP or a plain ROM. A missing or unreadable fixture fails the
+bootstrap rather than silently skipping ROM coverage. Tests still explicitly
+exercise unavailable-ROM behavior by clearing the configuration.
+
+Tests cover save round-trips, the manifest extraction pipeline, schema validity
+and both Farah asset lookup and resolved output. `test-files/` is excluded from
+distribution archives; source checkouts include it. The ROM fixture is original
+game data and is not covered by this package's MIT license.
 
 ## References and license
 

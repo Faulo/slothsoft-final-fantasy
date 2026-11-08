@@ -5,7 +5,7 @@
             <ssv:info version="1.0">
                 <ssv:name>Final Fantasy I Game Data</ssv:name>
                 <ssv:version>1.0</ssv:version>
-                <ssv:revision>R20261107</ssv:revision>
+                <ssv:revision>R20261108</ssv:revision>
                 <ssv:prefix>sf1</ssv:prefix>
                 <ssv:namespace>http://schema.slothsoft.net/final-fantasy/i</ssv:namespace>
                 <ssv:author email="daniel.lio.schulz@gmail.com">Daniel Schulz</ssv:author>
@@ -14,6 +14,8 @@ This namespace describes game data extracted from the original US NES release of
                 ]]></ssv:description>
                 <ssv:changelog><![CDATA[
 *** Version 1.0 ***
+    R20261108
+        - optional shop-count, chest-count and npc-count attributes on equipment
     R20261107
         - initial schema for ROM-derived reference data and equipment save editing
         - optional mixed-content item labels preserve ROM glyph IDs for inline icons
@@ -68,6 +70,7 @@ This namespace describes game data extracted from the original US NES release of
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
         <xs:attributeGroup ref="sf1:identity" />
+        <xs:attributeGroup ref="sf1:itemSources" />
         <xs:attribute name="id" type="sf1:equipmentId" use="required" />
         <xs:attribute name="hit" type="xs:unsignedByte" use="required" />
         <xs:attribute name="damage" type="xs:unsignedByte" use="required" />
@@ -80,6 +83,7 @@ This namespace describes game data extracted from the original US NES release of
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
         </xs:sequence>
         <xs:attributeGroup ref="sf1:identity" />
+        <xs:attributeGroup ref="sf1:itemSources" />
         <xs:attribute name="id" type="sf1:equipmentId" use="required" />
         <xs:attribute name="evade-penalty" type="xs:unsignedByte" use="required" />
         <xs:attribute name="absorb" type="xs:unsignedByte" use="required" />
@@ -93,6 +97,11 @@ This namespace describes game data extracted from the original US NES release of
             </xs:simpleType>
         </xs:attribute>
     </xs:complexType>
+    <xs:attributeGroup name="itemSources">
+        <xs:attribute name="shop-count" type="xs:nonNegativeInteger" />
+        <xs:attribute name="chest-count" type="xs:nonNegativeInteger" />
+        <xs:attribute name="npc-count" type="xs:nonNegativeInteger" />
+    </xs:attributeGroup>
     <xs:complexType name="spell">
         <xs:sequence>
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />

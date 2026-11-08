@@ -7,8 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-08
+
 ### Added
 
+- ZIP ROM configuration: a single `.nes` entry is unpacked to a managed temporary
+  file, preserving support for plain ROM paths. Requires PHP's `ext-zip`.
+- The original US ROM as a source-only test fixture, loaded automatically by
+  PHPUnit in local and CI runs; `test-files/` remains excluded from distributions.
+- ROM-derived `shop-count`, `chest-count` and `npc-count` for weapons and armor.
+  Counts include placed shops and obtainable chest rewards, deduplicate shared
+  chest flags, and include the dwarf smith's one-time weapon reward.
 - On-demand PNGs for the world map and all 61 standard US maps, decoded from
   layouts, metatiles, graphics and palettes extracted by the savegame manifest.
   Static atlas views reveal rooms and leave chests closed.
@@ -54,5 +63,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PHPStan level 8 validation, cross-platform PHP integration tests and browser
   checks for the utility contract, with optional private-ROM integration tests.
 
-[Unreleased]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/Faulo/slothsoft-final-fantasy/releases/tag/1.0.0

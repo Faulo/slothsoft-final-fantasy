@@ -13,6 +13,7 @@
         "php": "^8.2",
         "ext-dom": "*",
         "ext-xsl": "*",
+        "ext-zip": "*",
         "ext-zlib": "*",
         "slothsoft/core": "^1.15.1",
         "slothsoft/farah": "^1.29.7",
@@ -35,7 +36,10 @@
     "autoload-dev": {
         "psr-4": {
             "Slothsoft\\FinalFantasy\\": "tests"
-        }
+        },
+        "files": [
+            "tests/bootstrap.php"
+        ]
     },
     "keywords": [
         "slothsoft",
@@ -45,7 +49,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-main": "1.0.x-dev"
+            "dev-main": "1.1.x-dev"
         }
     },
     "config": {

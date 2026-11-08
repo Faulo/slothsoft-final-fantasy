@@ -47,10 +47,22 @@ final class GameDataTest extends TestCase {
         $prg[0x33AE5] = chr(1);
         $prg[0x3AF5F] = chr(7);
         $prg[0x3AF61] = chr(48);
+        $prg[0x0800] = chr(8);
+        $prg[0x3100 + 7] = chr(28);
+        $prg[0x3400] = chr(9);
+        $prg[0x3EBB5 + 11] = chr(1);
+        $prg = substr_replace($prg, pack('v', 0x8500), 0x38300 + 2, 2);
+        $prg = substr_replace($prg, "\x1C\x1D\0\0\0", 0x38500, 5);
+        $prg[0x3936D] = chr(9);
+        $prg[0x39384] = chr(39);
         
         [$dataset, $domain] = $this->parseSyntheticPrg($prg);
         $raw = new DOMXPath($dataset);
         $raw->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
+        self::assertStringStartsWith('08 ', $raw->evaluate('string(//sse:binary[@name="map-properties"]/@value)'));
+        self::assertStringStartsWith('09 ', $raw->evaluate('string(//sse:binary[@name="map-objects"]/@value)'));
+        self::assertSame('1c 1d 00 00 00', trim($raw->evaluate('string(//sse:instruction[@name="shops"]/sse:group[2]/sse:binary/@value)')));
+        self::assertSame('39', $raw->evaluate('string(//sse:integer[@name="smith-weapon"]/@value)'));
         self::assertStringStartsWith('81 00 ', $raw->evaluate('string(//sse:instruction[@name="class-graphics"]/sse:group[3]/sse:image/@value)'));
         self::assertSame(12.0, $raw->evaluate('count(//sse:instruction[@name="class-graphics"]/sse:group/sse:image)'));
         self::assertStringStartsWith('00 00 01 ', $raw->evaluate('string(//sse:binary[@name="class-palettes"]/@value)'));
@@ -178,6 +190,15 @@ final class GameDataTest extends TestCase {
         self::assertSame(255, $armor[32]['resistanceMask']);
         self::assertSame(2, $armor[32]['category']);
         self::assertSame(3, $armor[40]['category']);
+        self::assertSame(35, array_sum(array_column($weapons, 'chestCount')));
+        self::assertSame(51, array_sum(array_column($armor, 'chestCount')));
+        self::assertSame(1, array_sum(array_column($weapons, 'npcCount')));
+        self::assertSame(0, array_sum(array_column($armor, 'npcCount')));
+        self::assertGreaterThan(0, $weapons[1]['shopCount']);
+        self::assertSame(1, $weapons[6]['chestCount']); // Shared chest ID 25, three placements.
+        self::assertSame(2, $armor[4]['chestCount']); // IDs 1 and 29, latter is shared.
+        self::assertSame([0, 0, 1], [$weapons[39]['shopCount'], $weapons[39]['chestCount'], $weapons[39]['npcCount']]);
+        self::assertSame([0, 1, 0], [$weapons[40]['shopCount'], $weapons[40]['chestCount'], $weapons[40]['npcCount']]);
     }
     
     public function testSpellsAndClassRestrictionsResolve(): void {
@@ -251,7 +272,7 @@ final class GameDataTest extends TestCase {
     }
     
     private function localRom(): string {
-        $path = getenv('FINAL_FANTASY_I_ROM') ?: '';
+        $path = \Slothsoft\FinalFantasy\Configuration::getRomPath('i') ?? '';
         if (! is_file($path)) {
             self::markTestSkipped('Supply the original US ROM via FINAL_FANTASY_I_ROM for extraction integration tests.');
         }
