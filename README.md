@@ -65,44 +65,36 @@ the pre-release package/site separation.
 
 ## Utility CSS and host integration
 
-The `.ff-ui` block exposes the full 64-entry NES palette used by the PNG renderer
-as 55 descriptive color variables, including `--ff-gold`, `--ff-brown`,
-`--ff-mint` and `--ff-pale-blue`. Duplicate black indices share `--ff-black`.
-Each declaration documents its NES indices; the existing `--ff-blue`,
-`--ff-white`, `--ff-gray` and `--ff-black` values are unchanged. These are
-palette primitives, with no new semantic roles assigned.
+The package provides fourteen composable public classes, semantic HTML defaults
+and documented custom-property inputs. Applications can build the reference
+tables and native equipment editor without additional CSS. See the
+[design-system contract](doc/design-system.md) for the complete API, supported
+markup, layout recipes, palette tokens and compatibility helpers.
 
-The ROM supplies hardware color indices, not RGB values. These variables use
-the same conventional 2C02 RGB approximation as `NesSpriteSheet`; they are not
-RGB colors extracted from the ROM or a claim that every color is used by FF1.
-See the palette swatches in the example HTML below. A host can use a color
-directly, for example `.my-heading { color: var(--ff-gold); }`, and introduce
-semantic aliases later.
+Load `/slothsoft@final-fantasy/i/css/default` after host styles. Apply `ff-ui`
+only to the themed panels, leaving surrounding headings and prose in the host
+theme. Combine it with `ff-panel` for a game frame, and `ff-fit` for an intrinsic
+reference fieldset. Legends are framed and aligned automatically. Tables use
+continuous row rules, 2ch column spacing, centered pale-blue column headings and
+left-aligned body names; use `ff-number` on numeric body cells.
 
-Load `/slothsoft@final-fantasy/i/css/default` in the host page. Apply
-`class="ff-ui ff-panel"` to a form or a table container; add `ff-table` to make a
-wide table scroll within its panel. Only these components receive the ROM font
-and white-on-blue theme, including headings, labels and native controls.
-The host's surrounding text and page header keep their own styling.
+`--ff-scale` defaults to 1. Set `style="--ff-scale: 2"` on a root for 16px text,
+24px line height, 48px full sprite height and 2px borders/shadows. `ff-portrait`
+crops a class sprite's top half without changing scale. Native `ff-select`
+controls take their longest option width in `--ff-option-width`; `ff-equipped`
+preserves a real checkbox while showing the game's E marker.
 
-Links use color instead of underlines: gold when unvisited, ochre (NES $18) when
-visited, cyan on hover or keyboard focus, and white while pressed. Keyboard
-focus retains its visible outline. Active color takes precedence over hover
-and focus. The example's palette link demonstrates these states.
+The full 64-entry NES palette is exposed as 55 named color variables, with
+duplicate black indices sharing `--ff-black`. Values match the PNG renderer's
+conventional 2C02 RGB approximation; they are not RGB values stored in the ROM.
+Semantic tokens define foreground, background, frame, heading and link colors.
+Links remain gold, ochre when visited, cyan on hover/focus and white when pressed.
 
-The base units are `--ff-font-size: 8px` and `--ff-sprite-size: 24px` (height).
-`--ff-scale` defaults to 1. Set it on each `ff-ui` root to multiply text, sprites,
-spacing and borders together, for example `style="--ff-scale: 2"`. The line
-height is 150%; the border unit is one eighth of the scaled font size. All panel
-text has an opaque black shadow offset one scaled pixel right and down, with
-no blur. Descendants and controls inherit it without adding another shadow.
-Character sprites preserve their 16:24 aspect ratio. `.ff-class-sprite` crops the standing
-pose by default; set `--ff-pose` to an index from 0 to 7 for another pose.
-`.ff-item-icon` uses `--ff-icon-index` (0–13) to select a menu pictogram.
-
-See [the complete example HTML](assets/i/examples/panels.xhtml) for forms,
-tables, symbols and class sprites. Example text is illustrative; actual game
-names must come from the XML API. The examples depend only on package assets.
+The [standalone examples](assets/i/examples/panels.xhtml) demonstrate reference
+tables and editor grids at both 1x and 2x, plus uploads and palette swatches.
+Examples depend only on package assets; names are illustrative. Actual game
+names must come from the XML API. Legacy table, class-list, tooltip and item-icon
+helpers remain available but are not needed by new compositions.
 
 For editing, hosts consume `i/api/data?view=editor`. It accepts `ff-action=upload`
 with the `ff-save` file, or `ff-action=download` with the returned base64
@@ -262,3 +254,9 @@ Files live privately under `ServerEnvironment::getDataDirectory()` at
 A fresh editor starts with the ROM's default party (Fighter, Thief, Black Belt,
 Red Mage), blank names, initial stats, flags, gold and empty inventory. These
 initial tables are extracted through the savegame manifest; no save is bundled.
+
+The optional browser contract check is `tests/browser/utilities.cjs`. Run it in
+DDEV with Playwright Firefox installed, setting `FF_PLAYWRIGHT_MODULE` to its
+module path and `FF_EXAMPLE_URL` to a configured host's package example URL.
+`FF_EXAMPLE_SCREENSHOT` optionally captures the rendered examples. This verifies
+the standalone utility contract without relying on the site's stylesheet.

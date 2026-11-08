@@ -19,7 +19,7 @@
     --ff-sprite-width: calc(var(--ff-sprite-height) * 2 / 3);
     /* Full 2C02 RGB approximation, matching NesSpriteSheet. ROMs store indices,
        not RGB values. Duplicate black indices share one named color.
-       These are palette colors; semantic roles belong to the consuming theme. */
+       Palette primitives remain independent of the semantic tokens below. */
     --ff-gray: #7c7c7c; /* $00 */
     --ff-blue: #0000fc; /* $01 */
     --ff-dark-blue: #0000bc; /* $02 */
@@ -75,6 +75,16 @@
     --ff-pale-mint: #b8f8d8; /* $3B */
     --ff-cyan: #00fcfc; /* $3C */
     --ff-pale-rose: #f8d8f8; /* $3D */
+    --ff-foreground: var(--ff-white);
+    --ff-background: var(--ff-blue);
+    --ff-frame: var(--ff-white);
+    --ff-frame-shade: var(--ff-gray);
+    --ff-frame-shadow: var(--ff-black);
+    --ff-heading: var(--ff-pale-blue);
+    --ff-link: var(--ff-gold);
+    --ff-link-visited: var(--ff-ochre);
+    --ff-link-hover: var(--ff-cyan);
+    --ff-link-active: var(--ff-white);
     font-family: 'Final Fantasy I', monospace;
     font-size: var(--ff-unit);
     font-style: normal;
@@ -83,8 +93,8 @@
     line-height: 150%;
     letter-spacing: 0;
     text-shadow: calc(1px * var(--ff-scale)) calc(1px * var(--ff-scale)) 0 var(--ff-black);
-    color: var(--ff-white);
-    background: var(--ff-blue);
+    color: var(--ff-foreground);
+    background: var(--ff-background);
     min-width: 0;
     max-width: 100%;
 }
@@ -104,16 +114,17 @@
     color: inherit;
 }
 
-.ff-ui.ff-panel, .ff-ui .ff-panel {
-    border: var(--ff-border) solid var(--ff-white);
+.ff-ui.ff-panel, .ff-ui .ff-panel, .ff-ui.ff-panel > legend, .ff-ui .ff-panel > legend {
+    border: var(--ff-border) solid var(--ff-frame);
     border-radius: calc(var(--ff-border) * 2);
-    box-shadow: inset 0 0 0 var(--ff-border) var(--ff-gray),
-    0 0 0 var(--ff-border) var(--ff-gray),
-    0 0 0 calc(var(--ff-border) * 2) var(--ff-black);
-    background: var(--ff-blue);
-    color: var(--ff-white);
+    box-shadow: inset 0 0 0 var(--ff-border) var(--ff-frame-shade),
+    0 0 0 var(--ff-border) var(--ff-frame-shade),
+    0 0 0 calc(var(--ff-border) * 2) var(--ff-frame-shadow);
+    background: var(--ff-background);
+    color: var(--ff-foreground);
     padding: 1em;
-    min-width: 0;
+    min-inline-size: 0;
+    margin: 0;
 }
 
 .ff-ui :where(h1, h2, h3, h4, p, ul) {
@@ -131,34 +142,31 @@
 }
 
 .ff-ui a:link {
-    color: var(--ff-gold);
+    color: var(--ff-link);
 }
 
 .ff-ui a:visited {
-    color: var(--ff-ochre);
+    color: var(--ff-link-visited);
 }
 
 .ff-ui a:hover, .ff-ui a:focus-visible {
-    color: var(--ff-cyan);
+    color: var(--ff-link-hover);
 }
 
 .ff-ui a:active {
-    color: var(--ff-white);
-}
-
-.ff-ui.ff-table {
-    overflow-x: auto;
+    color: var(--ff-link-active);
 }
 
 .ff-ui table {
-    width: 100%;
+    width: auto;
+    border-spacing: 0;
     border-collapse: collapse;
     border: none;
 }
 
 .ff-ui :where(table, caption, thead, tbody, tfoot, tr, th, td) {
-    background: var(--ff-blue);
-    color: var(--ff-white);
+    background: var(--ff-background);
+    color: var(--ff-foreground);
     box-shadow: none;
     border-radius: 0;
 }
@@ -171,9 +179,19 @@
 .ff-ui th, .ff-ui td {
     text-align: left;
     vertical-align: top;
-    padding: .5em;
+    padding: 0;
     border: none;
-    border-bottom: var(--ff-border) solid var(--ff-gray);
+    border-bottom: var(--ff-border) solid var(--ff-frame-shade);
+}
+
+.ff-ui th:not(:last-child), .ff-ui td:not(:last-child) {
+    padding-inline-end: 2ch;
+}
+
+.ff-ui thead th {
+    text-align: center;
+    vertical-align: middle;
+    color: var(--ff-heading);
 }
 
 .ff-ui tbody th {
@@ -183,13 +201,13 @@
 .ff-ui :where(input, select, option, button, textarea),
 .ff-ui ::file-selector-button {
     font: inherit;
-    color: var(--ff-white);
-    background: var(--ff-blue);
+    color: var(--ff-foreground);
+    background: var(--ff-background);
 }
 
 .ff-ui :where(input, select, button, textarea),
 .ff-ui ::file-selector-button {
-    border: var(--ff-border) solid var(--ff-white);
+    border: var(--ff-border) solid var(--ff-frame);
     border-radius: 0;
     padding: .5em;
 }
@@ -230,23 +248,20 @@
 
 .ff-ui legend {
     padding-inline: .5em;
-    color: var(--ff-white);
-    background: var(--ff-blue);
+    color: var(--ff-foreground);
+    background: var(--ff-background);
 }
 
 .ff-ui :focus-visible {
-    outline: var(--ff-border) solid var(--ff-white);
+    outline: var(--ff-border) solid var(--ff-frame);
     outline-offset: var(--ff-border);
 }
 
-.ff-ui .ff-classes {
-    display: inline-grid;
-    grid-template-columns: repeat(6, var(--ff-sprite-width));
-    gap: calc(var(--ff-border) * 2);
-}
-
 .ff-ui .ff-class-sprite {
+    --ff-sprite: none;
     display: block;
+    flex: none;
+    background-image: var(--ff-sprite);
     width: var(--ff-sprite-width);
     height: var(--ff-sprite-height);
     background-size: calc(var(--ff-sprite-width) * 8) var(--ff-sprite-height);
@@ -257,6 +272,126 @@
 
 .ff-ui .ff-class-sprite[data-allowed="false"] {
     filter: grayscale(0.5) opacity(0.5) brightness(0.75);
+}
+
+/* Layout inputs reset on each utility so nested layouts do not inherit tracks/gaps. */
+.ff-contain {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    contain: inline-size;
+}
+
+.ff-ui.ff-panel {
+    margin-block: 1em;
+}
+
+.ff-ui.ff-panel > legend, .ff-ui .ff-panel > legend {
+    padding: .5em;
+    margin-inline-start: calc(-1em - var(--ff-border));
+}
+
+.ff-ui.ff-fit, .ff-ui .ff-fit {
+    width: fit-content;
+    max-width: 100%;
+    min-inline-size: 0;
+}
+
+.ff-ui.ff-row, .ff-ui .ff-row {
+    --ff-gap: .5em;
+    --ff-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    flex-wrap: var(--ff-wrap);
+    gap: var(--ff-gap);
+    min-inline-size: 0;
+}
+
+.ff-ui.ff-grid, .ff-ui .ff-grid {
+    --ff-columns: repeat(2, max-content);
+    --ff-gap: 1em;
+    --ff-row-gap: var(--ff-gap);
+    --ff-column-gap: var(--ff-gap);
+    display: grid;
+    grid-template-columns: var(--ff-columns);
+    gap: var(--ff-row-gap) var(--ff-column-gap);
+    min-inline-size: 0;
+}
+
+.ff-ui.ff-scroll, .ff-ui .ff-scroll {
+    --ff-scroll-padding: 0;
+    overflow-x: auto;
+    min-inline-size: 0;
+    padding: var(--ff-scroll-padding);
+}
+
+.ff-ui td.ff-number {
+    text-align: right;
+}
+
+.ff-ui .ff-prose {
+    --ff-measure: 44ch;
+    max-width: var(--ff-measure);
+    white-space: normal;
+}
+
+.ff-ui .ff-prose p {
+    margin: 0;
+}
+
+.ff-ui .ff-inline-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ff-ui .ff-inline-list li {
+    display: inline;
+}
+
+.ff-ui .ff-inline-list li:not(:last-child)::after {
+    content: ', ';
+}
+
+.ff-ui .ff-class-sprite.ff-portrait {
+    height: calc(var(--ff-sprite-height) / 2);
+}
+
+.ff-ui select.ff-select {
+    --ff-option-width: 10ch;
+    /* Text width, one ch padding, two ch native arrow, and both borders. */
+    width: calc(var(--ff-option-width) + 3ch + var(--ff-border) * 2);
+    height: 1.5em;
+    padding: 0 .5em;
+    line-height: 1;
+}
+
+.ff-ui input.ff-equipped {
+    border: none;
+    margin: 0;
+    width: 1em;
+    height: 1.5em;
+    background: transparent;
+    cursor: pointer;
+}
+
+.ff-ui input.ff-equipped::after, .ff-ui input.ff-equipped:checked::after {
+    content: 'E';
+    line-height: 150%;
+}
+
+.ff-ui input.ff-equipped:not(:checked)::after {
+    opacity: .25;
+}
+
+/* Compatibility helpers: retained for existing consumers; use the utilities above. */
+.ff-ui.ff-table {
+    overflow-x: auto;
+}
+
+.ff-ui .ff-classes {
+    display: inline-grid;
+    grid-template-columns: repeat(6, var(--ff-sprite-width));
+    gap: calc(var(--ff-border) * 2);
 }
 
 .ff-ui .ff-class-entry {
@@ -270,9 +405,9 @@
     right: 0;
     z-index: 1;
     padding: .5em;
-    color: var(--ff-white);
-    background: var(--ff-blue);
-    border: var(--ff-border) solid var(--ff-white);
+    color: var(--ff-foreground);
+    background: var(--ff-background);
+    border: var(--ff-border) solid var(--ff-frame);
     white-space: nowrap;
     pointer-events: none;
 }
@@ -293,6 +428,7 @@
     image-rendering: pixelated;
 }
 
-.ff-ui [hidden] {
+/* Native visibility wins over layout utilities and compatibility helpers. */
+.ff-ui[hidden], .ff-ui [hidden] {
     display: none;
 }

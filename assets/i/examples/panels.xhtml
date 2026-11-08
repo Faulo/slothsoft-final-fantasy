@@ -6,101 +6,228 @@
     <link rel="stylesheet" href="/slothsoft@final-fantasy/i/css/default"/>
 </head>
 <body>
-<h1>Final Fantasy I utility CSS</h1>
-<p>The host owns its page markup, links and form actions. Put the FF theme on individual panels.</p>
-<p>The base font is 8px and the sprite height is 24px. The first panel uses scale 1; the form uses scale 2. Font and sprite assets require a configured private ROM.</p>
-<!-- Illustrative text only: applications retrieve actual names from the XML data API. -->
-<section class="ff-ui ff-panel ff-table">
-    <table>
-        <caption>Example at original scale</caption>
-        <thead>
-        <tr>
-            <th scope="col">Text</th>
-            <th scope="col">Sprite</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">Example🥢</th>
-            <td><span class="ff-class-sprite" role="img" aria-label="Class 0" style="background-image: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></td>
-        </tr>
-        </tbody>
-    </table>
-    <p><a href="#palette">View the color palette</a></p>
-</section>
-<p>Use <code>style="--ff-scale: 2"</code> to double every pixel unit, including borders.</p>
-<form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 2">
-    <fieldset class="ff-panel">
-        <legend>Example controls</legend>
-        <label for="example-item">Item</label>
-        <select id="example-item" name="item">
-            <option>Example🗡</option>
-            <option>Example🥢</option>
-        </select>
-        <label><input type="checkbox" name="equipped"/>Equipped</label>
-        <button type="button">Example button</button>
+<article class="ff-contain">
+    <h1>Final Fantasy I utility CSS</h1>
+    <p>The host owns markup, links and form actions. These reference and editor compositions use only package utilities and documented custom properties. Names and values are illustrative.</p>
+    <p>The base font is 8px and sprite height is 24px. Font and sprite assets require a private ROM. Resize the page to inspect horizontal scrolling.</p>
+    <fieldset class="ff-ui ff-panel ff-fit" style="--ff-scale: 1">
+        <legend>Example at 1x</legend>
+        <div class="ff-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Classes</th>
+                    <th scope="col">Effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Example🥢</th>
+                    <td class="ff-number">100</td>
+                    <td><span class="ff-row" style="--ff-gap: .25em">
+                    <span class="ff-class-sprite ff-portrait" role="img" aria-label="Fighter: can equip" data-allowed="true" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/>
+                    <span class="ff-class-sprite ff-portrait" role="img" aria-label="Knight: cannot equip" data-allowed="false" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=6')"/>
+                </span></td>
+                    <td class="ff-prose"><p>Example description.</p>
+                        <ul class="ff-inline-list">
+                            <li>Fire</li>
+                            <li>Ice</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </fieldset>
-</form>
-<h2>Full NES palette</h2>
-<p>These 55 named colors cover the renderer's 64 NES indices. Repeated black indices share one color. The RGB approximation matches generated PNGs; no ROM is needed for these swatches.</p>
-<section id="palette" class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">
-    <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(22em, 1fr)); gap: 1em; padding: 0; margin: 0; list-style: none">
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-gray)"/> gray</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-blue)"/> blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-blue)"/> dark-blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-indigo)"/> indigo</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-purple)"/> purple</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-wine)"/> wine</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-red)"/> dark-red</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-rust)"/> rust</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-brown)"/> brown</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-forest-green)"/> forest-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-green)"/> dark-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pine-green)"/> pine-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-teal)"/> dark-teal</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-black)"/> black</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-silver)"/> silver</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-azure)"/> azure</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-royal-blue)"/> royal-blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-violet)"/> violet</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-magenta)"/> magenta</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-rose)"/> rose</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-red)"/> red</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-orange)"/> orange</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-ochre)"/> ochre</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-bright-green)"/> bright-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-green)"/> green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-emerald)"/> emerald</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-teal)"/> teal</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-off-white)"/> off-white</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-sky-blue)"/> sky-blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cornflower-blue)"/> cornflower-blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-lavender)"/> lavender</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-orchid)"/> orchid</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pink)"/> pink</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-salmon)"/> salmon</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-apricot)"/> apricot</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-gold)"/> gold</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-lime)"/> lime</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-leaf-green)"/> leaf-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-mint)"/> mint</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-turquoise)"/> turquoise</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-gray)"/> dark-gray</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-white)"/> white</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-blue)"/> pale-blue</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-periwinkle)"/> periwinkle</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-lavender)"/> pale-lavender</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-pink)"/> pale-pink</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-blush)"/> blush</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-peach)"/> peach</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cream)"/> cream</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-sand)"/> sand</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-lime)"/> pale-lime</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-green)"/> pale-green</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-mint)"/> pale-mint</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cyan)"/> cyan</li>
-        <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-rose)"/> pale-rose</li>
-    </ul>
-</section>
+    <form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 1">
+        <div class="ff-grid" style="--ff-columns: repeat(auto-fit, minmax(min(100%, 32em), 1fr))">
+            <fieldset class="ff-panel">
+                <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
+                <h3>Weapons</h3>
+                <div class="ff-scroll" style="--ff-scroll-padding: .25em">
+                    <div class="ff-grid" style="--ff-row-gap: 0">
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-0" aria-label="Equip example slot 1" checked="checked"/>
+                            <select class="ff-select" name="item-0" aria-label="Example slot 1" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-1" aria-label="Equip example slot 2"/>
+                            <select class="ff-select" name="item-1" aria-label="Example slot 2" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-2" aria-label="Equip example slot 3"/>
+                            <select class="ff-select" name="item-2" aria-label="Example slot 3" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-3" aria-label="Equip example slot 4"/>
+                            <select class="ff-select" name="item-3" aria-label="Example slot 4" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <button type="button">Example button</button>
+    </form>
+    <fieldset class="ff-ui ff-panel ff-fit" style="--ff-scale: 2">
+        <legend>Example at 2x</legend>
+        <div class="ff-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Classes</th>
+                    <th scope="col">Effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Example🥢</th>
+                    <td class="ff-number">100</td>
+                    <td><span class="ff-row" style="--ff-gap: .25em">
+                    <span class="ff-class-sprite ff-portrait" role="img" aria-label="Fighter: can equip" data-allowed="true" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/>
+                    <span class="ff-class-sprite ff-portrait" role="img" aria-label="Knight: cannot equip" data-allowed="false" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=6')"/>
+                </span></td>
+                    <td class="ff-prose"><p>Example description.</p>
+                        <ul class="ff-inline-list">
+                            <li>Fire</li>
+                            <li>Ice</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    <form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 2">
+        <div class="ff-grid" style="--ff-columns: repeat(auto-fit, minmax(min(100%, 32em), 1fr))">
+            <fieldset class="ff-panel">
+                <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
+                <h3>Weapons</h3>
+                <div class="ff-scroll" style="--ff-scroll-padding: .25em">
+                    <div class="ff-grid" style="--ff-row-gap: 0">
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-0" aria-label="Equip example slot 1" checked="checked"/>
+                            <select class="ff-select" name="item-0" aria-label="Example slot 1" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-1" aria-label="Equip example slot 2"/>
+                            <select class="ff-select" name="item-1" aria-label="Example slot 2" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-2" aria-label="Equip example slot 3"/>
+                            <select class="ff-select" name="item-2" aria-label="Example slot 3" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                            <input type="checkbox" class="ff-equipped" name="equipped-3" aria-label="Equip example slot 4"/>
+                            <select class="ff-select" name="item-3" aria-label="Example slot 4" style="--ff-option-width: 8ch">
+                                <option/>
+                                <option selected="selected">Example🗡</option>
+                                <option>Example🥢</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <button type="button">Example button</button>
+    </form>
+    <form action="#" class="ff-ui ff-panel ff-row" style="--ff-scale: 2; --ff-wrap: wrap; --ff-gap: 1em">
+        <label for="example-save">.sav File</label><input id="example-save" name="save" type="file"/>
+        <button type="button">Load save</button>
+        <a href="#palette">View the color palette</a>
+    </form>
+    <h2>Full NES palette</h2>
+    <p>These 55 named colors cover the renderer's 64 NES indices. Repeated black indices share one color. The RGB approximation matches generated PNGs; no ROM is needed for these swatches.</p>
+    <section id="palette" class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">
+        <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(22em, 1fr)); gap: 1em; padding: 0; margin: 0; list-style: none">
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-gray)"/> gray</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-blue)"/> blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-blue)"/> dark-blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-indigo)"/> indigo</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-purple)"/> purple</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-wine)"/> wine</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-red)"/> dark-red</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-rust)"/> rust</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-brown)"/> brown</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-forest-green)"/> forest-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-green)"/> dark-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pine-green)"/> pine-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-teal)"/> dark-teal</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-black)"/> black</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-silver)"/> silver</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-azure)"/> azure</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-royal-blue)"/> royal-blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-violet)"/> violet</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-magenta)"/> magenta</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-rose)"/> rose</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-red)"/> red</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-orange)"/> orange</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-ochre)"/> ochre</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-bright-green)"/> bright-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-green)"/> green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-emerald)"/> emerald</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-teal)"/> teal</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-off-white)"/> off-white</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-sky-blue)"/> sky-blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cornflower-blue)"/> cornflower-blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-lavender)"/> lavender</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-orchid)"/> orchid</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pink)"/> pink</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-salmon)"/> salmon</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-apricot)"/> apricot</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-gold)"/> gold</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-lime)"/> lime</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-leaf-green)"/> leaf-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-mint)"/> mint</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-turquoise)"/> turquoise</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-dark-gray)"/> dark-gray</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-white)"/> white</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-blue)"/> pale-blue</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-periwinkle)"/> periwinkle</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-lavender)"/> pale-lavender</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-pink)"/> pale-pink</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-blush)"/> blush</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-peach)"/> peach</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cream)"/> cream</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-sand)"/> sand</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-lime)"/> pale-lime</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-green)"/> pale-green</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-mint)"/> pale-mint</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-cyan)"/> cyan</li>
+            <li><span aria-hidden="true" style="display: inline-block; width: 3em; height: 2em; vertical-align: middle; border: var(--ff-border) solid var(--ff-white); background: var(--ff-pale-rose)"/> pale-rose</li>
+        </ul>
+    </section>
+</article>
 </body>
 </html>
