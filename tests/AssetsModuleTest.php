@@ -30,8 +30,21 @@ final class AssetsModuleTest extends AbstractModuleTest {
             unset($assets['farah://slothsoft@final-fantasy/i/gfx/items']);
             unset($assets['farah://slothsoft@final-fantasy/i/gfx/cursor']);
             unset($assets['farah://slothsoft@final-fantasy/i/font']);
+            unset($assets['farah://slothsoft@final-fantasy/i/gfx/map']);
         }
         return $assets;
+    }
+    
+    /** @dataProvider assetLinkProvider */
+    public function testAssetHasValidLink(string $context, string $link): void {
+        $rom = Configuration::getRomPath('i');
+        if (str_starts_with($link, '/slothsoft@final-fantasy/i/gfx/map?') && ($rom === null || ! is_readable($rom))) {
+            $this->expectException(\Slothsoft\Farah\Exception\HttpStatusException::class);
+            $this->expectExceptionCode(503);
+            Module::resolveToResult(FarahUrl::createFromReference('farah:/' . $link));
+            return;
+        }
+        parent::testAssetHasValidLink($context, $link);
     }
     
     public function testDomainSchemaResolvesAtItsNamespaceLocation(): void {
