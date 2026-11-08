@@ -105,6 +105,12 @@ clicked button supplies `ff-action`, and only upload reads `ff-save`.
 The host chooses the form action. Successful downloads return the edited save;
 errors and loaded party data are represented in the domain XML.
 
+POST `ff-action=preview` with the same equipment fields and user ID to compute
+an unsaved editor state. This uses the exact save validation and stat calculation,
+including class-specific rules and byte overflow. The response is the usual XML,
+with `sf1:error` on invalid equipment. Preview never creates or writes a stored
+save, does not consume uploads, and leaves the disk modification time unchanged.
+
 ## Class graphics
 
 Class PNGs are generated on demand from the configured private ROM. The ROM

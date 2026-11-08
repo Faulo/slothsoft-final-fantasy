@@ -65,18 +65,21 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
         $stored = $repository->load($user);
         $contents = $stored ?? Save::newGame($rom);
         $save = new Save($contents);
+        $preview = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['ff-action'] ?? '') === 'preview';
         try {
             if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $action = $_POST['ff-action'] ?? '';
                 // Retain support for the original stateless form on first submission.
-                if ($action === 'upload' || ($stored === null && isset($_POST['ff-source']))) {
+                if ($action === 'upload' || (! $preview && $stored === null && isset($_POST['ff-source']))) {
                     $candidate = $this->readPostedSave();
                     $save = new Save($candidate);
                     $contents = $candidate;
                 }
-                if ($action === 'download' || $action === 'save') {
+                if ($action === 'download' || $action === 'save' || $preview) {
                     $contents = $save->withEquipment($this->readEquipment($_POST['equipment'] ?? null), $rom);
-                    $repository->store($user, $contents);
+                    if (! $preview) {
+                        $repository->store($user, $contents);
+                    }
                     if ($action === 'download') {
                         throw new HttpDownloadAssetException(new ExecutableStrategies(new FileWriterResultBuilder(FileInfoFactory::createFromString($contents), 'Final Fantasy (USA)-edited.sav')));
                     }
@@ -85,7 +88,7 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
                     throw new InvalidArgumentException('Unknown editor action.');
                 }
             }
-            if ($stored === null || (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['ff-action'] ?? '') === 'upload')) {
+            if (! $preview && ($stored === null || (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['ff-action'] ?? '') === 'upload'))) {
                 $repository->store($user, $contents);
             }
         } catch (InvalidArgumentException $exception) {

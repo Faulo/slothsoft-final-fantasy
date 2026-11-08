@@ -75,6 +75,53 @@ final class PageSchemaTest extends TestCase {
         return Module::resolveToDOMWriter(FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/api/data?view=' . $view))->toDocument();
     }
     
+    /** @dataProvider previews */
+    public function testPreviewDoesNotWriteSave(bool $stored, bool $valid): void {
+        $this->requireRom();
+        $path = Configuration::getRomPath('i');
+        self::assertNotNull($path);
+        $rom = GameData::fromFile($path);
+        $contents = Save::newGame($rom);
+        $directory = ServerEnvironment::getDataDirectory() . '/slothsoft/final-fantasy/i/users';
+        $repository = new SaveRepository($directory);
+        $user = SaveRepository::userId('');
+        if ($stored) {
+            $repository->store($user, $contents);
+            self::assertTrue(touch($directory . '/' . $user . '.sav', 946684800));
+        }
+        $characters = (new Save($contents))->getCharacters();
+        $weapons = array_filter($rom->getWeapons(), static fn(array $item): bool => in_array(0, $item['classes'], true));
+        $weapon = reset($weapons);
+        self::assertIsArray($weapon);
+        $equipment = [];
+        foreach ($characters as $index => $character) {
+            foreach (['weapons', 'armor'] as $kind) {
+                foreach ($character[$kind] as $slot => $item) {
+                    $equipment[$index][$kind][$slot] = ['id' => (string) $item['id']];
+                }
+            }
+        }
+        $equipment[0]['weapons'][0] = ['id' => $valid ? (string) $weapon['id'] : '41', 'equipped' => '1'];
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_GET = ['user' => $user];
+        $_POST = ['ff-action' => 'preview', 'equipment' => $equipment];
+        $document = $this->loadPage('editor');
+        $xpath = new DOMXPath($document);
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame($valid ? 0.0 : 1.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:error)'));
+        $stats = $characters[0]['stats'];
+        self::assertSame((string) ($valid ? ($stats['damage'] + $weapon['damage']) & 255 : $stats['damage']), $xpath->evaluate('string(//sf1:character[@index="0"]/sf1:stats/@damage)'));
+        self::assertSame((string) ($valid ? ($stats['hit'] + $weapon['hit']) & 255 : $stats['hit']), $xpath->evaluate('string(//sf1:character[@index="0"]/sf1:stats/@hit)'));
+        self::assertSame($stored ? $contents : null, $repository->load($user));
+        self::assertSame($stored ? 946684800 : null, $repository->getModifiedTime($user));
+        $this->validate($document);
+    }
+    
+    /** @return list<array{bool,bool}> */
+    public function previews(): array {
+        return [[true, true], [true, false], [false, true], [false, false]];
+    }
+    
     private function validate(DOMDocument $document): void {
         foreach ($document->getElementsByTagNameNS(GameData::XML_NAMESPACE, '*') as $element) {
             self::assertSame('sf1', $element->prefix);

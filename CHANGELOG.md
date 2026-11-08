@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add a read-only equipment preview action to the editor XML API, using the save
+  calculation without writing the save or changing its disk timestamp.
+
 - Allow `ff-number` on spans for right-aligned numeric grid values.
 
 - Expose read-only character HP, level, attributes and cached combat stats through
