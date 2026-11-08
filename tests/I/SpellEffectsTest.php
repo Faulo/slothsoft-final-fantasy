@@ -39,6 +39,20 @@ final class SpellEffectsTest extends TestCase {
         ];
     }
     
+    public function testUtilityDescriptions(): void {
+        $rules = $this->element(['life-hp' => 1]);
+        foreach ([
+                     34 => 'Outside battle, revives one fallen ally with 1 HP.',
+                     39 => 'Returns the party to the previous floor.',
+                     41 => 'Outside battle, removes Stone from one ally.',
+                     42 => 'Returns the party to the overworld.',
+                     57 => 'Outside battle, revives one fallen ally with full HP.'
+                 ] as $id => $expected) {
+            $spell = $this->element(['id' => $id, 'effect' => 0]);
+            self::assertSame([$expected], SpellEffects::describe($spell, $rules));
+        }
+    }
+    
     public function testChangingSourceValuesChangesDescription(): void {
         $spell = $this->element(['id' => 17, 'effect' => 7, 'effectivity' => 37, 'element-mask' => 0, 'target' => 16, 'hit' => 0]);
         $rules = $this->element(['base-hit' => 159, 'hp-limit' => 400]);

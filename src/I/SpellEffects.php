@@ -49,9 +49,9 @@ final class SpellEffects {
         $lines = match ($effect) {
             0 => [match ($id) {
                 34 => 'Outside battle, revives one fallen ally with ' . $rules->getAttribute('life-hp') . ' HP.',
-                39 => 'Outside battle, returns the party to the previous floor. On the first floor, leaves the dungeon.',
+                39 => 'Returns the party to the previous floor.',
                 41 => 'Outside battle, removes Stone from one ally.',
-                42 => 'Outside battle, leaves the dungeon and returns the party to the overworld.',
+                42 => 'Returns the party to the overworld.',
                 57 => 'Outside battle, revives one fallen ally with full HP.',
                 default => 'No effect in battle.'
             }],
