@@ -1,0 +1,66 @@
+<?php
+declare(strict_types = 1);
+
+namespace Slothsoft\FinalFantasy\I;
+
+use DOMDocument;
+use DOMElement;
+use PHPUnit\Framework\TestCase;
+
+/** @covers \Slothsoft\FinalFantasy\I\SpellEffects */
+final class SpellEffectsTest extends TestCase {
+    /** @dataProvider effects */
+    public function testImplementedEffects(int $effect, int $power, int $element, int $target, string $expected): void {
+        $spell = $this->element(['id' => 5, 'effect' => $effect, 'effectivity' => $power, 'element-mask' => $element, 'target' => $target, 'hit' => 24]);
+        $rules = $this->element(['base-hit' => 148, 'hp-limit' => 300]);
+        self::assertStringContainsString($expected, implode(' ', SpellEffects::describe($spell, $rules)));
+    }
+    
+    public function effects(): array {
+        return [
+            [1, 10, 16, 2, '10-20 Fire damage to one enemy.'],
+            [2, 40, 0, 1, 'Only affects undead enemies.'],
+            [3, 2, 2, 2, 'Inflicts Stone on one enemy.'],
+            [3, 32, 1, 1, 'Success roll at most 172 minus Magic Defense.'],
+            [5, 40, 1, 1, 'Lowers morale of each enemy by 40'],
+            [7, 140, 0, 8, 'Restores 140-255 HP to each ally'],
+            [8, 64, 0, 16, 'Removes Silence from one ally.'],
+            [9, 12, 0, 8, 'Raises defense of each ally by 12'],
+            [10, 137, 0, 8, 'Grants Status, Death, Earth resistance'],
+            [12, 0, 0, 16, 'Cancels SLOW, otherwise doubles hit count.'],
+            [13, 16, 0, 4, 'No attack or accuracy increase'],
+            [14, 20, 0, 2, 'Always misses'],
+            [15, 0, 0, 16, 'Cannot target dead or petrified allies.'],
+            [16, 20, 0, 1, 'Raises evasion of each enemy by 20'],
+            [17, 0, 0, 2, 'Does not remove enemy resistances'],
+            [18, 1, 8, 2, 'at most 300 current HP, unless resistant. No random roll.']
+        ];
+    }
+    
+    public function testChangingSourceValuesChangesDescription(): void {
+        $spell = $this->element(['id' => 17, 'effect' => 7, 'effectivity' => 37, 'element-mask' => 0, 'target' => 16, 'hit' => 0]);
+        $rules = $this->element(['base-hit' => 159, 'hp-limit' => 400]);
+        $field = $rules->ownerDocument->createElementNS(GameData::XML_NAMESPACE, 'sf1:field-healing');
+        foreach (['spell' => 17, 'minimum' => 45, 'spread' => 7] as $name => $value) {
+            $field->setAttribute($name, (string) $value);
+        }
+        $rules->appendChild($field);
+        self::assertSame(['Restores 37-74 HP to one ally in battle.', 'Outside battle, restores 45-52 HP to one ally.'], SpellEffects::describe($spell, $rules));
+        $spell->setAttribute('effect', '1');
+        $spell->setAttribute('hit', '31');
+        self::assertStringContainsString('190 minus Magic Defense', implode(' ', SpellEffects::describe($spell, $rules)));
+        $spell->setAttribute('effect', '18');
+        self::assertStringContainsString('at most 400 current HP', implode(' ', SpellEffects::describe($spell, $rules)));
+    }
+    
+    /** @param array<string, int> $attributes */
+    private function element(array $attributes): DOMElement {
+        $document = new DOMDocument();
+        $element = $document->createElement('record');
+        $document->appendChild($element);
+        foreach ($attributes as $name => $value) {
+            $element->setAttribute($name, (string) $value);
+        }
+        return $element;
+    }
+}

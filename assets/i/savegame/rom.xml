@@ -37,6 +37,23 @@
                 <integer name="target" position="3" size="1" />
                 <integer name="effect" position="4" size="1" />
             </repeat-group>
+            <!-- Immediate operands in the US spell routines, not replacement balance values. -->
+            <integer name="magic-base-hit-low" position="0x33874" size="1" />
+            <integer name="magic-base-hit-high" position="0x33879" size="1" />
+            <integer name="magic-roll-max" position="0x33A86" size="1" />
+            <integer name="magic-weakness-hit" position="0x3386F" size="1" />
+            <integer name="magic-hp-limit-low" position="0x33AE0" size="1" />
+            <integer name="magic-hp-limit-high" position="0x33AE5" size="1" />
+            <integer name="life-hp" position="0x3B02F" size="1" />
+            <!-- Menu healing uses frame-counter masks and separate base values. -->
+            <repeat-group name="menu-cure" position="0x3AF5F" group-count="3" group-size="8">
+                <integer name="spread" position="0" size="1" />
+                <integer name="minimum" position="2" size="1" />
+            </repeat-group>
+            <repeat-group name="menu-heal" position="0x3AFDF" group-count="3" group-size="9">
+                <integer name="spread" position="0" size="1" />
+                <integer name="minimum" position="3" size="1" />
+            </repeat-group>
             <repeat-group name="prices" position="0x37C00" group-count="256" group-size="2">
                 <integer name="price" size="2" byte-order="little" />
             </repeat-group>

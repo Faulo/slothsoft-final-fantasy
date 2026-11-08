@@ -96,6 +96,13 @@ This namespace describes game data extracted from the original US NES release of
     <xs:complexType name="spell">
         <xs:sequence>
             <xs:element name="class-ref" type="sf1:classReference" minOccurs="0" maxOccurs="12" />
+            <xs:element name="effect-description" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="line" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
         <xs:attributeGroup ref="sf1:identity" />
         <xs:attribute name="id" type="sf1:spellReference" use="required" />
@@ -200,6 +207,24 @@ This namespace describes game data extracted from the original US NES release of
                             <xs:sequence>
                                 <xs:element name="spell" type="sf1:spell" minOccurs="64" maxOccurs="64" />
                             </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="spell-rules" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="field-healing" minOccurs="0" maxOccurs="6">
+                                    <xs:complexType>
+                                        <xs:attribute name="spell" type="sf1:spellReference" use="required" />
+                                        <xs:attribute name="minimum" type="xs:unsignedByte" use="required" />
+                                        <xs:attribute name="spread" type="xs:unsignedByte" use="required" />
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="base-hit" type="xs:unsignedShort" use="required" />
+                            <xs:attribute name="roll-max" type="xs:unsignedByte" use="required" />
+                            <xs:attribute name="weakness-hit" type="xs:unsignedByte" use="required" />
+                            <xs:attribute name="hp-limit" type="xs:unsignedShort" use="required" />
+                            <xs:attribute name="life-hp" type="xs:unsignedByte" use="required" />
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="error" type="xs:string" minOccurs="0" />

@@ -70,6 +70,7 @@ final class GameData implements EquipmentCatalog {
             throw new RuntimeException('Could not transform the game data.');
         }
         $this->document = $result;
+        SpellEffects::appendTo($this->document);
     }
     
     /** @throws Exception */
@@ -163,6 +164,12 @@ final class GameData implements EquipmentCatalog {
                 $record[$key] = in_array($key, ['name', 'school'], true) ? $attribute->value : (int) $attribute->value;
             }
             $record['classes'] = [];
+            if ($group === 'spells') {
+                $record['effectDescription'] = [];
+                foreach ($xpath->query('sf1:effect-description/sf1:line', $node) as $line) {
+                    $record['effectDescription'][] = $line->textContent;
+                }
+            }
             foreach ($xpath->query('sf1:class-ref', $node) as $class) {
                 assert($class instanceof DOMElement);
                 $record['classes'][] = (int) $class->getAttribute('id');

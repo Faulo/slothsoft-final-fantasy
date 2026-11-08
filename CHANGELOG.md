@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Describe all US spell effects in domain XML, using ROM power, accuracy, targets, elements, status masks, battle constants and separate menu-healing operands. Document implemented spell bugs and expose descriptions through `getSpells()`.
+
 - Give all panel text an opaque black, unblurred shadow offset one pixel right and down at the configured scale, inherited by text and controls.
 
 - Use palette colors instead of underlines for panel links: gold, ochre (the Black Mage hat's darker shade, NES $18) when visited, cyan on hover or keyboard focus, and white while active. Preserve keyboard focus outlines.

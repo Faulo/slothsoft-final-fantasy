@@ -68,6 +68,23 @@
                     </sf1:spell>
                 </xsl:for-each>
             </sf1:spells>
+            <sf1:spell-rules
+                base-hit="{$file/sse:integer[@name='magic-base-hit-low']/@value + 256 * $file/sse:integer[@name='magic-base-hit-high']/@value}"
+                roll-max="{$file/sse:integer[@name='magic-roll-max']/@value}"
+                weakness-hit="{$file/sse:integer[@name='magic-weakness-hit']/@value}"
+                life-hp="{$file/sse:integer[@name='life-hp']/@value}"
+                hp-limit="{$file/sse:integer[@name='magic-hp-limit-low']/@value + 256 * $file/sse:integer[@name='magic-hp-limit-high']/@value}">
+                <xsl:for-each select="$file/sse:instruction[@name='menu-cure']/sse:group">
+                    <sf1:field-healing spell="{1 + (position() - 1) * 16}">
+                        <xsl:apply-templates select="sse:integer" />
+                    </sf1:field-healing>
+                </xsl:for-each>
+                <xsl:for-each select="$file/sse:instruction[@name='menu-heal']/sse:group">
+                    <sf1:field-healing spell="{20 + (position() - 1) * 16}">
+                        <xsl:apply-templates select="sse:integer" />
+                    </sf1:field-healing>
+                </xsl:for-each>
+            </sf1:spell-rules>
         </sf1:final-fantasy>
     </xsl:template>
     <xsl:template match="sse:integer">
