@@ -98,8 +98,10 @@ names must come from the XML API. Legacy table, class-list, tooltip and item-ico
 helpers remain available but are not needed by new compositions.
 
 For editing, hosts consume `i/api/data?view=editor`. It accepts `ff-action=upload`
-with the `ff-save` file, or `ff-action=download` with the returned base64
-`ff-source` and `equipment[character][weapons|armor][slot][id|equipped]` fields.
+with the `ff-save` file, or `ff-action=save`/`ff-action=download` with
+`equipment[character][weapons|armor][slot][id|equipped]` fields. Carry the returned
+`user` ID in the form URL. One multipart form may contain all controls: the
+clicked button supplies `ff-action`, and only upload reads `ff-save`.
 The host chooses the form action. Successful downloads return the edited save;
 errors and loaded party data are represented in the domain XML.
 
@@ -177,6 +179,10 @@ byte overflow and Black Belt/Master rules. Other SRAM bytes are preserved.
 The checksum follows the game's interleaved 6502 carry accumulation and the
 result is validated before download. The editor persists validated saves under random user IDs; the legacy base64
 source field remains accepted on a first submission for compatibility.
+The editor XML also exposes `size` in bytes and, when a stored save exists,
+`modified` as its actual filesystem modification time in UTC (`xs:dateTime`).
+Opening an existing save does not change this timestamp. Saving, uploading and
+downloading write the stored save and update its modification time.
 
 ## Development and validation
 

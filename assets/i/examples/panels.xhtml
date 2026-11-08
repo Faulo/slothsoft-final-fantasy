@@ -85,7 +85,7 @@
             </fieldset>
         </div>
         <div class="ff-grid" style="--ff-columns: minmax(0, 1fr); --ff-gap: 0">
-            <button type="button">Save changes</button>
+            <button type="button" value="save">Save changes</button>
             <button type="button">Download save</button>
         </div>
     </form>
@@ -120,24 +120,30 @@
             </table>
         </div>
     </fieldset>
-    <div class="ff-ui ff-row ff-scroll" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-wrap: wrap; --ff-align: start; --ff-gap: 1em; --ff-scroll-padding: .25em">
+    <form action="#" method="post" enctype="multipart/form-data" id="example-editor" class="ff-ui ff-row ff-scroll" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-wrap: wrap; --ff-align: start; --ff-gap: 1em; --ff-scroll-padding: .25em">
         <div class="ff-grid ff-fit" style="--ff-columns: minmax(0, 1fr); --ff-max-width: 25em">
-            <form action="#" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr); --ff-gap: 0">
-                <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em"><span class="ff-fit" style="--ff-max-width: 12ch"><input id="example-save" name="save" type="file"/></span><label for="example-save">.sav File</label></div>
-                <button type="button">Load save</button>
+            <div class="ff-panel" style="--ff-background: var(--ff-blue)">
+                <p>Last change</p>
+                <time datetime="2000-01-01T00:00:00Z">2000-01-01<br/>00:00:00 UTC</time>
+                <p>Size 8 KiB</p>
                 <a href="#palette">View the color palette</a>
-            </form>
+            </div>
             <div class="ff-panel" style="--ff-background: var(--ff-blue)">
                 <a href="#example-editor" aria-label="Example bookmark">0123456789abcdef
                     <wbr/>
                     0123456789abcdef</a>
             </div>
             <div class="ff-panel ff-grid" style="--ff-background: var(--ff-blue); --ff-columns: minmax(0, 1fr); --ff-gap: 0">
-                <button type="submit" form="example-editor" name="action" value="save">Save changes</button>
-                <button type="submit" form="example-editor" name="action" value="download">Download save</button>
+                <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
+                    <span class="ff-fit" style="--ff-max-width: 12ch"><input id="example-save" name="save" type="file"/></span>
+                    <label for="example-save">.sav File</label>
+                </div>
+                <button type="submit" name="action" value="upload">Load save</button>
+                <button type="submit" name="action" value="save">Save changes</button>
+                <button type="submit" name="action" value="download">Download save</button>
             </div>
         </div>
-        <form action="#" method="get" id="example-editor" class="ff-ui ff-fit" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-max-width: 56em">
+        <div class="ff-fit" style="--ff-max-width: 56em">
             <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
                 <fieldset class="ff-panel" style="--ff-background: var(--ff-blue)">
                     <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
@@ -180,8 +186,8 @@
                     </div>
                 </fieldset>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
     <h2>Full NES palette</h2>
     <p>These 55 named colors cover the renderer's 64 NES indices. Repeated black indices share one color. The RGB approximation matches generated PNGs; no ROM is needed for these swatches.</p>
     <section id="palette" class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">

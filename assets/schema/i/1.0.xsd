@@ -164,6 +164,8 @@ This namespace describes game data extracted from the original US NES release of
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
+        <xs:attribute name="modified" type="xs:dateTime" />
+        <xs:attribute name="size" type="xs:nonNegativeInteger" />
         <xs:attribute name="source" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:base64Binary">

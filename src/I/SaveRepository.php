@@ -34,6 +34,19 @@ final class SaveRepository {
         return $contents;
     }
     
+    public function getModifiedTime(string $user): ?int {
+        $path = $this->path($user);
+        clearstatcache(true, $path);
+        if (! is_file($path)) {
+            return null;
+        }
+        $modified = filemtime($path);
+        if ($modified === false) {
+            throw new RuntimeException('Could not read the saved game modification time.');
+        }
+        return $modified;
+    }
+    
     public function store(string $user, string $contents): void {
         new Save($contents);
         $path = $this->path($user);

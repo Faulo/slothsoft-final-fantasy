@@ -110,8 +110,10 @@ without another `ff-ui` for nested frames that inherit the root theme.
   at their natural width before wrapping, including inside a content-sized form.
 - Menu screen: a wrapping `ff-row` with `--ff-align: start` holds a single-column
   `ff-grid` sidebar and the party form. Use `ff-fit` and `--ff-max-width` to cap
-  their widths. Sidebar commands can target the party form with native HTML
-  `form` attributes; no nested forms or JavaScript are necessary.
+  their widths. One multipart form can contain the sidebar, file chooser and
+  equipment panels. Give each submit button its own action value; leave the file
+  input optional so saving and downloading do not require an upload. The host
+  supplies metadata such as modification time; the example uses illustrative values.
 - Character: nested `ff-panel` fieldset; `ff-row` inside its legend combines
   name and sprite.
 - Equipment: `ff-scroll` with `--ff-scroll-padding: .25em`, containing `ff-grid`

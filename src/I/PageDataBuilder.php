@@ -91,7 +91,7 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
         } catch (InvalidArgumentException $exception) {
             $this->appendText($root, 'error', $exception->getMessage());
         }
-        $this->appendSave($root, $save, $contents);
+        $this->appendSave($root, $save, $contents, $repository->getModifiedTime($user));
     }
     
     private function readPostedSave(): string {
@@ -148,9 +148,13 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
     }
     
     /** @throws DOMException */
-    private function appendSave(DOMElement $root, Save $save, string $contents): void {
+    private function appendSave(DOMElement $root, Save $save, string $contents, ?int $modified): void {
         $editor = $this->appendText($root, 'editor', '');
         $editor->setAttribute('source', base64_encode($contents));
+        $editor->setAttribute('size', (string) strlen($contents));
+        if ($modified !== null) {
+            $editor->setAttribute('modified', gmdate('Y-m-d\TH:i:s\Z', $modified));
+        }
         foreach ($save->getCharacters() as $character) {
             $node = $this->appendText($editor, 'character', '');
             foreach (['index', 'name', 'class'] as $key) {

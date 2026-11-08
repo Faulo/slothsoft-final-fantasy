@@ -6,6 +6,7 @@ namespace Slothsoft\FinalFantasy\I;
 use DOMDocument;
 use DOMXPath;
 use PHPUnit\Framework\TestCase;
+use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\Module\Module;
 use Slothsoft\FinalFantasy\Configuration;
@@ -44,6 +45,28 @@ final class PageSchemaTest extends TestCase {
         self::assertSame(4.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character)'));
         self::assertSame(32.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character/*/sf1:slot)'));
         self::assertSame(base64_encode($contents), $xpath->evaluate('string(/sf1:final-fantasy/sf1:editor/@source)'));
+        $this->validate($document);
+    }
+    
+    public function testEditorMetadataUsesDiskModificationTime(): void {
+        $this->requireRom();
+        $directory = ServerEnvironment::getDataDirectory() . '/slothsoft/final-fantasy/i/users';
+        $repository = new SaveRepository($directory);
+        $user = SaveRepository::userId('');
+        $contents = str_repeat("\0", 8192);
+        $contents[0x4FD] = "\xFF";
+        $contents[0x4FE] = "\x55";
+        $contents[0x4FF] = "\xAA";
+        $repository->store($user, $contents);
+        self::assertTrue(touch($directory . '/' . $user . '.sav', 946684800));
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET = ['user' => $user];
+        $document = $this->loadPage('editor');
+        $xpath = new DOMXPath($document);
+        $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
+        self::assertSame('2000-01-01T00:00:00Z', $xpath->evaluate('string(/sf1:final-fantasy/sf1:editor/@modified)'));
+        self::assertSame('8192', $xpath->evaluate('string(/sf1:final-fantasy/sf1:editor/@size)'));
+        self::assertSame(946684800, $repository->getModifiedTime($user));
         $this->validate($document);
     }
     

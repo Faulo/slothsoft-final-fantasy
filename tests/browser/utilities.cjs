@@ -35,8 +35,12 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
             await equipped.press('Space');
             assert.equal(await equipped.evaluate(node => getComputedStyle(node, '::after').opacity), '0.25');
             await equipped.press('Space');
-            const command = index === 0 ? form.locator('button').first() : page.locator('button[form=example-editor]').first();
-            const before = await command.boundingBox();
+            const command = form.locator('button[value=save]');
+            const commandBounds = () => command.evaluate(node => {
+                const rect = node.getBoundingClientRect();
+                return [rect.left + scrollX, rect.top + scrollY, rect.width, rect.height];
+            });
+            const before = await commandBounds();
             await command.focus();
             const focused = await command.evaluate(node => {
                 const css = getComputedStyle(node);
@@ -46,7 +50,7 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
             assert.match(focused[2], /\/i\/gfx\/cursor/);
             assert.equal(focused[3], `${16 * scale}px ${16 * scale}px`);
             assert.equal(focused[4], 'none');
-            assert.deepEqual(await command.boundingBox(), before, 'Hand must not shift command geometry');
+            (await commandBounds()).forEach((value, index) => assert.ok(Math.abs(value - before[index]) < .01, 'Hand must not shift command geometry'));
         }
         const file = page.locator('input[type=file]');
         await file.focus();

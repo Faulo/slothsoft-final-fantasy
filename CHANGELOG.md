@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Expose save size and the server file's last-modified time in editor XML, without updating timestamps when viewing a save.
+
 - Add `--ff-align` for row alignment and `--ff-max-width` for bounded content sizing, with a native form-associated menu example. Leave spacing around nested themed panels to their parent layout.
 
 - Render buttons and native file-selector buttons as borderless menu commands with the original ROM hand on hover/focus and cyan text. Demonstrate vertical command lists and horizontally wrapping party fieldsets in content-sized panels.

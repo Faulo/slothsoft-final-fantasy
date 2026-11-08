@@ -73,7 +73,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
         self::assertTrue($document->loadXML((string) $response->getBody()));
         $xpath = new DOMXPath($document);
         $xpath->registerNamespace('html', 'http://www.w3.org/1999/xhtml');
-        self::assertSame(3.0, $xpath->evaluate('count(//html:form[contains(@class, "ff-ui")])'));
+        self::assertSame(2.0, $xpath->evaluate('count(//html:form[contains(@class, "ff-ui")])'));
         self::assertSame(2.0, $xpath->evaluate('count(//html:fieldset[contains(@class, "ff-ui")]//html:table)'));
         self::assertSame('/slothsoft@final-fantasy/i/css/default', $xpath->evaluate('string(//html:link[@rel="stylesheet"]/@href)'));
         self::assertSame(0.0, $xpath->evaluate('count(//html:a[not(starts-with(@href, "#"))] | //html:nav)'));
