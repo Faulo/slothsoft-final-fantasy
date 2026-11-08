@@ -9,6 +9,7 @@ use DOMException;
 use InvalidArgumentException;
 use RuntimeException;
 use Slothsoft\Core\IO\FileInfoFactory;
+use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\FinalFantasy\Configuration;
 use Slothsoft\Farah\Exception\HttpDownloadAssetException;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -17,7 +18,7 @@ use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStra
 use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\FileWriterResultBuilder;
 
-/** ROM-backed reference data and stateless equipment editing. Saves are never published or retained. */
+/** ROM-backed reference data and persistent private equipment editing. */
 final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
     private const NS = GameData::XML_NAMESPACE;
     
@@ -39,7 +40,11 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
                 assert($root instanceof DOMElement);
                 $root->setAttribute('view', $view);
                 if ($view === 'editor') {
-                    $this->processEditor($root, $rom);
+                    $user = $_GET['user'] ?? $args->get('user', '');
+                    if (! is_string($user)) {
+                        throw new InvalidArgumentException('Invalid save user ID.');
+                    }
+                    $this->processEditor($root, $rom, $user);
                 }
             } catch (HttpDownloadAssetException $exception) {
                 throw $exception;
@@ -53,27 +58,40 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
     }
     
     /** @throws DOMException */
-    private function processEditor(DOMElement $root, GameData $rom): void {
-        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-            return;
-        }
+    private function processEditor(DOMElement $root, GameData $rom, string $user): void {
+        $user = SaveRepository::userId($user);
+        $root->setAttribute('user', $user);
+        $repository = new SaveRepository(ServerEnvironment::getDataDirectory() . '/slothsoft/final-fantasy/i/users');
+        $stored = $repository->load($user);
+        $contents = $stored ?? Save::newGame($rom);
+        $save = new Save($contents);
         try {
-            $contents = $this->readPostedSave();
-            $save = new Save($contents);
-        } catch (InvalidArgumentException $exception) {
-            $this->appendText($root, 'error', $exception->getMessage());
-            return;
-        }
-        try {
-            if (($_POST['ff-action'] ?? '') === 'download') {
-                $output = $save->withEquipment($this->readEquipment($_POST['equipment'] ?? null), $rom);
-                throw new HttpDownloadAssetException(new ExecutableStrategies(new FileWriterResultBuilder(FileInfoFactory::createFromString($output), 'Final Fantasy (USA)-edited.sav')));
+            if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+                $action = $_POST['ff-action'] ?? '';
+                // Retain support for the original stateless form on first submission.
+                if ($action === 'upload' || ($stored === null && isset($_POST['ff-source']))) {
+                    $candidate = $this->readPostedSave();
+                    $save = new Save($candidate);
+                    $contents = $candidate;
+                }
+                if ($action === 'download' || $action === 'save') {
+                    $contents = $save->withEquipment($this->readEquipment($_POST['equipment'] ?? null), $rom);
+                    $repository->store($user, $contents);
+                    if ($action === 'download') {
+                        throw new HttpDownloadAssetException(new ExecutableStrategies(new FileWriterResultBuilder(FileInfoFactory::createFromString($contents), 'Final Fantasy (USA)-edited.sav')));
+                    }
+                    $save = new Save($contents);
+                } elseif ($action !== 'upload') {
+                    throw new InvalidArgumentException('Unknown editor action.');
+                }
             }
-            $this->appendSave($root, $save, $contents);
+            if ($stored === null || (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['ff-action'] ?? '') === 'upload')) {
+                $repository->store($user, $contents);
+            }
         } catch (InvalidArgumentException $exception) {
             $this->appendText($root, 'error', $exception->getMessage());
-            $this->appendSave($root, $save, $contents);
         }
+        $this->appendSave($root, $save, $contents);
     }
     
     private function readPostedSave(): string {

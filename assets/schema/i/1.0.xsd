@@ -237,6 +237,7 @@ This namespace describes game data extracted from the original US NES release of
             <xs:attribute name="region" type="xs:string" fixed="US" />
             <xs:attribute name="rom-sha256" type="xs:string" />
             <xs:attribute name="view" type="xs:string" />
+            <xs:attribute name="user" type="xs:string" />
         </xs:complexType>
         <xs:key name="classId">
             <xs:selector xpath="sf1:classes/sf1:class" />

@@ -4,6 +4,10 @@
     <!-- Layout: https://github.com/Entroper/FF1Disassembly/tree/master/Final%20Fantasy%20Disassembly -->
     <archive path="game.nes" type="NES">
         <file file-name="1">
+            <binary name="initial-state" position="0x3000" size="256" />
+            <binary name="initial-flags" position="0x2F00" size="256" />
+            <binary name="starting-stats" position="0x3040" size="96" />
+            <binary name="starting-party" position="0x3A0AE" size="64" />
             <!-- Full menu font: bank 09:$8800, PPU tiles 80–FF. -->
             <image name="menu-font" position="0x24800" size="2048" width="128" height="64" bitplanes="2" />
             <!-- Equipment subset: bank 09:$8D40, PPU tiles D4–E1. -->

@@ -182,8 +182,8 @@ No-op exports are byte-identical. Changes update equipment slots, the checksum,
 and cached combat stats when the equipped set changes, reproducing original
 byte overflow and Black Belt/Master rules. Other SRAM bytes are preserved.
 The checksum follows the game's interleaved 6502 carry accumulation and the
-result is validated before download. The web flow is stateless: source save
-bytes travel as base64 in the form and are revalidated on download.
+result is validated before download. The editor persists validated saves under random user IDs; the legacy base64
+source field remains accepted on a first submission for compatibility.
 
 ## Development and validation
 
@@ -253,3 +253,12 @@ Native selects and options inherit the panel font and palette through CSS;
 Firefox is the rendering target. Panels use the menu's blue, white, gray and
 black palette (NES indices 01, 30, 00 and 0F), using the same conventional 2C02
 RGB approximation as the generated PNGs. Sprite transparency is preserved.
+
+The FF editor creates a random user ID on opening a fresh page. Its form actions
+and bookmark link retain `?user=...`; revisiting that URL loads the stored save.
+Save changes and downloads persist edits, while uploads replace that user's save.
+Files live privately under `ServerEnvironment::getDataDirectory()` at
+`slothsoft/final-fantasy/i/users`. The URL is the access key; no account is required.
+A fresh editor starts with the ROM's default party (Fighter, Thief, Black Belt,
+Red Mage), blank names, initial stats, flags, gold and empty inventory. These
+initial tables are extracted through the savegame manifest; no save is bundled.

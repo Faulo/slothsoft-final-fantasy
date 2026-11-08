@@ -104,6 +104,31 @@ final class GameData implements EquipmentCatalog {
         return NesSpriteSheet::toPng($tiles, substr($palettes, (ord($assignments[$class]) & 3) * 4, 4), $poses);
     }
     
+    /** New-game SRAM blocks, read exclusively through the ROM manifest. */
+    public function getNewGameState(): string {
+        $state = $this->readGraphics('//sse:binary[@name="initial-state"]') . str_repeat("\0", 256)
+            . $this->readGraphics('//sse:binary[@name="initial-flags"]') . str_repeat("\0", 256);
+        $stats = $this->readGraphics('//sse:binary[@name="starting-stats"]');
+        $party = $this->readGraphics('//sse:binary[@name="starting-party"]');
+        $state[0x14] = "\x01"; // On foot, as in GameStart.
+        for ($i = 0; $i < 4; $i++) {
+            $class = ord($party[$i * 16]);
+            $base = 0x100 + $i * 64;
+            $state[$base] = chr($class);
+            $state = substr_replace($state, substr($party, $i * 16 + 2, 4), $base + 2, 4);
+            $state[$base + 0x16] = chr(40);
+            foreach ([1 => 0x0A, 2 => 0x10, 3 => 0x11, 4 => 0x12, 5 => 0x13, 6 => 0x14, 7 => 0x20, 8 => 0x21, 9 => 0x23, 10 => 0x25] as $source => $target) {
+                $state[$base + $target] = $stats[$class * 16 + $source];
+            }
+            $state[$base + 0x0C] = $state[$base + 0x0A];
+            if ($class >= 3 && $class < 6) {
+                $state[0x320 + $i * 64] = "\x02";
+                $state[0x328 + $i * 64] = "\x02";
+            }
+        }
+        return $state;
+    }
+    
     public function getMenuFont(): string {
         return MenuFont::toTrueType($this->readGraphics('//sse:image[@name="menu-font"]'));
     }

@@ -9,6 +9,6 @@ use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFil
 final class PageParameters extends AbstractMapParameterFilter {
     /** @return array<string, StringSanitizer> */
     protected function createValueSanitizers(): array {
-        return ['view' => new StringSanitizer('home')];
+        return ['view' => new StringSanitizer('home'), 'user' => new StringSanitizer('')];
     }
 }

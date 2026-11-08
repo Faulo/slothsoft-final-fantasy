@@ -222,6 +222,32 @@ final class GameDataTest extends TestCase {
         self::assertSame('Falchon', $rom->getWeapons()[15]['name']);
     }
     
+    public function testNewGameAndPersistentSaves(): void {
+        $rom = new GameData($this->localRom());
+        $contents = Save::newGame($rom);
+        $save = new Save($contents);
+        self::assertSame([0, 1, 2, 3], array_column($save->getCharacters(), 'class'));
+        self::assertSame(8192, strlen($contents));
+        self::assertSame(400, ord($contents[0x41C]) + 256 * ord($contents[0x41D]));
+        self::assertSame(35, ord($contents[0x50A]));
+        self::assertSame(35, ord($contents[0x50C]));
+        self::assertSame(2, ord($contents[0x7E0]));
+        self::assertSame(2, ord($contents[0x7E8]));
+        self::assertSame(0, ord($contents[0x518]));
+        $repository = new SaveRepository(temp_dir('ff-save-test'));
+        $user = SaveRepository::userId('');
+        self::assertNotSame($user, SaveRepository::userId(''));
+        self::assertNull($repository->load($user));
+        $repository->store($user, $contents);
+        self::assertSame($contents, $repository->load($user));
+        $changed = $save->withEquipment([0 => ['weapons' => [0 => ['id' => 1, 'equipped' => false]]]], $rom);
+        $repository->store($user, $changed);
+        self::assertSame($changed, $repository->load($user));
+        self::assertNull($repository->load(SaveRepository::userId('')));
+        $this->expectException(\InvalidArgumentException::class);
+        $repository->load('../escape');
+    }
+    
     private function localRom(): string {
         $path = getenv('FINAL_FANTASY_I_ROM') ?: '';
         if (! is_file($path)) {

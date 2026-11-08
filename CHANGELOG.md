@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add private user-ID save persistence and ROM-derived new-game saves, with optional uploads.
+
 - Shorten WARP and EXIT descriptions to their destinations.
 
 - Shorten spell descriptions to effect and target, using only menu healing ranges. Use "Deals X ... damage", omit cancellation notes and keep target restrictions on separate lines; expose elements through the existing mask instead of standalone element notes. Retain raw battle values and rules in the XML API.

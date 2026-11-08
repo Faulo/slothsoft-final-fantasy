@@ -32,6 +32,13 @@ final class Save {
         $this->contents = $contents;
     }
     
+    public static function newGame(GameData $rom): string {
+        $state = $rom->getNewGameState();
+        $state[0xFE] = "\x55";
+        $state[0xFF] = "\xAA";
+        return self::withChecksum($state . $state . str_repeat("\0", 6144));
+    }
+    
     /** @return array<int, array{index:int,name:string,class:int,weapons:array<int,array{id:int,equipped:bool}>,armor:array<int,array{id:int,equipped:bool}>}> */
     public function getCharacters(): array {
         $characters = [];
