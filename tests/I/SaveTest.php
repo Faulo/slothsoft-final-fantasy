@@ -81,6 +81,31 @@ final class SaveTest extends TestCase {
         self::assertSame(2, (new Save($edited))->getCharacters()[3]['weapons'][2]['id']);
     }
     
+    public function testReadsStatsFromEachCharacterWithoutChangingSave(): void {
+        $bytes = $this->fixture();
+        for ($i = 0; $i < 4; $i++) {
+            $base = 0x500 + 64 * $i;
+            $bytes = substr_replace($bytes, pack('vv', 300 + $i, 900 + $i), $base + 0x0A, 4);
+            $bytes[$base + 0x25] = chr(70 + $i);
+            $bytes[$base + 0x26] = chr($i);
+        }
+        $bytes = $this->checksum($bytes);
+        $save = new Save($bytes);
+        foreach ($save->getCharacters() as $i => $character) {
+            self::assertSame([
+                'hp' => 300 + $i, 'max-hp' => 900 + $i,
+                'strength' => 57, 'agility' => 57, 'intelligence' => 57,
+                'vitality' => 57, 'luck' => 57, 'damage' => 21, 'hit' => 39,
+                'absorb' => 0, 'evade' => 47, 'resistance' => 0,
+                'magic-defense' => 70 + $i, 'level' => $i + 1
+            ], $character['stats']);
+        }
+        self::assertSame($bytes, $save->withEquipment([], $this->catalog()));
+        $edited = new Save($save->withEquipment([0 => ['weapons' => [0 => ['id' => 1, 'equipped' => true]]]], $this->catalog()));
+        self::assertSame(28, $edited->getCharacters()[0]['stats']['damage']);
+        self::assertSame(44, $edited->getCharacters()[0]['stats']['hit']);
+    }
+    
     public function testReplacingEquippedWeaponPreservesFlagAndAdjustsBonuses(): void {
         $bytes = $this->fixture();
         $bytes[0x518] = chr(129);

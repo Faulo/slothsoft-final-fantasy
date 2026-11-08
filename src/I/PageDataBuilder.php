@@ -160,6 +160,10 @@ final class PageDataBuilder implements ExecutableBuilderStrategyInterface {
             foreach (['index', 'name', 'class'] as $key) {
                 $node->setAttribute($key, (string) $character[$key]);
             }
+            $stats = $this->appendText($node, 'stats', '');
+            foreach ($character['stats'] as $key => $value) {
+                $stats->setAttribute($key, (string) $value);
+            }
             foreach (['weapons', 'armor'] as $kind) {
                 $group = $this->appendText($node, $kind, '');
                 foreach ($character[$kind] as $index => $item) {

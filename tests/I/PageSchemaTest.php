@@ -44,6 +44,7 @@ final class PageSchemaTest extends TestCase {
         self::assertSame(1.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:error)'));
         self::assertSame(4.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character)'));
         self::assertSame(32.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character/*/sf1:slot)'));
+        self::assertSame(4.0, $xpath->evaluate('count(/sf1:final-fantasy/sf1:editor/sf1:character/sf1:stats[@hp="0"][@level="1"][@magic-defense="0"])'));
         self::assertSame(base64_encode($contents), $xpath->evaluate('string(/sf1:final-fantasy/sf1:editor/@source)'));
         $this->validate($document);
     }

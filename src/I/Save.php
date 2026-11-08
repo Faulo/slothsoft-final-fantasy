@@ -39,7 +39,7 @@ final class Save {
         return self::withChecksum($state . $state . str_repeat("\0", 6144));
     }
     
-    /** @return array<int, array{index:int,name:string,class:int,weapons:array<int,array{id:int,equipped:bool}>,armor:array<int,array{id:int,equipped:bool}>}> */
+    /** @return array<int, array{index:int,name:string,class:int,stats:array<string,int>,weapons:array<int,array{id:int,equipped:bool}>,armor:array<int,array{id:int,equipped:bool}>}> */
     public function getCharacters(): array {
         $characters = [];
         for ($character = 0; $character < 4; $character++) {
@@ -48,9 +48,18 @@ final class Save {
                 'index' => $character,
                 'name' => TextCodec::decode(substr($this->contents, $base + 2, 4)),
                 'class' => ord($this->contents[$base]),
+                'stats' => [],
                 'weapons' => [],
                 'armor' => []
             ];
+            // Read the manifest's scalar values for this character, keeping binary
+            // offsets and integer widths in the savegame specification.
+            foreach ($this->loadFile()->getValueList() as $value) {
+                if ($value->getContentOffset() >= $base && $value->getContentOffset() < $base + 0x40 && ! in_array($value->getName(), ['item', 'equipped'], true)) {
+                    $record['stats'][$value->getName()] = (int) $value->getValue();
+                }
+            }
+            $record['stats']['level']++;
             foreach (['weapons' => 0x18, 'armor' => 0x1C] as $kind => $relative) {
                 for ($slot = 0; $slot < 4; $slot++) {
                     $offset = $base + $relative + $slot;

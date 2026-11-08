@@ -173,6 +173,14 @@ enforced. Inventory may contain unusable items; unchanged pre-existing invalid
 equipment is preserved. Character status, learned spells, party items and
 general data are outside the editor scope.
 
+Each character exposes read-only `sf1:stats` (also `getCharacters()['stats']`):
+current/max HP, one-based level, strength, agility, intelligence, vitality, luck,
+and the saved damage, hit, absorb, evade, resistance and magic-defense values.
+The savegame manifest reads these fields; no values are estimated from class or
+level. Cached combat stats reflect the saved equipment and update on saving
+equipment changes, without adding transient battle buffs. Layout is documented
+by the [US RAM map](https://github.com/Entroper/FF1Disassembly/blob/master/Final%20Fantasy%20Disassembly/variables.inc).
+
 No-op exports are byte-identical. Changes update equipment slots, the checksum,
 and cached combat stats when the equipped set changes, reproducing original
 byte overflow and Black Belt/Master rules. Other SRAM bytes are preserved.
