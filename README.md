@@ -2,12 +2,12 @@
 
 A Farah module for Final Fantasy game data and save editing. Currently supports
 the original US NES release of Final Fantasy I. Requires PHP 8.2 or later and
-the upcoming savegame 1.6 features through `slothsoft/savegame:dev-main`.
+`slothsoft/savegame` 1.6 or later.
 
 ## Installation and private ROM configuration
 
-Until a release is published, add the Git repository to your application's
-Composer repositories and require `slothsoft/final-fantasy:dev-main`:
+Add the Git repository to your application's Composer repositories and require
+the stable `slothsoft/final-fantasy` 1.0 release:
 
 ```json
 {
@@ -15,8 +15,7 @@ Composer repositories and require `slothsoft/final-fantasy:dev-main`:
         {"type": "vcs", "url": "https://github.com/Faulo/slothsoft-final-fantasy"}
     ],
     "require": {
-        "slothsoft/final-fantasy": "dev-main",
-        "slothsoft/savegame": "dev-main"
+        "slothsoft/final-fantasy": "^1.0.0"
     }
 }
 ```

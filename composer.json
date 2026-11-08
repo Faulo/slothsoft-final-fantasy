@@ -16,7 +16,7 @@
         "ext-zlib": "*",
         "slothsoft/core": "^1.15.1",
         "slothsoft/farah": "^1.29.7",
-        "slothsoft/savegame": "dev-main"
+        "slothsoft/savegame": "^1.6.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.3.5",
@@ -45,7 +45,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-main": "0.1.x-dev"
+            "dev-main": "1.0.x-dev"
         }
     },
     "config": {
