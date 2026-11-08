@@ -76,9 +76,6 @@ final class SpellEffects {
         if ($effect === 2) {
             $lines[] = 'Only affects undead enemies.';
         }
-        if (in_array($effect, [3, 4, 5, 18], true) && $element) {
-            $lines[] = "$elementName element.";
-        }
         return $lines;
     }
     

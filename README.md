@@ -157,7 +157,8 @@ in its ISO-8859-1 carrier encoding; `toDocument()` returns decoded domain data.
 Weapons and armor include equip permissions and spells cast by items. Spells
 include learning permissions, level, school, price and `sf1:effect-description`
 concise lines describing the implemented US effects. Healing descriptions use only
-menu values; cancellation, target restrictions and element notes are separate lines. `getSpells()` also exposes these
+menu values; cancellation and target restrictions are separate lines. Elements remain
+available through each spell's `element-mask`, without a separate description line. `getSpells()` also exposes these
 lines as `effectDescription`. The optional `sf1:spell-rules` element supplies
 ROM-derived hit-roll constants, the HP threshold and menu healing ranges.
 `SpellEffects` interprets parsed values without reading ROM offsets or producing

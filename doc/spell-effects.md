@@ -35,8 +35,9 @@ The threshold starts at the extracted base plus the spell's accuracy. Elemental
 resistance replaces the base with zero; weakness adds the extracted bonus.
 Subtract Magic Defense, clamping at zero. A roll less than or equal to this
 threshold succeeds, except the maximum roll always fails. The same rule governs
-ordinary status spells, SLOW and FEAR. Displaying the threshold avoids claiming a
-fixed success percentage when the target is unknown. `RandAX` scales a random
+ordinary status spells, SLOW and FEAR. The raw `hit` field is an accuracy bonus,
+not a fixed success percentage. For damage spells it affects double damage, not
+whether damage connects; effects without a hit roll ignore it. `RandAX` scales a random
 byte into the roll range, so the 201 possible roll values are not equiprobable.
 
 Effect 18 instead requires current HP **at most** the extracted limit and no

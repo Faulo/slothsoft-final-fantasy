@@ -14,6 +14,7 @@ final class SpellEffectsTest extends TestCase {
         $spell = $this->element(['id' => 5, 'effect' => $effect, 'effectivity' => $power, 'element-mask' => $element, 'target' => $target, 'hit' => 24]);
         $rules = $this->element(['base-hit' => 148, 'hp-limit' => 300]);
         self::assertStringContainsString($expected, implode(' ', SpellEffects::describe($spell, $rules)));
+        self::assertStringNotContainsString(' element.', implode(' ', SpellEffects::describe($spell, $rules)));
     }
     
     public function effects(): array {
@@ -21,7 +22,7 @@ final class SpellEffectsTest extends TestCase {
             [1, 10, 16, 2, '10-20 HP Fire damage to one enemy.'],
             [2, 40, 0, 1, 'Only affects undead enemies.'],
             [3, 2, 2, 2, 'Inflicts Stone on one enemy.'],
-            [3, 32, 1, 1, 'Status element.'],
+            [3, 32, 1, 1, 'Inflicts Sleep on each enemy.'],
             [5, 40, 1, 1, 'Inflicts 40 morale loss on each enemy.'],
             [7, 140, 0, 8, 'Restores HP to each ally'],
             [8, 64, 0, 16, 'Removes Silence from one ally.'],
