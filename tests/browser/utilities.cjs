@@ -35,7 +35,7 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
             await equipped.press('Space');
             assert.equal(await equipped.evaluate(node => getComputedStyle(node, '::after').opacity), '0.25');
             await equipped.press('Space');
-            const command = form.locator('button').first();
+            const command = index === 0 ? form.locator('button').first() : page.locator('button[form=example-editor]').first();
             const before = await command.boundingBox();
             await command.focus();
             const focused = await command.evaluate(node => {

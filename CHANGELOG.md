@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add `--ff-align` for row alignment and `--ff-max-width` for bounded content sizing, with a native form-associated menu example. Leave spacing around nested themed panels to their parent layout.
+
 - Render buttons and native file-selector buttons as borderless menu commands with the original ROM hand on hover/focus and cyan text. Demonstrate vertical command lists and horizontally wrapping party fieldsets in content-sized panels.
 
 - Share the cyan interaction token across links, native controls, E markers, file-selector buttons and keyboard focus outlines. Preserve idle select transparency and unchecked marker dimming.

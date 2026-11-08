@@ -57,18 +57,20 @@ custom properties, rather than additional presentation rules. Lengths in em/ch
 follow the local FF scale. Layout properties reset on each row/grid/scroll/prose
 utility, preventing a parent's tracks or gaps from leaking into a nested layout.
 
-| Property                          | Set on               | Default / accepted value                                        |
-|-----------------------------------|----------------------|-----------------------------------------------------------------|
-| `--ff-scale`                      | `ff-ui`              | `1`; positive multiplier. The site uses `2`.                    |
-| `--ff-columns`                    | `ff-grid`            | `repeat(2, max-content)`; CSS grid track definition.            |
-| `--ff-gap`                        | `ff-row` / `ff-grid` | `.5em` / `1em`; nonnegative CSS length.                         |
-| `--ff-row-gap`, `--ff-column-gap` | `ff-grid`            | Local `--ff-gap`; nonnegative CSS length.                       |
-| `--ff-wrap`                       | `ff-row`             | `nowrap`; use `wrap` for an upload toolbar.                     |
-| `--ff-scroll-padding`             | `ff-scroll`          | `0`; use `.25em` around controls to accommodate focus outlines. |
-| `--ff-measure`                    | `ff-prose`           | `44ch`; maximum text width.                                     |
-| `--ff-option-width`               | `ff-select`          | `10ch`; longest rendered option length in ch, including glyphs. |
-| `--ff-sprite`                     | `ff-class-sprite`    | `none`; `url(...)` of the package's class PNG endpoint.         |
-| `--ff-pose`                       | `ff-class-sprite`    | `0`; integer 0-7, inherited from the theme root when omitted.   |
+| Property                          | Set on               | Default / accepted value                                           |
+|-----------------------------------|----------------------|--------------------------------------------------------------------|
+| `--ff-scale`                      | `ff-ui`              | `1`; positive multiplier. The site uses `2`.                       |
+| `--ff-columns`                    | `ff-grid`            | `repeat(2, max-content)`; CSS grid track definition.               |
+| `--ff-gap`                        | `ff-row` / `ff-grid` | `.5em` / `1em`; nonnegative CSS length.                            |
+| `--ff-row-gap`, `--ff-column-gap` | `ff-grid`            | Local `--ff-gap`; nonnegative CSS length.                          |
+| `--ff-wrap`                       | `ff-row`             | `nowrap`; use `wrap` for an upload toolbar.                        |
+| `--ff-align`                      | `ff-row`             | `center`; CSS `align-items` value, e.g. `start` for panel columns. |
+| `--ff-max-width`                  | `ff-fit`             | `100%`; optional width cap, always bounded by the parent.          |
+| `--ff-scroll-padding`             | `ff-scroll`          | `0`; use `.25em` around controls to accommodate focus outlines.    |
+| `--ff-measure`                    | `ff-prose`           | `44ch`; maximum text width.                                        |
+| `--ff-option-width`               | `ff-select`          | `10ch`; longest rendered option length in ch, including glyphs.    |
+| `--ff-sprite`                     | `ff-class-sprite`    | `none`; `url(...)` of the package's class PNG endpoint.            |
+| `--ff-pose`                       | `ff-class-sprite`    | `0`; integer 0-7, inherited from the theme root when omitted.      |
 
 `data-allowed="false"` on a sprite retains the unavailable appearance:
 grayscale .5, opacity .5 and brightness .75. This is a visual state, not a
@@ -106,6 +108,10 @@ without another `ff-ui` for nested frames that inherit the root theme.
   sprites. Class order and permission filtering belong to the application.
 - Party: `ff-row` with `--ff-wrap: wrap; --ff-gap: 1em`. Fieldsets fill a row
   at their natural width before wrapping, including inside a content-sized form.
+- Menu screen: a wrapping `ff-row` with `--ff-align: start` holds a single-column
+  `ff-grid` sidebar and the party form. Use `ff-fit` and `--ff-max-width` to cap
+  their widths. Sidebar commands can target the party form with native HTML
+  `form` attributes; no nested forms or JavaScript are necessary.
 - Character: nested `ff-panel` fieldset; `ff-row` inside its legend combines
   name and sprite.
 - Equipment: `ff-scroll` with `--ff-scroll-padding: .25em`, containing `ff-grid`

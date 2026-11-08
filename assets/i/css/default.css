@@ -330,22 +330,29 @@
     margin-block: 1em;
 }
 
+.ff-ui .ff-ui.ff-panel {
+    /* Nested theme roots participate in their parent's row/grid spacing. */
+    margin-block: 0;
+}
+
 .ff-ui.ff-panel > legend, .ff-ui .ff-panel > legend {
     padding: .5em;
     margin-inline-start: calc(-1em - var(--ff-border));
 }
 
 .ff-ui.ff-fit, .ff-ui .ff-fit {
+    --ff-max-width: 100%;
     width: fit-content;
-    max-width: 100%;
+    max-width: min(100%, var(--ff-max-width));
     min-inline-size: 0;
 }
 
 .ff-ui.ff-row, .ff-ui .ff-row {
     --ff-gap: .5em;
     --ff-wrap: nowrap;
+    --ff-align: center;
     display: flex;
-    align-items: center;
+    align-items: var(--ff-align);
     flex-wrap: var(--ff-wrap);
     gap: var(--ff-gap);
     min-inline-size: 0;

@@ -120,59 +120,68 @@
             </table>
         </div>
     </fieldset>
-    <form action="#" method="get" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr)">
-        <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
-            <fieldset class="ff-panel">
-                <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
-                <h3>Weapons</h3>
-                <div class="ff-scroll" style="--ff-scroll-padding: .25em">
-                    <div class="ff-grid" style="--ff-row-gap: 0">
-                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
-                            <input type="checkbox" class="ff-equipped" name="equipped-0" aria-label="Equip example slot 1" checked="checked"/>
-                            <select class="ff-select" name="item-0" aria-label="Example slot 1" style="--ff-option-width: 8ch">
-                                <option/>
-                                <option selected="selected">Example🗡</option>
-                                <option>Example🥢</option>
-                            </select>
-                        </div>
-                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
-                            <input type="checkbox" class="ff-equipped" name="equipped-1" aria-label="Equip example slot 2"/>
-                            <select class="ff-select" name="item-1" aria-label="Example slot 2" style="--ff-option-width: 8ch">
-                                <option/>
-                                <option selected="selected">Example🗡</option>
-                                <option>Example🥢</option>
-                            </select>
-                        </div>
-                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
-                            <input type="checkbox" class="ff-equipped" name="equipped-2" aria-label="Equip example slot 3"/>
-                            <select class="ff-select" name="item-2" aria-label="Example slot 3" style="--ff-option-width: 8ch">
-                                <option/>
-                                <option selected="selected">Example🗡</option>
-                                <option>Example🥢</option>
-                            </select>
-                        </div>
-                        <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
-                            <input type="checkbox" class="ff-equipped" name="equipped-3" aria-label="Equip example slot 4"/>
-                            <select class="ff-select" name="item-3" aria-label="Example slot 4" style="--ff-option-width: 8ch">
-                                <option/>
-                                <option selected="selected">Example🗡</option>
-                                <option>Example🥢</option>
-                            </select>
+    <div class="ff-ui ff-row ff-scroll" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-wrap: wrap; --ff-align: start; --ff-gap: 1em; --ff-scroll-padding: .25em">
+        <div class="ff-grid ff-fit" style="--ff-columns: minmax(0, 1fr); --ff-max-width: 25em">
+            <form action="#" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr); --ff-gap: 0">
+                <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em"><span class="ff-fit" style="--ff-max-width: 12ch"><input id="example-save" name="save" type="file"/></span><label for="example-save">.sav File</label></div>
+                <button type="button">Load save</button>
+                <a href="#palette">View the color palette</a>
+            </form>
+            <div class="ff-panel" style="--ff-background: var(--ff-blue)">
+                <a href="#example-editor" aria-label="Example bookmark">0123456789abcdef
+                    <wbr/>
+                    0123456789abcdef</a>
+            </div>
+            <div class="ff-panel ff-grid" style="--ff-background: var(--ff-blue); --ff-columns: minmax(0, 1fr); --ff-gap: 0">
+                <button type="submit" form="example-editor" name="action" value="save">Save changes</button>
+                <button type="submit" form="example-editor" name="action" value="download">Download save</button>
+            </div>
+        </div>
+        <form action="#" method="get" id="example-editor" class="ff-ui ff-fit" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-max-width: 56em">
+            <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
+                <fieldset class="ff-panel" style="--ff-background: var(--ff-blue)">
+                    <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
+                    <h3>Weapons</h3>
+                    <div class="ff-scroll" style="--ff-scroll-padding: .25em">
+                        <div class="ff-grid" style="--ff-row-gap: 0">
+                            <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                                <input type="checkbox" class="ff-equipped" name="equipped-0" aria-label="Equip example slot 1" checked="checked"/>
+                                <select class="ff-select" name="item-0" aria-label="Example slot 1" style="--ff-option-width: 8ch">
+                                    <option/>
+                                    <option selected="selected">Example🗡</option>
+                                    <option>Example🥢</option>
+                                </select>
+                            </div>
+                            <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                                <input type="checkbox" class="ff-equipped" name="equipped-1" aria-label="Equip example slot 2"/>
+                                <select class="ff-select" name="item-1" aria-label="Example slot 2" style="--ff-option-width: 8ch">
+                                    <option/>
+                                    <option selected="selected">Example🗡</option>
+                                    <option>Example🥢</option>
+                                </select>
+                            </div>
+                            <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                                <input type="checkbox" class="ff-equipped" name="equipped-2" aria-label="Equip example slot 3"/>
+                                <select class="ff-select" name="item-2" aria-label="Example slot 3" style="--ff-option-width: 8ch">
+                                    <option/>
+                                    <option selected="selected">Example🗡</option>
+                                    <option>Example🥢</option>
+                                </select>
+                            </div>
+                            <div class="ff-grid" style="--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em">
+                                <input type="checkbox" class="ff-equipped" name="equipped-3" aria-label="Equip example slot 4"/>
+                                <select class="ff-select" name="item-3" aria-label="Example slot 4" style="--ff-option-width: 8ch">
+                                    <option/>
+                                    <option selected="selected">Example🗡</option>
+                                    <option>Example🥢</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </fieldset>
-        </div>
-        <div class="ff-grid" style="--ff-columns: minmax(0, 1fr); --ff-gap: 0">
-            <button type="button">Save changes</button>
-            <button type="button">Download save</button>
-        </div>
-    </form>
-    <form action="#" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr); --ff-gap: 0">
-        <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em"><input id="example-save" name="save" type="file"/><label for="example-save">.sav File</label></div>
-        <button type="button">Load save</button>
-        <a href="#palette">View the color palette</a>
-    </form>
+                </fieldset>
+            </div>
+        </form>
+    </div>
     <h2>Full NES palette</h2>
     <p>These 55 named colors cover the renderer's 64 NES indices. Repeated black indices share one color. The RGB approximation matches generated PNGs; no ROM is needed for these swatches.</p>
     <section id="palette" class="ff-ui ff-panel" aria-label="Named NES palette" style="--ff-scale: 2">
