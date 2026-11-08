@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Hide select frames while idle and reveal them on hover, activation, focus and open-dropdown states without resizing controls. Let the palette example grow horizontally before wrapping.
+
 - Size framed panels, legends and native controls to their contents by default, bounded by available width; preserve option-derived compact select sizing.
 
 - Establish fourteen public design-system utilities, configurable layouts and semantic color tokens. Consolidate the established site table and legend design into package defaults; demonstrate and verify references and native editor controls at both scales. Retain published asset URLs and legacy CSS helpers.

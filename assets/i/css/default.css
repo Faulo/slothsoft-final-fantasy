@@ -221,6 +221,12 @@
     width: fit-content;
     min-width: 0;
     margin: 0;
+    /* Reserve the border so interaction never changes control geometry. */
+    border-color: transparent;
+}
+
+.ff-ui select:is(:hover, :active, :focus, :focus-within, :open) {
+    border-color: var(--ff-frame);
 }
 
 .ff-ui button, .ff-ui ::file-selector-button {
@@ -259,6 +265,11 @@
 .ff-ui :focus-visible {
     outline: var(--ff-border) solid var(--ff-frame);
     outline-offset: var(--ff-border);
+}
+
+.ff-ui select:focus-visible {
+    /* The visible frame is the keyboard focus indicator for selects. */
+    outline: none;
 }
 
 .ff-ui .ff-class-sprite {

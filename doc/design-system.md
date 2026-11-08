@@ -35,6 +35,9 @@ centered horizontally and vertically in the heading color; `tbody th` stays
 left-aligned, white and unbroken. Explicit `br` elements control heading breaks.
 Framed panels, legends and native controls fit their contents rather than stretching
 to full width. Compact selects retain their explicit option-derived width.
+Selects reserve a transparent border when idle; hover, activation, focus, focus
+within and an open dropdown reveal the frame color. Keyboard focus uses that
+frame without an additional outline, and control dimensions stay unchanged.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
 
@@ -100,6 +103,10 @@ without another `ff-ui` for nested frames that inherit the root theme.
 - Slot: `ff-grid` with `--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em`,
   containing `ff-equipped` and `ff-select` directly.
 - Upload: `ff-ui ff-panel ff-row` with `--ff-wrap: wrap; --ff-gap: 1em`.
+- Collections that should grow horizontally before wrapping: a content-sized
+  panel containing `ff-row` with `--ff-wrap: wrap`. An auto-repeat grid inside
+  an intrinsically sized parent can instead resolve to a single column. The
+  palette example uses wrapping rows with bounded 22em swatches.
 
 See [the standalone examples](../assets/i/examples/panels.xhtml) for references
 and editor controls at both 1x and 2x, using only package CSS. The palette
