@@ -41,8 +41,8 @@
             </table>
         </div>
     </fieldset>
-    <form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 1">
-        <div class="ff-grid" style="--ff-columns: repeat(auto-fit, minmax(min(100%, 32em), 1fr))">
+    <form action="#" method="get" class="ff-ui ff-panel ff-grid" style="--ff-scale: 1; --ff-columns: minmax(0, 1fr)">
+        <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
             <fieldset class="ff-panel">
                 <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
                 <h3>Weapons</h3>
@@ -84,7 +84,10 @@
                 </div>
             </fieldset>
         </div>
-        <button type="button">Example button</button>
+        <div class="ff-grid" style="--ff-columns: minmax(0, 1fr); --ff-gap: 0">
+            <button type="button">Save changes</button>
+            <button type="button">Download save</button>
+        </div>
     </form>
     <fieldset class="ff-ui ff-panel" style="--ff-scale: 2">
         <legend>Example at 2x</legend>
@@ -117,8 +120,8 @@
             </table>
         </div>
     </fieldset>
-    <form action="#" method="get" class="ff-ui ff-panel" style="--ff-scale: 2">
-        <div class="ff-grid" style="--ff-columns: repeat(auto-fit, minmax(min(100%, 32em), 1fr))">
+    <form action="#" method="get" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr)">
+        <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
             <fieldset class="ff-panel">
                 <legend><span class="ff-row"><span>Example</span><span class="ff-class-sprite" role="img" aria-label="Fighter" style="--ff-sprite: url('/slothsoft@final-fantasy/i/gfx/class?class=0')"/></span></legend>
                 <h3>Weapons</h3>
@@ -160,10 +163,13 @@
                 </div>
             </fieldset>
         </div>
-        <button type="button">Example button</button>
+        <div class="ff-grid" style="--ff-columns: minmax(0, 1fr); --ff-gap: 0">
+            <button type="button">Save changes</button>
+            <button type="button">Download save</button>
+        </div>
     </form>
-    <form action="#" class="ff-ui ff-panel ff-row" style="--ff-scale: 2; --ff-wrap: wrap; --ff-gap: 1em">
-        <label for="example-save">.sav File</label><input id="example-save" name="save" type="file"/>
+    <form action="#" class="ff-ui ff-panel ff-grid" style="--ff-scale: 2; --ff-columns: minmax(0, 1fr); --ff-gap: 0">
+        <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em"><input id="example-save" name="save" type="file"/><label for="example-save">.sav File</label></div>
         <button type="button">Load save</button>
         <a href="#palette">View the color palette</a>
     </form>

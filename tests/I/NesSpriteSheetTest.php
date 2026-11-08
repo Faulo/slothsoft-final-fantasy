@@ -8,6 +8,25 @@ use PHPUnit\Framework\TestCase;
 
 final class NesSpriteSheetTest extends TestCase {
     use UnpackHelper;
+    public function testTileGridKeepsBothRowsAndSpriteTransparency(): void {
+        $tiles = str_repeat("\xFF", 8) . str_repeat("\0", 8)
+            . str_repeat("\0", 8) . str_repeat("\xFF", 8)
+            . str_repeat("\xFF", 16) . str_repeat("\0", 16);
+        $png = NesSpriteSheet::toTileGrid($tiles, "\x0F\x00\x10\x30", 2);
+        $info = getimagesizefromstring($png);
+        self::assertIsArray($info);
+        self::assertSame([16, 16, IMAGETYPE_PNG], array_slice($info, 0, 3));
+        self::assertSame("\0\xFF\xFF\xFF", substr($png, strpos($png, 'tRNS') + 4, 4));
+        $offset = strpos($png, 'IDAT');
+        $length = self::unpack('Nlength', substr($png, $offset - 4, 4))['length'];
+        $pixels = gzuncompress(substr($png, $offset + 4, $length));
+        self::assertSame(
+            str_repeat("\0" . str_repeat("\x01", 8) . str_repeat("\x02", 8), 8)
+            . str_repeat("\0" . str_repeat("\x03", 8) . str_repeat("\0", 8), 8),
+            $pixels
+        );
+    }
+    
     public function testPngPreservesBitplanesTileOrderPoseRowsPaletteAndTransparency(): void {
         $tiles = str_repeat("\0", 512);
         $tiles[0] = "\xA0"; // first tile, pixels 0 and 2: low bit.

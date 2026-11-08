@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Render buttons and native file-selector buttons as borderless menu commands with the original ROM hand on hover/focus and cyan text. Demonstrate vertical command lists and horizontally wrapping party fieldsets in content-sized panels.
+
 - Share the cyan interaction token across links, native controls, E markers, file-selector buttons and keyboard focus outlines. Preserve idle select transparency and unchecked marker dimming.
 
 - Hide select frames while idle and reveal them on hover, activation, focus and open-dropdown states without resizing controls. Let the palette example grow horizontally before wrapping.

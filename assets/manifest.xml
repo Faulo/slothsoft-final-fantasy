@@ -11,6 +11,7 @@
         <resource-directory name="savegame" type="application/xml" />
         <custom-asset name="font" executable-builder="Slothsoft\FinalFantasy\I\MenuFontBuilder" />
         <directory name="gfx">
+            <custom-asset name="cursor" executable-builder="Slothsoft\FinalFantasy\I\MenuCursorBuilder" />
             <custom-asset name="items" executable-builder="Slothsoft\FinalFantasy\I\ItemIconBuilder" />
             <custom-asset name="class" executable-builder="Slothsoft\FinalFantasy\I\ClassSpriteBuilder" parameter-filter="Slothsoft\FinalFantasy\I\ClassSpriteParameters" />
         </directory>

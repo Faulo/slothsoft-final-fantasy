@@ -56,6 +56,7 @@ Composer registers the Farah module `slothsoft@final-fantasy`.
 | `farah://slothsoft@final-fantasy/i/font`                  | ROM-derived TrueType font                                            |
 | `farah://slothsoft@final-fantasy/i/gfx/class?class=2`     | Black Belt battle sprite sheet (class IDs 0–11)                      |
 | `farah://slothsoft@final-fantasy/i/gfx/items`             | Item-name icon sheet from the menu font                              |
+| `farah://slothsoft@final-fantasy/i/gfx/cursor`            | Transparent 16x16 menu hand from the original ROM                    |
 
 The domain namespace is `http://schema.slothsoft.net/final-fantasy/i`, with prefix
 `sf1`. Applications consume the XML data API and own their HTML, page routes,

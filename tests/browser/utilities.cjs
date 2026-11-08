@@ -22,7 +22,7 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
                     header.color, panel.querySelector('legend').getBoundingClientRect().left - panel.getBoundingClientRect().left];
             });
             assert.deepEqual(metrics, [`${8 * scale}px`, `${12 * scale}px`, `${scale}px`, `${16 * scale}px`, `${12 * scale}px`, 'rgb(164, 228, 252)', 0]);
-            const form = page.locator('form.ff-ui:not(.ff-row)').nth(index);
+            const form = page.locator('form.ff-ui:has(select)').nth(index);
             const controls = await form.locator('select').evaluateAll(selects => selects.map(select => [select.getBoundingClientRect().height, getComputedStyle(select).fontFamily]));
             assert.equal(controls.length, 4);
             controls.forEach(([height, font]) => {
@@ -35,7 +35,25 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
             await equipped.press('Space');
             assert.equal(await equipped.evaluate(node => getComputedStyle(node, '::after').opacity), '0.25');
             await equipped.press('Space');
+            const command = form.locator('button').first();
+            const before = await command.boundingBox();
+            await command.focus();
+            const focused = await command.evaluate(node => {
+                const css = getComputedStyle(node);
+                return [css.color, css.borderTopWidth, css.backgroundImage, css.backgroundSize, css.outlineStyle];
+            });
+            assert.deepEqual(focused.slice(0, 2), ['rgb(0, 252, 252)', '0px']);
+            assert.match(focused[2], /\/i\/gfx\/cursor/);
+            assert.equal(focused[3], `${16 * scale}px ${16 * scale}px`);
+            assert.equal(focused[4], 'none');
+            assert.deepEqual(await command.boundingBox(), before, 'Hand must not shift command geometry');
         }
+        const file = page.locator('input[type=file]');
+        await file.focus();
+        assert.deepEqual(await file.evaluate(node => {
+            const css = getComputedStyle(node, '::file-selector-button');
+            return [css.color, css.borderTopWidth, css.backgroundImage.endsWith('/i/gfx/cursor")'), css.backgroundSize];
+        }), ['rgb(0, 252, 252)', '0px', true, '32px 32px']);
         // Semantic token overrides must apply to table headings as well as their panel.
         const themed = tables.first();
         await themed.evaluate(panel => {
@@ -59,7 +77,7 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
         }
         await page.setViewportSize({width: 390, height: 1000});
         assert.equal(await page.evaluate(() => document.body.scrollWidth <= innerWidth), true);
-        const equipment = page.locator('form:not(.ff-row) .ff-scroll > .ff-grid');
+        const equipment = page.locator('form:has(select) .ff-scroll > .ff-grid');
         for (const grid of await equipment.all()) {
             assert.deepEqual(await grid.evaluate(node => {
                 const slots = [...node.children].map(child => child.getBoundingClientRect());

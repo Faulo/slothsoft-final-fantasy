@@ -140,6 +140,14 @@ final class GameData implements EquipmentCatalog {
         );
     }
     
+    public function getMenuCursor(): string {
+        return NesSpriteSheet::toTileGrid(
+            $this->readGraphics('//sse:image[@name="menu-cursor"]'),
+            substr($this->readGraphics('//sse:binary[@name="sprite-palettes"]'), 12, 4),
+            2
+        );
+    }
+    
     private function readGraphics(string $query): string {
         $xpath = new DOMXPath($this->dataset);
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');

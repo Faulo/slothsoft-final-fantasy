@@ -42,6 +42,11 @@ Enabled inputs (including E checkboxes), selects, buttons, textareas and the
 native file-selector button use that same color for text and borders during
 interaction. Keyboard focus outlines use it too. Unchecked E markers retain
 their dimming. File-selector hover/focus follows the owning file input.
+Buttons and native file-selector buttons are borderless menu commands. Their
+reserved 2em cursor space shows the ROM-derived 16x16 hand on hover, focus or
+activation, without shifting text. The hand and cyan text replace the button
+focus outline. Disabled commands are dimmed. The native file caption and
+selected filename remain browser-owned.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
 
@@ -99,15 +104,18 @@ without another `ff-ui` for nested frames that inherit the root theme.
   `ff-scroll` child around the table.
 - Permission strip: `ff-row` with `--ff-gap: .25em`, containing full or portrait
   sprites. Class order and permission filtering belong to the application.
-- Party: `ff-grid` with
-  `--ff-columns: repeat(auto-fit, minmax(min(100%, 32em), 1fr))`.
+- Party: `ff-row` with `--ff-wrap: wrap; --ff-gap: 1em`. Fieldsets fill a row
+  at their natural width before wrapping, including inside a content-sized form.
 - Character: nested `ff-panel` fieldset; `ff-row` inside its legend combines
   name and sprite.
 - Equipment: `ff-scroll` with `--ff-scroll-padding: .25em`, containing `ff-grid`
   with `--ff-row-gap: 0`. Four children produce the two-by-two arrangement.
 - Slot: `ff-grid` with `--ff-columns: 1em minmax(0, 1fr); --ff-gap: .5em`,
   containing `ff-equipped` and `ff-select` directly.
-- Upload: `ff-ui ff-panel ff-row` with `--ff-wrap: wrap; --ff-gap: 1em`.
+- Commands: `ff-grid` with `--ff-columns: minmax(0, 1fr); --ff-gap: 0` stacks
+  buttons vertically. Use the same layout on an upload form; its first row is an
+  `ff-row` with `--ff-wrap: wrap; --ff-gap: 1em`, containing the file input
+  followed by its label. The label wraps below the input on narrow screens.
 - Collections that should grow horizontally before wrapping: a content-sized
   panel containing `ff-row` with `--ff-wrap: wrap`. An auto-repeat grid inside
   an intrinsically sized parent can instead resolve to a single column. The

@@ -46,21 +46,31 @@ final class NesSpriteSheet {
     }
     
     public static function toTileStrip(string $tiles, string $palette, int $transparent = 2): string {
+        return self::toTileGrid($tiles, $palette, intdiv(strlen($tiles), 16), $transparent);
+    }
+    
+    /** Complete tiles in row-major order, with sprite color zero transparent by default. */
+    public static function toTileGrid(string $tiles, string $palette, int $columns, int $transparent = 0): string {
         if ($tiles === '' || strlen($tiles) % 16 !== 0 || strlen($tiles) > 4096
             || strlen($palette) !== 4 || $transparent < 0 || $transparent > 3) {
             throw new InvalidArgumentException('Expected complete NES tiles, four palette entries and a transparency index from 0 to 3.');
         }
         $count = intdiv(strlen($tiles), 16);
+        if ($columns < 1 || $columns > $count || $count % $columns !== 0) {
+            throw new InvalidArgumentException('Expected a whole number of tile rows.');
+        }
+        $height = intdiv($count, $columns) * 8;
         $scanlines = '';
-        for ($y = 0; $y < 8; $y++) {
+        for ($y = 0; $y < $height; $y++) {
             $scanlines .= "\0";
-            for ($tile = 0; $tile < $count; $tile++) {
+            for ($column = 0; $column < $columns; $column++) {
+                $tile = intdiv($y, 8) * $columns + $column;
                 for ($x = 0; $x < 8; $x++) {
-                    $scanlines .= self::pixel($tiles, $tile * 16 + $y, $x);
+                    $scanlines .= self::pixel($tiles, $tile * 16 + $y % 8, $x);
                 }
             }
         }
-        return self::encodePng($count * 8, 8, $scanlines, $palette, $transparent);
+        return self::encodePng($columns * 8, $height, $scanlines, $palette, $transparent);
     }
     
     private static function pixel(string $tiles, int $offset, int $x): string {
