@@ -44,20 +44,25 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
             await command.focus();
             const focused = await command.evaluate(node => {
                 const css = getComputedStyle(node);
-                return [css.color, css.borderTopWidth, css.backgroundImage, css.backgroundSize, css.outlineStyle];
+                const hand = getComputedStyle(node, '::before');
+                return [css.color, css.borderTopWidth, hand.backgroundImage, hand.width, css.outlineStyle,
+                    css.paddingLeft, hand.left, hand.visibility, hand.position];
             });
             assert.deepEqual(focused.slice(0, 2), ['rgb(0, 252, 252)', '0px']);
             assert.match(focused[2], /\/i\/gfx\/cursor/);
-            assert.equal(focused[3], `${16 * scale}px ${16 * scale}px`);
+            assert.equal(focused[3], `${16 * scale}px`);
             assert.equal(focused[4], 'none');
+            assert.deepEqual(focused.slice(5), [`${4 * scale}px`, `${-12 * scale}px`, 'visible', 'absolute']);
             (await commandBounds()).forEach((value, index) => assert.ok(Math.abs(value - before[index]) < .01, 'Hand must not shift command geometry'));
         }
         const file = page.locator('input[type=file]');
         await file.focus();
         assert.deepEqual(await file.evaluate(node => {
             const css = getComputedStyle(node, '::file-selector-button');
-            return [css.color, css.borderTopWidth, css.backgroundImage.endsWith('/i/gfx/cursor")'), css.backgroundSize];
-        }), ['rgb(0, 252, 252)', '0px', true, '32px 32px']);
+            const hand = getComputedStyle(node.parentElement, '::before');
+            return [css.color, css.borderTopWidth, hand.backgroundImage.endsWith('/i/gfx/cursor")'),
+                css.paddingLeft, hand.width, hand.left, hand.visibility];
+        }), ['rgb(0, 252, 252)', '0px', true, '8px', '32px', '-24px', 'visible']);
         // Semantic token overrides must apply to table headings as well as their panel.
         const themed = tables.first();
         await themed.evaluate(panel => {

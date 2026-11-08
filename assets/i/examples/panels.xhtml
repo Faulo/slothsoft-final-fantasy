@@ -120,7 +120,7 @@
             </table>
         </div>
     </fieldset>
-    <form action="#" method="post" enctype="multipart/form-data" id="example-editor" class="ff-ui ff-row ff-scroll" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-wrap: wrap; --ff-align: start; --ff-gap: 1em; --ff-scroll-padding: .25em">
+    <form action="#" method="post" enctype="multipart/form-data" id="example-editor" class="ff-ui ff-row ff-scroll" style="--ff-scale: 2; --ff-background: var(--ff-black); --ff-wrap: wrap; --ff-align: start; --ff-gap: 1em; --ff-scroll-padding: .5em">
         <div class="ff-grid ff-fit" style="--ff-columns: minmax(0, 1fr); --ff-max-width: 25em">
             <div class="ff-panel" style="--ff-background: var(--ff-blue)">
                 <p>Last change</p>
@@ -135,7 +135,7 @@
             </div>
             <div class="ff-panel ff-grid" style="--ff-background: var(--ff-blue); --ff-columns: minmax(0, 1fr); --ff-gap: 0">
                 <div class="ff-row" style="--ff-wrap: wrap; --ff-gap: 1em">
-                    <span class="ff-fit" style="--ff-max-width: 12ch"><input id="example-save" name="save" type="file"/></span>
+                    <label class="ff-fit" style="--ff-max-width: 12ch"><input id="example-save" name="save" type="file" aria-label="Example save file"/></label>
                     <label for="example-save">.sav File</label>
                 </div>
                 <button type="submit" name="action" value="upload">Load save</button>

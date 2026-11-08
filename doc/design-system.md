@@ -42,11 +42,15 @@ Enabled inputs (including E checkboxes), selects, buttons, textareas and the
 native file-selector button use that same color for text and borders during
 interaction. Keyboard focus outlines use it too. Unchecked E markers retain
 their dimming. File-selector hover/focus follows the owning file input.
-Buttons and native file-selector buttons are borderless menu commands. Their
-reserved 2em cursor space shows the ROM-derived 16x16 hand on hover, focus or
-activation, without shifting text. The hand and cyan text replace the button
+Buttons and native file-selector buttons are borderless menu commands. The
+ROM-derived 16x16 hand overlays the panel border on hover, focus or activation,
+without reserving space or shifting text. Wrap a native file input directly in
+a `label` so its hand can paint outside the control; give the input an accessible
+name. Buttons supply their own overlay. The hand and cyan text replace the button
 focus outline. Disabled commands are dimmed. The native file caption and
 selected filename remain browser-owned.
+Keep .5em of outer padding when a menu sits inside `ff-scroll`, so the floating
+hand is not clipped. This padding belongs to the menu container, not its commands.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
 

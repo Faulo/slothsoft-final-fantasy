@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Float command hands over panel borders instead of reserving an indentation. Native file inputs use a label wrapper for the same overlay.
+
 - Expose save size and the server file's last-modified time in editor XML, without updating timestamps when viewing a save.
 
 - Add `--ff-align` for row alignment and `--ff-max-width` for bounded content sizing, with a native form-associated menu example. Leave spacing around nested themed panels to their parent layout.
