@@ -74,8 +74,8 @@ final class GameDataTest extends TestCase {
         self::assertSame('199', $xpath->evaluate('string(//sf1:spell-rules/@roll-max)'));
         self::assertSame('43', $xpath->evaluate('string(//sf1:spell-rules/@weakness-hit)'));
         self::assertSame('301', $xpath->evaluate('string(//sf1:spell-rules/@hp-limit)'));
-        self::assertStringContainsString('Raises evasion of each ally by 34', $xpath->evaluate('string(//sf1:spell[@id="1"]/sf1:effect-description)'));
-        self::assertStringContainsString('48-55 HP', $xpath->evaluate('string(//sf1:spell[@id="1"]/sf1:effect-description)'));
+        self::assertStringContainsString('Grants 34 evasion to each ally', $xpath->evaluate('string(//sf1:spell[@id="1"]/sf1:effect-description)'));
+        self::assertSame('48', $xpath->evaluate('string(//sf1:field-healing[@spell="1"]/@minimum)'));
         self::assertSame(1.0, $xpath->evaluate('count(//sf1:spell[@id="1"]/sf1:class-ref)'));
         self::assertSame('11', $xpath->evaluate('string(//sf1:spell[@id="1"]/sf1:class-ref/@id)'));
         
@@ -186,11 +186,10 @@ final class GameDataTest extends TestCase {
         self::assertSame([3, 4, 6, 9, 10], $spells[1]['classes']);
         self::assertSame([11], $spells[61]['classes']);
         self::assertSame('NUKE', $spells[61]['name']);
-        self::assertSame('Restores 33-66 HP to one ally in battle.', $spells[17]['effectDescription'][0]);
-        self::assertSame('Outside battle, restores 32-63 HP to one ally.', $spells[17]['effectDescription'][1]);
-        self::assertSame('Restores 48-96 HP to each ally in battle.', $spells[36]['effectDescription'][0]);
+        self::assertSame(['Restores 32-63 HP to one ally.'], $spells[17]['effectDescription']);
+        self::assertSame('Restores 32-47 HP to each ally.', $spells[36]['effectDescription'][0]);
         self::assertStringContainsString('Always misses', $spells[7]['effectDescription'][0]);
-        self::assertStringContainsString('Raises evasion of each enemy by 20', $spells[24]['effectDescription'][0]);
+        self::assertStringContainsString('Grants 20 evasion to each enemy', $spells[24]['effectDescription'][0]);
         self::assertStringContainsString('at most 300 current HP', $spells[64]['effectDescription'][0]);
         foreach ($spells as $spell) {
             self::assertNotEmpty($spell['effectDescription']);

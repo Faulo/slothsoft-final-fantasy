@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Shorten spell descriptions to effect and target, using only menu healing ranges. Keep cancellation, target restrictions and element notes on separate lines. Retain raw battle values and rules in the XML API.
+
 - Describe all US spell effects in domain XML, using ROM power, accuracy, targets, elements, status masks, battle constants and separate menu-healing operands. Document implemented spell bugs and expose descriptions through `getSpells()`.
 
 - Give all panel text an opaque black, unblurred shadow offset one pixel right and down at the configured scale, inherited by text and controls.

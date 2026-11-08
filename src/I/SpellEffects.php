@@ -36,7 +36,6 @@ final class SpellEffects {
         $id = (int) $spell->getAttribute('id');
         $effect = (int) $spell->getAttribute('effect');
         $power = (int) $spell->getAttribute('effectivity');
-        $hit = (int) $spell->getAttribute('hit');
         $element = (int) $spell->getAttribute('element-mask');
         $targetId = (int) $spell->getAttribute('target');
         $target = match (true) {
@@ -46,9 +45,7 @@ final class SpellEffects {
             (bool) ($targetId & 8) => 'each ally',
             default => 'one ally'
         };
-        $threshold = (int) $rules->getAttribute('base-hit') + $hit;
         $elementName = $element ? self::mask($element, self::ELEMENTS) : 'non-elemental';
-        $chance = "Success roll at most $threshold minus Magic Defense.";
         $lines = match ($effect) {
             0 => [match ($id) {
                 34 => 'Outside battle, revives one fallen ally with ' . $rules->getAttribute('life-hp') . ' HP.',
@@ -58,24 +55,22 @@ final class SpellEffects {
                 57 => 'Outside battle, revives one fallen ally with full HP.',
                 default => 'No effect in battle.'
             }],
-            1, 2 => [sprintf('%d-%d %s damage to %s. A successful roll doubles damage.', $power, $power * 2,
-                $effect === 2 ? 'non-elemental' : $elementName, $target),
-                "Double damage roll at most $threshold minus Magic Defense."],
-            3 => ['Inflicts ' . self::mask($power, self::AILMENTS) . " on $target.", $chance],
-            4 => ["Slows $target. Cancels FAST, otherwise limits attacks to one hit. Does not stack further.", $chance],
-            5 => ["Lowers morale of $target by $power, to a minimum of 0.", $chance],
-            6, 7 => [sprintf('Restores %d-%d HP to %s in battle.', $power, min(255, $power * 2), $target)],
+            1, 2 => [sprintf('%d-%d HP %s damage to %s.', $power, $power * 2,
+                $effect === 2 ? 'non-elemental' : $elementName, $target)],
+            3 => ['Inflicts ' . self::mask($power, self::AILMENTS) . " on $target."],
+            4 => ["Inflicts a one-hit limit on $target.", 'Cancels FAST.'],
+            5 => ["Inflicts $power morale loss on $target."],
+            6, 7 => [self::healing($id, $target, $rules)],
             8 => ['Removes ' . self::mask($power, self::AILMENTS) . " from $target."],
-            9 => ["Raises defense of $target by $power, up to 255. Always succeeds."],
-            10 => ['Grants ' . self::mask($power, self::ELEMENTS) . " resistance to $target. Always succeeds."],
-            11, 13 => ['No attack or accuracy increase on party members in this US version.'],
-            12 => ["Speeds up $target. Cancels SLOW, otherwise doubles hit count. Does not stack further."],
-            14 => ['Always misses in this US version.'],
-            15 => ["Restores all HP and removes all ailments from $target in battle. Cannot target dead or petrified allies.",
-                'Outside battle, restores all HP but leaves ailments unchanged, even Death and Stone.'],
-            16 => ["Raises evasion of $target by $power, up to 255. Always succeeds."],
-            17 => ['Does not remove enemy resistances in this US version.'],
-            18 => ['Inflicts ' . self::mask($power, self::AILMENTS) . " on $target with at most " . $rules->getAttribute('hp-limit') . ' current HP, unless resistant. No random roll.'],
+            9 => ["Grants $power defense to $target."],
+            10 => ['Grants ' . self::mask($power, self::ELEMENTS) . " resistance to $target."],
+            11, 13 => ['No effect.'],
+            12 => ["Grants doubled hit count to $target.", 'Cancels SLOW.'],
+            14 => ['Always misses.'],
+            15 => ["Restores all HP to $target."],
+            16 => ["Grants $power evasion to $target."],
+            17 => ['No effect.'],
+            18 => ['Inflicts ' . self::mask($power, self::AILMENTS) . " on $target with at most " . $rules->getAttribute('hp-limit') . ' current HP.'],
             default => ['Unknown spell effect.']
         };
         if ($effect === 2) {
@@ -84,17 +79,18 @@ final class SpellEffects {
         if (in_array($effect, [3, 4, 5, 18], true) && $element) {
             $lines[] = "$elementName element.";
         }
+        return $lines;
+    }
+    
+    private static function healing(int $id, string $target, DOMElement $rules): string {
         foreach ($rules->getElementsByTagNameNS(GameData::XML_NAMESPACE, 'field-healing') as $healing) {
             if ((int) $healing->getAttribute('spell') === $id) {
                 $minimum = (int) $healing->getAttribute('minimum');
                 $maximum = $minimum + (int) $healing->getAttribute('spread');
-                $lines[] = "Outside battle, restores $minimum-$maximum HP to $target.";
+                return "Restores $minimum-$maximum HP to $target.";
             }
         }
-        if ($id === 25) {
-            $lines[] = 'Also usable outside battle.';
-        }
-        return $lines;
+        return "Restores HP to $target.";
     }
     
     /** @param array<int, string> $names */

@@ -18,22 +18,22 @@ final class SpellEffectsTest extends TestCase {
     
     public function effects(): array {
         return [
-            [1, 10, 16, 2, '10-20 Fire damage to one enemy.'],
+            [1, 10, 16, 2, '10-20 HP Fire damage to one enemy.'],
             [2, 40, 0, 1, 'Only affects undead enemies.'],
             [3, 2, 2, 2, 'Inflicts Stone on one enemy.'],
-            [3, 32, 1, 1, 'Success roll at most 172 minus Magic Defense.'],
-            [5, 40, 1, 1, 'Lowers morale of each enemy by 40'],
-            [7, 140, 0, 8, 'Restores 140-255 HP to each ally'],
+            [3, 32, 1, 1, 'Status element.'],
+            [5, 40, 1, 1, 'Inflicts 40 morale loss on each enemy.'],
+            [7, 140, 0, 8, 'Restores HP to each ally'],
             [8, 64, 0, 16, 'Removes Silence from one ally.'],
-            [9, 12, 0, 8, 'Raises defense of each ally by 12'],
+            [9, 12, 0, 8, 'Grants 12 defense to each ally'],
             [10, 137, 0, 8, 'Grants Status, Death, Earth resistance'],
-            [12, 0, 0, 16, 'Cancels SLOW, otherwise doubles hit count.'],
-            [13, 16, 0, 4, 'No attack or accuracy increase'],
+            [12, 0, 0, 16, 'Cancels SLOW.'],
+            [13, 16, 0, 4, 'No effect.'],
             [14, 20, 0, 2, 'Always misses'],
-            [15, 0, 0, 16, 'Cannot target dead or petrified allies.'],
-            [16, 20, 0, 1, 'Raises evasion of each enemy by 20'],
-            [17, 0, 0, 2, 'Does not remove enemy resistances'],
-            [18, 1, 8, 2, 'at most 300 current HP, unless resistant. No random roll.']
+            [15, 0, 0, 16, 'Restores all HP to one ally.'],
+            [16, 20, 0, 1, 'Grants 20 evasion to each enemy'],
+            [17, 0, 0, 2, 'No effect.'],
+            [18, 1, 8, 2, 'at most 300 current HP.']
         ];
     }
     
@@ -45,10 +45,10 @@ final class SpellEffectsTest extends TestCase {
             $field->setAttribute($name, (string) $value);
         }
         $rules->appendChild($field);
-        self::assertSame(['Restores 37-74 HP to one ally in battle.', 'Outside battle, restores 45-52 HP to one ally.'], SpellEffects::describe($spell, $rules));
+        self::assertSame(['Restores 45-52 HP to one ally.'], SpellEffects::describe($spell, $rules));
         $spell->setAttribute('effect', '1');
         $spell->setAttribute('hit', '31');
-        self::assertStringContainsString('190 minus Magic Defense', implode(' ', SpellEffects::describe($spell, $rules)));
+        self::assertStringContainsString('37-74 HP non-elemental damage', implode(' ', SpellEffects::describe($spell, $rules)));
         $spell->setAttribute('effect', '18');
         self::assertStringContainsString('at most 400 current HP', implode(' ', SpellEffects::describe($spell, $rules)));
     }

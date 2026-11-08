@@ -156,7 +156,8 @@ in its ISO-8859-1 carrier encoding; `toDocument()` returns decoded domain data.
 
 Weapons and armor include equip permissions and spells cast by items. Spells
 include learning permissions, level, school, price and `sf1:effect-description`
-lines describing the implemented US effects. `getSpells()` also exposes these
+concise lines describing the implemented US effects. Healing descriptions use only
+menu values; cancellation, target restrictions and element notes are separate lines. `getSpells()` also exposes these
 lines as `effectDescription`. The optional `sf1:spell-rules` element supplies
 ROM-derived hit-roll constants, the HP threshold and menu healing ranges.
 `SpellEffects` interprets parsed values without reading ROM offsets or producing
@@ -166,7 +167,7 @@ describe the original US implementation: weapon critical thresholds use the
 weapon IDs, ineffective elemental/enemy-category weapon bonuses are omitted,
 and armor resistance masks are decoded. Spell descriptions report actual bugs,
 including ineffective LOCK, TMPR, SABR and XFER, beneficial enemy evasion from
-LOK2, and the distinct battle and menu healing ranges.
+LOK2. Raw battle and menu healing values remain available in the XML.
 
 `Save` uses `assets/i/savegame/equipment.xml` to edit four weapon and four armor
 slots for each character in an 8192-byte battery save, including equipped flags.
