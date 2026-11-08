@@ -73,8 +73,8 @@ markup, layout recipes, palette tokens and compatibility helpers.
 
 Load `/slothsoft@final-fantasy/i/css/default` after host styles. Apply `ff-ui`
 only to the themed panels, leaving surrounding headings and prose in the host
-theme. Combine it with `ff-panel` for a game frame, and `ff-fit` for an intrinsic
-reference fieldset. Legends are framed and aligned automatically. Tables use
+theme. Combine it with `ff-panel` for a content-sized game frame, bounded by the
+available width. Framed controls also fit their contents by default. Legends are framed and aligned automatically. Tables use
 continuous row rules, 2ch column spacing, centered pale-blue column headings and
 left-aligned body names; use `ff-number` on numeric body cells.
 

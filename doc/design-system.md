@@ -11,28 +11,30 @@ These fourteen classes are the canonical public CSS contract. Except for
 `ff-contain`, utilities apply on an `ff-ui` root or within one as described below.
 Keep ordinary page headings and introductory prose outside that root.
 
-| Class             | Supported element and behavior                                                                                                                                                                                        |
-|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ff-ui`           | Theme root. ROM font, 8px base text, 150% line height, palette, one scaled black pixel text shadow, links and native controls.                                                                                        |
-| `ff-panel`        | Root or descendant container. Game frame and 1em padding. Direct fieldset legends receive the same frame, .5em padding and grid-aligned placement. Root panels have 1em block margins; nested panels have no margins. |
-| `ff-fit`          | Root or descendant container. Fit-content width bounded by available width. Use on reference fieldsets.                                                                                                               |
-| `ff-contain`      | Unthemed host container. Inline-size containment, zero minimum width and maximum width of 100%. Requires an available width from its host layout; do not use to shrink-wrap intrinsic content.                        |
-| `ff-row`          | Root or descendant container. Flex row, vertically centered, .5em gap, no wrapping by default.                                                                                                                        |
-| `ff-grid`         | Root or descendant container. Grid, two max-content columns and 1em row/column gaps by default.                                                                                                                       |
-| `ff-scroll`       | Root or descendant container. Horizontal scrolling with zero minimum width and optional inner padding. Put inside a framed fieldset so its legend and frame are not clipped.                                          |
-| `ff-number`       | `td`. Right-aligned numeric value. Column headings remain centered.                                                                                                                                                   |
-| `ff-prose`        | Descendant text container or `td`. Wrapping text, maximum width 44ch, paragraphs with zero margins.                                                                                                                   |
-| `ff-inline-list`  | Descendant `ul` or `ol`. Inline items separated by comma-space, no markers, margin or padding.                                                                                                                        |
-| `ff-class-sprite` | Descendant with `role="img"` and an accessible label. One 16x24 class pose, scaled and pixelated. The host supplies the sprite URL.                                                                                   |
-| `ff-portrait`     | Modifier on `ff-class-sprite`. Shows the top half of the sprite without shrinking its pixels.                                                                                                                         |
-| `ff-select`       | Native descendant `select`. Height 1.5em including borders; width is option text plus 3ch for padding/arrow and both borders.                                                                                         |
-| `ff-equipped`     | Native descendant `input[type="checkbox"]`. One-em E marker, 1.5em high; unchecked opacity .25. Its real checked state, form submission and keyboard operation are preserved. Supply an accessible control name.      |
+| Class             | Supported element and behavior                                                                                                                                                                                                                                   |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ff-ui`           | Theme root. ROM font, 8px base text, 150% line height, palette, one scaled black pixel text shadow, links and native controls.                                                                                                                                   |
+| `ff-panel`        | Root or descendant container. Content-sized game frame, bounded by available width, and 1em padding. Direct fieldset legends receive the same frame, .5em padding and grid-aligned placement. Root panels have 1em block margins; nested panels have no margins. |
+| `ff-fit`          | Root or descendant container. Fit-content width bounded by available width. Use for unframed content; panels already fit their contents.                                                                                                                         |
+| `ff-contain`      | Unthemed host container. Inline-size containment, zero minimum width and maximum width of 100%. Requires an available width from its host layout; do not use to shrink-wrap intrinsic content.                                                                   |
+| `ff-row`          | Root or descendant container. Flex row, vertically centered, .5em gap, no wrapping by default.                                                                                                                                                                   |
+| `ff-grid`         | Root or descendant container. Grid, two max-content columns and 1em row/column gaps by default.                                                                                                                                                                  |
+| `ff-scroll`       | Root or descendant container. Horizontal scrolling with zero minimum width and optional inner padding. Put inside a framed fieldset so its legend and frame are not clipped.                                                                                     |
+| `ff-number`       | `td`. Right-aligned numeric value. Column headings remain centered.                                                                                                                                                                                              |
+| `ff-prose`        | Descendant text container or `td`. Wrapping text, maximum width 44ch, paragraphs with zero margins.                                                                                                                                                              |
+| `ff-inline-list`  | Descendant `ul` or `ol`. Inline items separated by comma-space, no markers, margin or padding.                                                                                                                                                                   |
+| `ff-class-sprite` | Descendant with `role="img"` and an accessible label. One 16x24 class pose, scaled and pixelated. The host supplies the sprite URL.                                                                                                                              |
+| `ff-portrait`     | Modifier on `ff-class-sprite`. Shows the top half of the sprite without shrinking its pixels.                                                                                                                                                                    |
+| `ff-select`       | Native descendant `select`. Height 1.5em including borders; width is option text plus 3ch for padding/arrow and both borders.                                                                                                                                    |
+| `ff-equipped`     | Native descendant `input[type="checkbox"]`. One-em E marker, 1.5em high; unchecked opacity .25. Its real checked state, form submission and keyboard operation are preserved. Supply an accessible control name.                                                 |
 
 Use semantic HTML without additional classes for tables, headings, legends,
 links, buttons and text. Tables have intrinsic width, continuous collapsed row
 rules and 2ch between columns, with no vertical cell padding. `thead th` is
 centered horizontally and vertically in the heading color; `tbody th` stays
 left-aligned, white and unbroken. Explicit `br` elements control heading breaks.
+Framed panels, legends and native controls fit their contents rather than stretching
+to full width. Compact selects retain their explicit option-derived width.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
 
@@ -85,7 +87,7 @@ without another `ff-ui` for nested frames that inherit the root theme.
 
 ## Compositions
 
-- Reference group: `ff-ui ff-panel ff-fit` on a fieldset, a direct legend and an
+- Reference group: `ff-ui ff-panel` on a fieldset, a direct legend and an
   `ff-scroll` child around the table.
 - Permission strip: `ff-row` with `--ff-gap: .25em`, containing full or portrait
   sprites. Class order and permission filtering belong to the application.
