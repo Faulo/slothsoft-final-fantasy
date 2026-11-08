@@ -134,6 +134,10 @@
     margin-block: .5em;
 }
 
+.ff-ui :where(h3) {
+    margin-bottom: 0;
+}
+
 .ff-ui :where(h1, h2, h3, h4, p) {
     padding: 0;
     text-align: left;
