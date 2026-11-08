@@ -136,6 +136,7 @@
 
 .ff-ui :where(h3) {
     margin-bottom: 0;
+    color: var(--ff-heading);
 }
 
 .ff-ui :where(h1, h2, h3, h4, p) {

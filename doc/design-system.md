@@ -33,7 +33,7 @@ links, buttons and text. Tables have intrinsic width, continuous collapsed row
 rules and 2ch between columns, with no vertical cell padding. `thead th` is
 centered horizontally and vertically in the heading color; `tbody th` stays
 left-aligned, white and unbroken. Explicit `br` elements control heading breaks.
-Section headings (`h3`) have a .5em top margin and no bottom margin.
+Section headings (`h3`) use `--ff-heading`, with a .5em top margin and no bottom margin.
 Framed panels, legends and native controls fit their contents rather than stretching
 to full width. Compact selects retain their explicit option-derived width.
 Selects reserve a transparent border when idle; hover, activation, focus, focus

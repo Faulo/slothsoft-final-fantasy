@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use the heading color token for FF section headings (`h3`).
+
 - Remove the bottom margin from FF section headings (`h3`).
 
 - Add a read-only equipment preview action to the editor XML API, using the save
