@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class NesSpriteSheetTest extends TestCase {
+    use UnpackHelper;
     public function testPngPreservesBitplanesTileOrderPoseRowsPaletteAndTransparency(): void {
         $tiles = str_repeat("\0", 512);
         $tiles[0] = "\xA0"; // first tile, pixels 0 and 2: low bit.
@@ -21,7 +22,7 @@ final class NesSpriteSheetTest extends TestCase {
         self::assertSame([128, 24, IMAGETYPE_PNG], array_slice($info, 0, 3));
         $chunks = [];
         for ($offset = 8; $offset < strlen($png);) {
-            $length = unpack('Nlength', substr($png, $offset, 4))['length'];
+            $length = self::unpack('Nlength', substr($png, $offset, 4))['length'];
             $type = substr($png, $offset + 4, 4);
             $data = substr($png, $offset + 8, $length);
             self::assertSame(pack('N', crc32($type . $data)), substr($png, $offset + 8 + $length, 4));
@@ -59,7 +60,7 @@ final class NesSpriteSheetTest extends TestCase {
         self::assertSame([16, 8, IMAGETYPE_PNG], array_slice($info, 0, 3));
         self::assertSame("\xFF\xFF\0\xFF", substr($png, strpos($png, 'tRNS') + 4, 4));
         $offset = strpos($png, 'IDAT');
-        $length = unpack('Nlength', substr($png, $offset - 4, 4))['length'];
+        $length = self::unpack('Nlength', substr($png, $offset - 4, 4))['length'];
         $pixels = gzuncompress(substr($png, $offset + 4, $length));
         self::assertIsString($pixels);
         self::assertSame("\0\x03" . str_repeat("\x02", 14) . "\x03", substr($pixels, 0, 17));

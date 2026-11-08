@@ -53,7 +53,8 @@ final class TextCodec {
     
     public static function decode(string $bytes): string {
         $text = '';
-        foreach (unpack('C*', $bytes) ?: [] as $byte) {
+        foreach (str_split($bytes) as $character) {
+            $byte = ord($character);
             if ($byte === 0) {
                 break;
             }
@@ -66,7 +67,8 @@ final class TextCodec {
     public static function createLabel(DOMDocument $document, string $bytes): DOMElement {
         $label = $document->createElementNS(GameData::XML_NAMESPACE, 'sf1:label');
         $text = '';
-        foreach (unpack('C*', $bytes) ?: [] as $byte) {
+        foreach (str_split($bytes) as $character) {
+            $byte = ord($character);
             if ($byte === 0) {
                 break;
             }

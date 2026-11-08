@@ -19,6 +19,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
         return FarahUrlAuthority::createFromVendorAndModule('slothsoft', 'final-fantasy');
     }
     
+    /** @return array<string, array{\Slothsoft\Farah\FarahUrl\FarahUrl}> */
     public function assetLocalUrlProvider(): array {
         $assets = parent::assetLocalUrlProvider();
         $rom = Configuration::getRomPath('i');
@@ -35,6 +36,7 @@ final class AssetsModuleTest extends AbstractModuleTest {
     public function testDomainSchemaResolvesAtItsNamespaceLocation(): void {
         $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/schema/i/1.0');
         $document = Module::resolveToDOMWriter($url)->toDocument();
+        self::assertNotNull($document->documentElement);
         self::assertSame('http://www.w3.org/2001/XMLSchema', $document->documentElement->namespaceURI);
         self::assertSame(GameData::XML_NAMESPACE, $document->documentElement->getAttribute('targetNamespace'));
         $xpath = new DOMXPath($document);
@@ -90,7 +92,9 @@ final class AssetsModuleTest extends AbstractModuleTest {
         $url = FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/css/default');
         $response = (new LookupAssetStrategy())->process(new ServerRequest('GET', $url));
         $css = (string) $response->getBody();
-        self::assertSame(1, preg_match('/\.ff-ui\s*\{([^}]+)}/', $css, $block));
+        if (preg_match('/\.ff-ui\s*\{([^}]+)}/', $css, $block) !== 1) {
+            self::fail('The FF UI palette block is missing.');
+        }
         self::assertSame(55, preg_match_all('/--ff-([a-z-]+):\s*#([a-f0-9]{6});/i', $block[1], $colors));
         $namedColors = array_combine($colors[1], $colors[2]);
         self::assertSame('f8b800', $namedColors['gold']);

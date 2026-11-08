@@ -23,6 +23,7 @@ final class PageSchemaTest extends TestCase {
     public function testReferencePageMatchesSchema(): void {
         $this->requireRom();
         $document = $this->loadPage('spells');
+        self::assertNotNull($document->documentElement);
         self::assertSame('spells', $document->documentElement->getAttribute('view'));
         self::assertSame(64, $document->getElementsByTagNameNS(GameData::XML_NAMESPACE, 'spell')->length);
         $this->validate($document);

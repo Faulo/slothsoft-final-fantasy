@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 /** @runTestsInSeparateProcesses */
 final class SaveTest extends TestCase {
+    use UnpackHelper;
     
     private function fixture(): string {
         $bytes = str_repeat("\x39", 8192);
@@ -30,7 +31,7 @@ final class SaveTest extends TestCase {
     /** Independent modulo-255 oracle, sufficient for these generated records. */
     private function checksum(string $bytes): string {
         $bytes[0x4FD] = "\0";
-        $sum = array_sum(unpack('C*', substr($bytes, 0x400, 0x400)));
+        $sum = array_sum(self::unpack('C*', substr($bytes, 0x400, 0x400)));
         $bytes[0x4FD] = chr(($sum % 255) ^ 255);
         return $bytes;
     }
@@ -163,12 +164,16 @@ final class SaveTest extends TestCase {
         self::assertSame(255, ord($edited[0x518]));
     }
     
-    /** @dataProvider invalidUpdates */
+    /**
+     * @dataProvider invalidUpdates
+     * @param array<array-key, mixed> $updates
+     */
     public function testRejectsInvalidEquipmentEdits(array $updates): void {
         $this->expectException(InvalidArgumentException::class);
         (new Save($this->fixture()))->withEquipment($updates, $this->catalog());
     }
     
+    /** @return array<string, array{array<array-key, mixed>}> */
     public function invalidUpdates(): array {
         return [
             'non-integer member' => [['hero' => ['weapons' => []]]],
@@ -206,6 +211,7 @@ final class SaveTest extends TestCase {
         new Save($bytes);
     }
     
+    /** @return list<array{string}> */
     public function invalidSaves(): array {
         return [['length'], ['signature'], ['checksum']];
     }

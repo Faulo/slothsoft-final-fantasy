@@ -18,6 +18,7 @@ final class SpellEffectsTest extends TestCase {
         self::assertStringNotContainsString('Cancels ', implode(' ', SpellEffects::describe($spell, $rules)));
     }
     
+    /** @return list<array{int, int, int, int, string}> */
     public function effects(): array {
         return [
             [1, 10, 16, 2, 'Deals 10-20 Fire damage to one enemy.'],
@@ -56,6 +57,7 @@ final class SpellEffectsTest extends TestCase {
     public function testChangingSourceValuesChangesDescription(): void {
         $spell = $this->element(['id' => 17, 'effect' => 7, 'effectivity' => 37, 'element-mask' => 0, 'target' => 16, 'hit' => 0]);
         $rules = $this->element(['base-hit' => 159, 'hp-limit' => 400]);
+        self::assertNotNull($rules->ownerDocument);
         $field = $rules->ownerDocument->createElementNS(GameData::XML_NAMESPACE, 'sf1:field-healing');
         foreach (['spell' => 17, 'minimum' => 45, 'spread' => 7] as $name => $value) {
             $field->setAttribute($name, (string) $value);

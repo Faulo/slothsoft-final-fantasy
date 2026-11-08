@@ -52,8 +52,7 @@ final class GameData implements EquipmentCatalog {
         $input = clone $this->dataset;
         $xpath = new DOMXPath($input);
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
-        foreach ($xpath->query('//sse:string[@name="text"]') as $node) {
-            assert($node instanceof DOMElement);
+        foreach (XmlElements::query($xpath, '//sse:string[@name="text"]') as $node) {
             $bytes = mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8');
             $node->setAttribute('value', TextCodec::decode($bytes));
             $node->appendChild(TextCodec::createLabel($input, $bytes));
@@ -181,8 +180,7 @@ final class GameData implements EquipmentCatalog {
         $xpath = new DOMXPath($this->document);
         $xpath->registerNamespace('sf1', self::XML_NAMESPACE);
         $records = [];
-        foreach ($xpath->query('/sf1:final-fantasy/sf1:' . $group . '/*') as $node) {
-            assert($node instanceof DOMElement);
+        foreach (XmlElements::query($xpath, '/sf1:final-fantasy/sf1:' . $group . '/*') as $node) {
             $record = [];
             foreach ($node->attributes as $attribute) {
                 $key = preg_replace_callback('/-([a-z])/', static fn(array $match): string => strtoupper($match[1]), $attribute->name);
@@ -191,12 +189,11 @@ final class GameData implements EquipmentCatalog {
             $record['classes'] = [];
             if ($group === 'spells') {
                 $record['effectDescription'] = [];
-                foreach ($xpath->query('sf1:effect-description/sf1:line', $node) as $line) {
+                foreach (XmlElements::query($xpath, 'sf1:effect-description/sf1:line', $node) as $line) {
                     $record['effectDescription'][] = $line->textContent;
                 }
             }
-            foreach ($xpath->query('sf1:class-ref', $node) as $class) {
-                assert($class instanceof DOMElement);
+            foreach (XmlElements::query($xpath, 'sf1:class-ref', $node) as $class) {
                 $record['classes'][] = (int) $class->getAttribute('id');
             }
             $records[(int) $node->getAttribute('id')] = $record;

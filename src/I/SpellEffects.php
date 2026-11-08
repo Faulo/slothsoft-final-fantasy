@@ -15,12 +15,11 @@ final class SpellEffects {
     public static function appendTo(DOMDocument $document): void {
         $xpath = new DOMXPath($document);
         $xpath->registerNamespace('sf1', GameData::XML_NAMESPACE);
-        $rules = $xpath->query('/sf1:final-fantasy/sf1:spell-rules')->item(0);
+        $rules = XmlElements::query($xpath, '/sf1:final-fantasy/sf1:spell-rules')[0] ?? null;
         if (! $rules instanceof DOMElement) {
             return;
         }
-        foreach ($xpath->query('/sf1:final-fantasy/sf1:spells/sf1:spell') as $spell) {
-            assert($spell instanceof DOMElement);
+        foreach (XmlElements::query($xpath, '/sf1:final-fantasy/sf1:spells/sf1:spell') as $spell) {
             $description = $document->createElementNS(GameData::XML_NAMESPACE, 'sf1:effect-description');
             foreach (self::describe($spell, $rules) as $text) {
                 $line = $document->createElementNS(GameData::XML_NAMESPACE, 'sf1:line');

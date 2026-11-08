@@ -52,6 +52,7 @@ final class ClassSpriteTest extends TestCase {
         Module::resolveToFileWriter(FarahUrl::createFromReference('farah://slothsoft@final-fantasy/i/gfx/class?class=' . rawurlencode($class)));
     }
     
+    /** @return list<array{string}> */
     public function invalidClasses(): array {
         return [['-1'], ['12'], ['2foo'], ['../2']];
     }

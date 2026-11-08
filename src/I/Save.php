@@ -81,7 +81,7 @@ final class Save {
                 throw new InvalidArgumentException('Unknown party member.');
             }
             foreach ($groups as $kind => $slots) {
-                if (! isset($catalogs[$kind]) || ! is_array($slots)) {
+                if (($kind !== 'weapons' && $kind !== 'armor') || ! is_array($slots)) {
                     throw new InvalidArgumentException('Only weapons and armor can be edited.');
                 }
                 foreach ($slots as $slot => $values) {
@@ -94,7 +94,11 @@ final class Save {
                     if (array_key_exists('equipped', $values) && ! is_bool($values['equipped'])) {
                         throw new InvalidArgumentException('The equipped flag must be true or false.');
                     }
-                    $next[$character][$kind][$slot] = array_replace($next[$character][$kind][$slot], $values);
+                    $previous = $next[$character][$kind][$slot];
+                    $next[$character][$kind][$slot] = [
+                        'id' => $values['id'] ?? $previous['id'],
+                        'equipped' => $values['equipped'] ?? $previous['equipped']
+                    ];
                 }
             }
         }

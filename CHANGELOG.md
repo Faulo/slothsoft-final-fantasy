@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix level-8 PHPStan diagnostics with checked XML and binary reads, explicit equipment shapes and typed test providers; retain the existing analysis configuration.
+
 - Add private user-ID save persistence and ROM-derived new-game saves, with optional uploads.
 
 - Shorten WARP and EXIT descriptions to their destinations.

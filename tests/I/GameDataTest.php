@@ -108,7 +108,9 @@ final class GameDataTest extends TestCase {
         $input = clone $dataset;
         $xpath = new DOMXPath($input);
         $xpath->registerNamespace('sse', 'http://schema.slothsoft.net/savegame/editor');
-        foreach ($xpath->query('//sse:string[@name="text"]') as $node) {
+        $strings = $xpath->query('//sse:string[@name="text"]');
+        self::assertNotFalse($strings);
+        foreach ($strings as $node) {
             self::assertInstanceOf(DOMElement::class, $node);
             $bytes = mb_convert_encoding($node->getAttribute('value'), 'ISO-8859-1', 'UTF-8');
             $node->setAttribute('value', TextCodec::decode($bytes));
