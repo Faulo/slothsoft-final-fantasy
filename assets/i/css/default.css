@@ -256,7 +256,7 @@
 }
 
 .ff-ui .ff-class-sprite[data-allowed="false"] {
-    filter: grayscale(0.5) opacity(0.25);
+    filter: grayscale(0.5) opacity(0.5) brightness(0.75);
 }
 
 .ff-ui .ff-class-entry {
