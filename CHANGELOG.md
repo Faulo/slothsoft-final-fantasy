@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-08
+
+### Fixed
+
+- Nested `ff-ui` roots now keep their own font size, line height and text shadow
+  when their scale differs from the surrounding layout.
+
 ## [1.1.0] - 2026-11-08
 
 ### Added
@@ -63,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PHPStan level 8 validation, cross-platform PHP integration tests and browser
   checks for the utility contract, with optional private-ROM integration tests.
 
-[Unreleased]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.1.1...HEAD
+[1.1.1]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/Faulo/slothsoft-final-fantasy/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/Faulo/slothsoft-final-fantasy/releases/tag/1.0.0

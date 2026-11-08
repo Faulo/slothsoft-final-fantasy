@@ -81,6 +81,22 @@ const {firefox} = require(process.env.FF_PLAYWRIGHT_MODULE || 'playwright');
         await themed.evaluate(node => node.hidden = true);
         assert.equal(await themed.isVisible(), false);
         await themed.evaluate(node => node.hidden = false);
+        // A nested theme root keeps its own scale instead of inheriting outer typography.
+        const nested = await themed.evaluate(panel => {
+            const wrapper = document.createElementNS(panel.namespaceURI, 'div');
+            wrapper.className = 'ff-ui';
+            wrapper.style.setProperty('--ff-scale', '2');
+            panel.before(wrapper);
+            wrapper.append(panel);
+            const css = getComputedStyle(panel);
+            const text = getComputedStyle(panel.querySelector('tbody th'));
+            const result = [getComputedStyle(wrapper).fontSize, css.fontSize, css.lineHeight,
+                css.borderTopWidth, css.textShadow, text.fontSize, text.textShadow];
+            wrapper.before(panel);
+            wrapper.remove();
+            return result;
+        });
+        assert.deepEqual(nested, ['16px', '8px', '12px', '1px', 'rgb(0, 0, 0) 1px 1px 0px', '8px', 'rgb(0, 0, 0) 1px 1px 0px']);
         if (process.env.FF_EXAMPLE_SCREENSHOT) {
             await page.screenshot({path: process.env.FF_EXAMPLE_SCREENSHOT});
         }
