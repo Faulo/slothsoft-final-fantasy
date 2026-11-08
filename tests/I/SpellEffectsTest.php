@@ -15,11 +15,12 @@ final class SpellEffectsTest extends TestCase {
         $rules = $this->element(['base-hit' => 148, 'hp-limit' => 300]);
         self::assertStringContainsString($expected, implode(' ', SpellEffects::describe($spell, $rules)));
         self::assertStringNotContainsString(' element.', implode(' ', SpellEffects::describe($spell, $rules)));
+        self::assertStringNotContainsString('Cancels ', implode(' ', SpellEffects::describe($spell, $rules)));
     }
     
     public function effects(): array {
         return [
-            [1, 10, 16, 2, '10-20 HP Fire damage to one enemy.'],
+            [1, 10, 16, 2, 'Deals 10-20 Fire damage to one enemy.'],
             [2, 40, 0, 1, 'Only affects undead enemies.'],
             [3, 2, 2, 2, 'Inflicts Stone on one enemy.'],
             [3, 32, 1, 1, 'Inflicts Sleep on each enemy.'],
@@ -28,7 +29,7 @@ final class SpellEffectsTest extends TestCase {
             [8, 64, 0, 16, 'Removes Silence from one ally.'],
             [9, 12, 0, 8, 'Grants 12 defense to each ally'],
             [10, 137, 0, 8, 'Grants Status, Death, Earth resistance'],
-            [12, 0, 0, 16, 'Cancels SLOW.'],
+            [12, 0, 0, 16, 'Grants doubled hit count to one ally.'],
             [13, 16, 0, 4, 'No effect.'],
             [14, 20, 0, 2, 'Always misses'],
             [15, 0, 0, 16, 'Restores all HP to one ally.'],
@@ -49,7 +50,7 @@ final class SpellEffectsTest extends TestCase {
         self::assertSame(['Restores 45-52 HP to one ally.'], SpellEffects::describe($spell, $rules));
         $spell->setAttribute('effect', '1');
         $spell->setAttribute('hit', '31');
-        self::assertStringContainsString('37-74 HP non-elemental damage', implode(' ', SpellEffects::describe($spell, $rules)));
+        self::assertStringContainsString('Deals 37-74 non-elemental damage', implode(' ', SpellEffects::describe($spell, $rules)));
         $spell->setAttribute('effect', '18');
         self::assertStringContainsString('at most 400 current HP', implode(' ', SpellEffects::describe($spell, $rules)));
     }

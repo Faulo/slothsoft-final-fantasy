@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Shorten spell descriptions to effect and target, using only menu healing ranges. Keep cancellation and target restrictions on separate lines; expose elements through the existing mask instead of standalone element notes. Retain raw battle values and rules in the XML API.
+- Shorten spell descriptions to effect and target, using only menu healing ranges. Use "Deals X ... damage", omit cancellation notes and keep target restrictions on separate lines; expose elements through the existing mask instead of standalone element notes. Retain raw battle values and rules in the XML API.
 
 - Describe all US spell effects in domain XML, using ROM power, accuracy, targets, elements, status masks, battle constants and separate menu-healing operands. Document implemented spell bugs and expose descriptions through `getSpells()`.
 
