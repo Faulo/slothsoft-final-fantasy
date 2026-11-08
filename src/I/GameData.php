@@ -132,6 +132,28 @@ final class GameData implements EquipmentCatalog {
         return MenuFont::toTrueType($this->readGraphics('//sse:image[@name="menu-font"]'));
     }
     
+    /** Original map IDs 0-60; "world" selects the 256x256 overworld. */
+    public function getMap(string $id): string {
+        if ($id !== 'world' && ! preg_match('/^(?:[0-9]|[1-5][0-9]|60)$/D', $id)) {
+            throw new InvalidArgumentException('Choose world or a map ID from 0 to 60.');
+        }
+        $read = fn(string $name): string => $this->readGraphics('//sse:binary[@name="' . $name . '"]');
+        if ($id === 'world') {
+            return MapGraphics::world($read('world-layout'), $read('world-tiles'), $read('world-quadrants'), $read('world-attributes'), $read('world-palette'));
+        }
+        $map = (int) $id;
+        $tileset = ord($read('map-tilesets')[$map]);
+        $layouts = $read('map-layouts');
+        $pointer = ord($layouts[$map * 2]) | (ord($layouts[$map * 2 + 1]) << 8);
+        return MapGraphics::standard(
+            substr($layouts, $pointer),
+            substr($read('map-tiles'), $tileset * 2048, 2048) . $this->readGraphics('//sse:image[@name="menu-font"]'),
+            substr($read('map-quadrants'), $tileset * 512, 512),
+            substr($read('map-attributes'), $tileset * 128, 128),
+            substr($read('map-palettes'), $map * 48, 48)
+        );
+    }
+    
     public function getItemIcons(): string {
         return NesSpriteSheet::toTileStrip(
             $this->readGraphics('//sse:image[@name="item-icons"]'),

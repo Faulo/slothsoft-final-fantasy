@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- On-demand PNGs for the world map and all 61 standard US maps, decoded from
+  layouts, metatiles, graphics and palettes extracted by the savegame manifest.
+  Static atlas views reveal rooms and leave chests closed.
+- The `i/gfx/map?map=world` and `i/gfx/map?map=0`–`60` assets, `GameData::getMap()`
+  and the responsive `ff-pixel-art` image utility.
+- The `ff-flush` panel modifier for edge-to-edge images with an overlaid legend.
+
 ## [1.0.0] - 2026-11-08
 
 ### Added

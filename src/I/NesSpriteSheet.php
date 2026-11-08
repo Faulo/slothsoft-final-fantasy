@@ -79,21 +79,30 @@ final class NesSpriteSheet {
             | (((ord($tiles[$offset + 8]) >> $shift) & 1) << 1));
     }
     
-    private static function encodePng(int $width, int $height, string $scanlines, string $palette, int $transparent): string {
+    /** Encode filtered, eight-bit indexed scanlines using NES hardware colors. */
+    public static function encodePng(int $width, int $height, string $scanlines, string $palette, ?int $transparent = null): string {
+        if ($width < 1 || $height < 1 || strlen($scanlines) !== ($width + 1) * $height
+            || strlen($palette) < 1 || strlen($palette) > 256
+            || ($transparent !== null && ($transparent < 0 || $transparent >= strlen($palette)))) {
+            throw new InvalidArgumentException('Invalid indexed PNG dimensions or palette.');
+        }
         $colors = '';
-        for ($index = 0; $index < 4; $index++) {
+        for ($index = 0; $index < strlen($palette); $index++) {
             $colors .= substr(pack('N', self::RGB[ord($palette[$index]) & 0x3F]), 1);
         }
         $compressed = gzcompress($scanlines, 9);
         if ($compressed === false) {
             throw new RuntimeException('Could not encode the NES graphics PNG.');
         }
-        $alpha = "\xFF\xFF\xFF\xFF";
-        $alpha[$transparent] = "\0";
+        $alpha = '';
+        if ($transparent !== null) {
+            $alpha = str_repeat("\xFF", strlen($palette));
+            $alpha[$transparent] = "\0";
+        }
         return "\x89PNG\r\n\x1A\n"
             . self::chunk('IHDR', pack('NNCCCCC', $width, $height, 8, 3, 0, 0, 0))
             . self::chunk('PLTE', $colors)
-            . self::chunk('tRNS', $alpha)
+            . ($alpha === '' ? '' : self::chunk('tRNS', $alpha))
             . self::chunk('IDAT', $compressed)
             . self::chunk('IEND', '');
     }

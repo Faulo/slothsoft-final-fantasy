@@ -368,6 +368,23 @@
     margin-inline-start: calc(-1em - var(--ff-border));
 }
 
+/* Edge-to-edge content with a legend overlaid on the top frame. */
+.ff-ui.ff-panel.ff-flush, .ff-ui .ff-panel.ff-flush {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    margin-block-start: 2em;
+}
+
+.ff-ui.ff-panel.ff-flush > legend, .ff-ui .ff-panel.ff-flush > legend {
+    position: absolute;
+    inset-block-start: calc(-1 * var(--ff-border));
+    inset-inline-start: calc(-1 * var(--ff-border));
+    transform: translateY(-50%);
+    margin: 0;
+    z-index: 1;
+}
+
 .ff-ui.ff-fit, .ff-ui .ff-fit {
     --ff-max-width: 100%;
     width: fit-content;
@@ -402,6 +419,14 @@
     overflow-x: auto;
     min-inline-size: 0;
     padding: var(--ff-scroll-padding);
+}
+
+/* Preserve pixel edges and aspect ratio, shrinking to fit the available panel. */
+.ff-ui .ff-pixel-art {
+    display: block;
+    image-rendering: pixelated;
+    max-width: 100%;
+    height: auto;
 }
 
 .ff-ui td.ff-number, .ff-ui span.ff-number {

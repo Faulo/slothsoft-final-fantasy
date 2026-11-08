@@ -7,7 +7,7 @@ target; no JavaScript is required for typography or controls.
 
 ## Public classes
 
-These fourteen classes are the canonical public CSS contract. Except for
+These sixteen classes are the canonical public CSS contract. Except for
 `ff-contain`, utilities apply on an `ff-ui` root or within one as described below.
 Keep ordinary page headings and introductory prose outside that root.
 
@@ -27,6 +27,7 @@ Keep ordinary page headings and introductory prose outside that root.
 | `ff-portrait`     | Modifier on `ff-class-sprite`. Shows the top half of the sprite without shrinking its pixels.                                                                                                                                                                    |
 | `ff-select`       | Native descendant `select`. Height 1.5em including borders; width is option text plus 3ch for padding/arrow and both borders.                                                                                                                                    |
 | `ff-equipped`     | Native descendant `input[type="checkbox"]`. One-em E marker, 1.5em high; unchecked opacity .25. Its real checked state, form submission and keyboard operation are preserved. Supply an accessible control name.                                                 |
+| `ff-pixel-art`    | Descendant `img`. Pixelated block image, bounded by available width, preserving its aspect ratio.                                                                                                                                                                |
 
 Use semantic HTML without additional classes for tables, headings, legends,
 links, buttons and text. Tables have intrinsic width, continuous collapsed row
@@ -54,6 +55,18 @@ Keep .5em of outer padding when a menu sits inside `ff-scroll`, so the floating
 hand is not clipped. This padding belongs to the menu container, not its commands.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
+
+`ff-pixel-art` applies to a descendant `img`: block display, pixelated rendering,
+maximum width 100% and automatic height. It preserves the aspect ratio and
+shrinks large ROM images to fit their panel. Supply intrinsic `width`, `height`
+and meaningful `alt` text in HTML. It does not enlarge images with `--ff-scale`.
+See `i/examples/maps` for a complete panel using the map PNG endpoint.
+
+`ff-flush` modifies an `ff-panel` for edge-to-edge content: zero padding,
+transparent panel background and 2em top margin. Its legend retains the theme
+background and overlays the top border, without reserving space inside the panel.
+The map example uses `--ff-scale: 2` for the legend and frame; image dimensions
+remain independent of that scale.
 
 ## Public inputs and states
 
@@ -149,7 +162,7 @@ computed variable names, or utility order in a class attribute.
 The published asset URLs, font/glyph mapping, palette names, sprite pose and
 permission state remain unchanged. `ff-table`, `ff-classes`, `ff-class-entry`,
 `ff-class-tooltip` and `ff-item-icon` remain as legacy helpers. New compositions
-use the fourteen classes above. Existing inline `background-image` sprite
+use the sixteen classes above. Existing inline `background-image` sprite
 sources still work; new templates use `--ff-sprite`.
 
 This pre-release design refactor intentionally updates default table spacing,

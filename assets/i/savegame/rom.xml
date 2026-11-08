@@ -4,6 +4,18 @@
     <!-- Layout: https://github.com/Entroper/FF1Disassembly/tree/master/Final%20Fantasy%20Disassembly -->
     <archive path="game.nes" type="NES">
         <file file-name="1">
+            <!-- Map compression, metatile quadrants, attributes and palette data (banks 00-06). -->
+            <binary name="world-layout" position="0x4000" size="0x4000" />
+            <binary name="world-quadrants" position="0x0100" size="512" />
+            <binary name="world-attributes" position="0x0300" size="128" />
+            <binary name="world-palette" position="0x0380" size="16" />
+            <binary name="world-tiles" position="0x8000" size="4096" />
+            <binary name="map-layouts" position="0x10000" size="0xC000" />
+            <binary name="map-tilesets" position="0x2CC0" size="61" />
+            <binary name="map-palettes" position="0x2000" size="61 * 48" />
+            <binary name="map-attributes" position="0x0400" size="1024" />
+            <binary name="map-quadrants" position="0x1000" size="4096" />
+            <binary name="map-tiles" position="0xC000" size="0x4000" />
             <binary name="initial-state" position="0x3000" size="256" />
             <binary name="initial-flags" position="0x2F00" size="256" />
             <binary name="starting-stats" position="0x3040" size="96" />

@@ -11,6 +11,7 @@
         <resource-directory name="savegame" type="application/xml" />
         <custom-asset name="font" executable-builder="Slothsoft\FinalFantasy\I\MenuFontBuilder" />
         <directory name="gfx">
+            <custom-asset name="map" executable-builder="Slothsoft\FinalFantasy\I\MapBuilder" parameter-filter="Slothsoft\FinalFantasy\I\MapParameters" />
             <custom-asset name="cursor" executable-builder="Slothsoft\FinalFantasy\I\MenuCursorBuilder" />
             <custom-asset name="items" executable-builder="Slothsoft\FinalFantasy\I\ItemIconBuilder" />
             <custom-asset name="class" executable-builder="Slothsoft\FinalFantasy\I\ClassSpriteBuilder" parameter-filter="Slothsoft\FinalFantasy\I\ClassSpriteParameters" />
@@ -19,6 +20,7 @@
             <custom-asset name="data" executable-builder="Slothsoft\FinalFantasy\I\PageDataBuilder" parameter-filter="Slothsoft\FinalFantasy\I\PageParameters" />
         </directory>
         <directory name="examples">
+            <resource name="maps" path="maps.xhtml" type="application/xhtml+xml" />
             <resource name="panels" path="panels.xhtml" type="application/xhtml+xml" />
         </directory>
     </directory>

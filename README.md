@@ -42,6 +42,28 @@ randomizers and other modified PRGs are not supported.
 
 ## Module and schema
 
+### Maps
+
+`farah://slothsoft@final-fantasy/i/gfx/map?map=world` renders the overworld as an
+opaque 4096×4096 PNG. Map IDs `0`–`60` render the original standard maps as
+1024×1024 PNGs. `GameData::getMap(string $id)` exposes the same renderer in PHP.
+Invalid IDs return HTTP 400; an unavailable ROM returns HTTP 503 without exposing
+its path. Layouts, metatile quadrants, NES 2bpp graphics and palette indices come
+from `i/savegame/rom.xml`, including the menu font used for shop signs.
+
+These are static terrain atlases: rooms are revealed, chests remain closed, and
+NPCs, vehicles and the party are not overlaid. For simultaneous indoor/outdoor
+visibility, palette 0 and the dark part of palette 1 use the indoor colors;
+wall highlights and outdoor terrain retain their outdoor colors. Full 64×64
+layouts are preserved, including unused space and disconnected cave sections.
+Names, floor labels, grouping and routes belong to the consuming site.
+
+Use `<img class="ff-pixel-art" ... />` inside an `ff-ui ff-panel` to retain crisp
+pixel edges and aspect ratio while fitting the available width. The package's
+`i/examples/maps` page includes an example. No ROM-derived images are shipped.
+
+### Assets
+
 Composer registers the Farah module `slothsoft@final-fantasy`.
 
 | Asset                                                     | Purpose                                                              |
