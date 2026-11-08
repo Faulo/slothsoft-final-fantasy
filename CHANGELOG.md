@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Allow `ff-number` on spans for right-aligned numeric grid values.
+
 - Expose read-only character HP, level, attributes and cached combat stats through
   the SRAM manifest, Save API and domain XML.
 

@@ -399,7 +399,7 @@
     padding: var(--ff-scroll-padding);
 }
 
-.ff-ui td.ff-number {
+.ff-ui td.ff-number, .ff-ui span.ff-number {
     text-align: right;
 }
 
