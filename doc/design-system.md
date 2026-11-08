@@ -36,8 +36,12 @@ left-aligned, white and unbroken. Explicit `br` elements control heading breaks.
 Framed panels, legends and native controls fit their contents rather than stretching
 to full width. Compact selects retain their explicit option-derived width.
 Selects reserve a transparent border when idle; hover, activation, focus, focus
-within and an open dropdown reveal the frame color. Keyboard focus uses that
+within and an open dropdown reveal the cyan interaction color. Keyboard focus uses that
 frame without an additional outline, and control dimensions stay unchanged.
+Enabled inputs (including E checkboxes), selects, buttons, textareas and the
+native file-selector button use that same color for text and borders during
+interaction. Keyboard focus outlines use it too. Unchecked E markers retain
+their dimming. File-selector hover/focus follows the owning file input.
 Native options inherit the font and colors. Item names remain plain Unicode
 text; the font supplies the ROM glyphs. No icon wrapper is necessary.
 
@@ -69,18 +73,19 @@ use their independent native `:checked` state. Keyboard focus remains visible.
 The complete named palette remains public. Semantic tokens can be overridden
 on the theme root; their defaults preserve the existing colors:
 
-| Token               | Palette default                   |
-|---------------------|-----------------------------------|
-| `--ff-foreground`   | `--ff-white`                      |
-| `--ff-background`   | `--ff-blue`                       |
-| `--ff-frame`        | `--ff-white`                      |
-| `--ff-frame-shade`  | `--ff-gray`                       |
-| `--ff-frame-shadow` | `--ff-black`                      |
-| `--ff-heading`      | `--ff-pale-blue`                  |
-| `--ff-link`         | `--ff-gold`                       |
-| `--ff-link-visited` | `--ff-ochre`                      |
-| `--ff-link-hover`   | `--ff-cyan` (also keyboard focus) |
-| `--ff-link-active`  | `--ff-white`                      |
+| Token               | Palette default                                      |
+|---------------------|------------------------------------------------------|
+| `--ff-foreground`   | `--ff-white`                                         |
+| `--ff-background`   | `--ff-blue`                                          |
+| `--ff-frame`        | `--ff-white`                                         |
+| `--ff-frame-shade`  | `--ff-gray`                                          |
+| `--ff-frame-shadow` | `--ff-black`                                         |
+| `--ff-heading`      | `--ff-pale-blue`                                     |
+| `--ff-link`         | `--ff-gold`                                          |
+| `--ff-link-visited` | `--ff-ochre`                                         |
+| `--ff-interaction`  | `--ff-cyan` (control interaction and focus outlines) |
+| `--ff-link-hover`   | `--ff-interaction` (also keyboard focus)             |
+| `--ff-link-active`  | `--ff-white`                                         |
 
 The base font/sprite sizes and derived measurements remain available for
 compatibility, but new consumers should configure scale rather than calculated

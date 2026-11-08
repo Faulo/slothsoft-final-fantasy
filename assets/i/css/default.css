@@ -81,9 +81,10 @@
     --ff-frame-shade: var(--ff-gray);
     --ff-frame-shadow: var(--ff-black);
     --ff-heading: var(--ff-pale-blue);
+    --ff-interaction: var(--ff-cyan);
     --ff-link: var(--ff-gold);
     --ff-link-visited: var(--ff-ochre);
-    --ff-link-hover: var(--ff-cyan);
+    --ff-link-hover: var(--ff-interaction);
     --ff-link-active: var(--ff-white);
     font-family: 'Final Fantasy I', monospace;
     font-size: var(--ff-unit);
@@ -203,6 +204,7 @@
 .ff-ui :where(input, select, option, button, textarea),
 .ff-ui ::file-selector-button {
     font: inherit;
+    text-shadow: inherit;
     color: var(--ff-foreground);
     background: var(--ff-background);
 }
@@ -225,8 +227,10 @@
     border-color: transparent;
 }
 
-.ff-ui select:is(:hover, :active, :focus, :focus-within, :open) {
-    border-color: var(--ff-frame);
+.ff-ui :is(input, select, button, textarea):enabled:is(:hover, :active, :focus, :focus-within, :open),
+.ff-ui input[type="file"]:enabled:is(:hover, :active, :focus, :focus-within)::file-selector-button {
+    color: var(--ff-interaction);
+    border-color: var(--ff-interaction);
 }
 
 .ff-ui button, .ff-ui ::file-selector-button {
@@ -263,7 +267,7 @@
 }
 
 .ff-ui :focus-visible {
-    outline: var(--ff-border) solid var(--ff-frame);
+    outline: var(--ff-border) solid var(--ff-interaction);
     outline-offset: var(--ff-border);
 }
 
